@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+<p>Welcome, teacher!</p>
+<form action="/teacher/create-task" method="POST">
+Header: <input type="text" name="header"/>
+Problem: <input type="text" name="problem"/>
+<input type="submit" value="Create">
+</form>
+
+<form action="/teacher/add-student" method="POST">
+    Task: <input type="text" name="task"/>
+    Student: <input type="text" name="student"/>
+    <input type="submit" value="Add">
+</form>
+
+<form action="/teacher/change-task" method="POST">
+    Old header: <input type="text" name="header"/>
+    New problem: <input type="text" name="newProblem"/>
+    <input type="submit" value="Change">
+</form>
+
+<form action="/teacher/get-task" method="POST">
+    Header: <input type="text" name="header"/>
+    <input type="submit" value="Get task">
+</form>
+
+<form action="/teacher/delete-task" method="POST">
+    Header: <input type="text" name="header"/>
+    <input type="submit" value="Delete task">
+</form>
+
+<form action="/teacher/get-my-tasks" method="GET">
+    <input type="submit" value="Get my tasks">
+</form>
+
+<form action="/teacher/get-all-tasks" method="GET">
+    <input type="submit" value="Get all tasks">
+</form>
+
+</body>
+</html>
