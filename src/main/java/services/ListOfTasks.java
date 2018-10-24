@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 public class ListOfTasks {
         private static ListOfTasks instance;
         private ArrayList<Task> tasks = new ArrayList<>();
+        private ListOfTasks(){};
         public static ListOfTasks getInstance() {
             if (instance == null) {
                 instance = new ListOfTasks();

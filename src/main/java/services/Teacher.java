@@ -1,3 +1,4 @@
+
 package services;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-@Path("/teacher")
+@Path("/teacher/{id}")
 public class Teacher {
-    private ArrayList<LocalTask> myTasks = new ArrayList<>();
+    private TaskByStudents myTasks;
     int cur= 0;
     private ListOfTasks tasks;
 
@@ -31,13 +32,8 @@ public class Teacher {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ListOfHeader getMyTasks() {
-        myTasks.add(new LocalTask("Header1", "Problem1"));
         ArrayList<String> res = new ArrayList<>();
-        for(LocalTask t: myTasks) {
-            res.add(t.getHeader());
-        }
-        //System.out.println(res.toString());
-        return new ListOfHeader(res);
+        return new ListOfHeader(myTasks.getInstance().get());
     }
 
     @Path("/get-task")
@@ -56,27 +52,27 @@ public class Teacher {
     @Path("/add-student")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
-    public StringJson addStudent(MultivaluedMap<String, String> formParams) {
-        String header = formParams.get("task").get(0);
-        String student = formParams.get("student").get(0);
-        if (tasks.getInstance().contain(header)) {
-            Task t = tasks.getInstance().getTask(header);
-            if((t.getHeader()).equals(header)) {
-                int j = myTasks.indexOf(t);
-                if(j == -1) {
-                    LocalTask tt = new LocalTask(t);
-                    myTasks.add(tt);
-                    j = myTasks.indexOf(tt);
-                    myTasks.get(j).addStudent(student);
-                } else {
-                    myTasks.get(j).addStudent(student);
-                }
-                return new StringJson("OK. Student " + student + " was added.");
-            }
-        }
-        //System.out.println(res.toString());
-        return new StringJson("ERROR. This task '" + header + "' hasn't been created.");
+    public StringJson addStudent(@PathParam("id")int id, MultivaluedMap<String, String> formParams) throws IOException {
+        String header = formParams.get("header").get(0);
+        int idStudent  = Integer.parseInt(formParams.get("id").get(0));
+        if(tasks.getInstance().contain(header)) {
+            myTasks.getInstance().addStudent(new LocalTask(tasks.getInstance().getTask(header), idStudent));
+            return new StringJson("OK. Task '"+ header + "' was added for student '" + idStudent + "'.");
+        } else
+            return new StringJson("Error. You don't have task '" + header + "'.");
+    }
+
+    @Path("/show-answer")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public StringJson showAnswer(@PathParam("id")int id, MultivaluedMap<String, String> formParams) throws IOException {
+        String header = formParams.get("header").get(0);
+        int idStudent  = Integer.parseInt(formParams.get("id").get(0));
+        if(myTasks.getInstance().contain(idStudent, header)) {
+            return new StringJson("OK. Answer for task '"+ header + "' by student '" + idStudent + "' is: '"
+            + myTasks.getInstance().getTask(idStudent, header).getAnswer() + "'.");
+        } else
+            return new StringJson("Error. You don't have task '" + header + "'.");
     }
 
     @Path("/create-task")
@@ -91,7 +87,6 @@ public class Teacher {
         if(tasks.getInstance().contain(newTask))
             return new StringJson("ERROR. Task '" + header + "' has been created.");
         tasks.getInstance().add(newTask);
-        myTasks.add(new LocalTask(newTask));
         return new StringJson("OK. You create new task '" + header + "'.");
     }
 
@@ -117,23 +112,5 @@ public class Teacher {
             return new StringJson("ERROR. Task '" + header + "' hasn't been created.");
         tasks.getInstance().delete(header);
         return new StringJson("OK. You deleted task '" + header + "'.");
-    }
-
-    static class ListOfHeader{
-        ArrayList<String> tasks;
-
-        public ListOfHeader(){};
-
-        public ListOfHeader(ArrayList<String> tasks) {
-            this.tasks = tasks;
-        }
-
-        public ArrayList<String> getTasks() {
-            return tasks;
-        }
-
-        public void setTasks(ArrayList<String> tasks) {
-            this.tasks = tasks;
-        }
     }
 }

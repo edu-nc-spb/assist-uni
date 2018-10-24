@@ -5,26 +5,39 @@ import java.util.HashMap;
 
 public class LocalTask {
     Task task;
-    HashMap<String, String> studentToAnswer = new HashMap<>();
+    String answer = "";
+    int idSudent;
+    LocalTask(){};
     LocalTask(String header, String problem) {
         task = new Task(header, problem);
     }
-    LocalTask(Task task) {
+    LocalTask(Task task, int idStudent) {
         this.task = task;
+        this.idSudent = idStudent;
+    }
+
+    public int getIdSudent() {
+        return idSudent;
     }
 
     public Task getTask() {
         return task;
     }
 
-    void addStudent(String student) {
-        studentToAnswer.put(student, "");
+
+    public void setTask(Task task) {
+        this.task = task;
     }
-    void addAnswer(String student, String answer) {
-        studentToAnswer.replace(student, answer);
+
+    public String getAnswer() {
+        return answer;
     }
-    void deleteAnswer(String student) {
-        studentToAnswer.replace(student, "");
+
+    void setAnswer(String answer) {
+        this.answer = answer;
+    }
+    void deleteAnswer() {
+        answer="";
     }
     String getHeader() {
         return task.getHeader();
@@ -36,6 +49,6 @@ public class LocalTask {
         if (o == null || getClass() != o.getClass()) return false;
 
         LocalTask other = (LocalTask) o;
-        return (this.task.getHeader().equals(other.getTask().getHeader()));
+        return (this.task.getHeader().equals(other.getTask().getHeader()) && this.getIdSudent() == other.getIdSudent());
     }
 }

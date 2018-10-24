@@ -6,39 +6,45 @@
 </head>
 <body>
 <p>Welcome, teacher!</p>
-<form action="/teacher/create-task" method="POST">
-Header: <input type="text" name="header"/>
-Problem: <input type="text" name="problem"/>
+<form action="/teacher/1/create-task" method="POST">
+    Task header: <input type="text" name="header"/>
+    Problem: <input type="text" name="problem"/>
 <input type="submit" value="Create">
 </form>
 
-<form action="/teacher/add-student" method="POST">
-    Task: <input type="text" name="task"/>
-    Student: <input type="text" name="student"/>
+<form action="/teacher/1/add-student" method="POST">
+    Task header: <input type="text" name="header"/>
+    Student id: <input type="text" name="id"/>
     <input type="submit" value="Add">
 </form>
 
-<form action="/teacher/change-task" method="POST">
-    Old header: <input type="text" name="header"/>
+<form action="/teacher/1/show-answer" method="POST">
+    Task header: <input type="text" name="header"/>
+    Student id: <input type="text" name="id"/>
+    <input type="submit" value="Show answer">
+</form>
+
+<form action="/teacher/1/change-task" method="POST">
+    Task header: <input type="text" name="header"/>
     New problem: <input type="text" name="newProblem"/>
     <input type="submit" value="Change">
 </form>
 
-<form action="/teacher/get-task" method="POST">
-    Header: <input type="text" name="header"/>
+<form action="/teacher/1/get-task" method="POST">
+    Task header: <input type="text" name="header"/>
     <input type="submit" value="Get task">
 </form>
 
-<form action="/teacher/delete-task" method="POST">
-    Header: <input type="text" name="header"/>
+<form action="/teacher/1/delete-task" method="POST">
+    Task header: <input type="text" name="header"/>
     <input type="submit" value="Delete task">
 </form>
 
-<form action="/teacher/get-my-tasks" method="GET">
+<form action="/teacher/1/get-my-tasks" method="GET">
     <input type="submit" value="Get my tasks">
 </form>
 
-<form action="/teacher/get-all-tasks" method="GET">
+<form action="/teacher/1/get-all-tasks" method="GET">
     <input type="submit" value="Get all tasks">
 </form>
 

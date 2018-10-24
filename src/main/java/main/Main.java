@@ -8,6 +8,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import services.Student;
 import services.Teacher;
 
 
@@ -26,13 +27,14 @@ public class Main {
         Server jettyServer = new Server(8080);
         jettyServer.setHandler(handlers);
 
-        ServletHolder jerseyServlet = context.addServlet(
+        ServletHolder jerseyServlet1 = context.addServlet(
                 org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-        jerseyServlet.setInitOrder(0);
+        jerseyServlet1.setInitOrder(0);
 
-        jerseyServlet.setInitParameter(
+
+        jerseyServlet1.setInitParameter(
                 "jersey.config.server.provider.classnames",
-                Teacher.class.getCanonicalName());
+                "services.Teacher, services.Student");
 
         try {
             jettyServer.start();
