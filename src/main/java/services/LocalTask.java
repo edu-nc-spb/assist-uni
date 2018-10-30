@@ -7,11 +7,11 @@ public class LocalTask {
     Task task;
     String answer = "";
     int idSudent;
-    LocalTask(){};
-    LocalTask(String header, String problem) {
+    public LocalTask(){};
+    public LocalTask(String header, String problem) {
         task = new Task(header, problem);
     }
-    LocalTask(Task task, int idStudent) {
+    public LocalTask(Task task, int idStudent) {
         this.task = task;
         this.idSudent = idStudent;
     }
@@ -33,13 +33,13 @@ public class LocalTask {
         return answer;
     }
 
-    void setAnswer(String answer) {
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
-    void deleteAnswer() {
+    public void deleteAnswer() {
         answer="";
     }
-    String getHeader() {
+    public String getHeader() {
         return task.getHeader();
     }
 

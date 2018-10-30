@@ -20,11 +20,11 @@ public class TaskByStudents {
     public ArrayList<String> get() {
         return new ArrayList<String>(localTasks.keySet());
     }
-    protected boolean contain(String header) {
+    public boolean contain(String header) {
         return localTasks.containsKey(header);
     }
 
-    protected boolean contain(int id, String header) {
+    public boolean contain(int id, String header) {
         if(localTasks.containsKey(header)) {
             ArrayList<LocalTask> a = localTasks.get(header);
             for(LocalTask t: a) {

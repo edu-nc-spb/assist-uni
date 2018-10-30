@@ -18,11 +18,11 @@ public class StudentByTasks {
         }
         return instance;
     }
-    protected boolean contain(int id) {
+    public boolean contain(int id) {
         return localTasks.containsKey(id);
     }
 
-    protected boolean contain(int id, String header) {
+    public boolean contain(int id, String header) {
         if(localTasks.containsKey(id)) {
             ArrayList<LocalTask> a = localTasks.get(id);
             for(LocalTask t: a) {

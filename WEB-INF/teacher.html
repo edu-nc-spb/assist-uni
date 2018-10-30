@@ -1,52 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
+    <meta charset="utf-8">
+    <title>Teacher</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
-<p>Welcome, teacher!</p>
-<form action="/teacher/1/create-task" method="POST">
-    Task header: <input type="text" name="header"/>
-    Problem: <input type="text" name="problem"/>
-<input type="submit" value="Create">
-</form>
 
-<form action="/teacher/1/add-student" method="POST">
+<form action="teacher/1/create-task" id="createTask">
+    Task header: <input type="text" name="header" placeholder="Header...">
+    Task problem: <input type="text" name="problem" placeholder="Problem...">
+    <input type="submit" value="Create">
+</form>
+<form action="/teacher/1/add-student" id="addStudent">
     Task header: <input type="text" name="header"/>
     Student id: <input type="text" name="id"/>
     <input type="submit" value="Add">
 </form>
 
-<form action="/teacher/1/show-answer" method="POST">
+<form action="/teacher/1/show-answer"id = "showAnswer">
     Task header: <input type="text" name="header"/>
     Student id: <input type="text" name="id"/>
     <input type="submit" value="Show answer">
 </form>
 
-<form action="/teacher/1/change-task" method="POST">
+<form action="/teacher/1/change-task" id = "changeTask">
     Task header: <input type="text" name="header"/>
     New problem: <input type="text" name="newProblem"/>
     <input type="submit" value="Change">
 </form>
 
-<form action="/teacher/1/get-task" method="POST">
-    Task header: <input type="text" name="header"/>
-    <input type="submit" value="Get task">
-</form>
-
-<form action="/teacher/1/delete-task" method="POST">
+<form action="/teacher/1/delete-task" id = "deleteTask">
     Task header: <input type="text" name="header"/>
     <input type="submit" value="Delete task">
 </form>
 
-<form action="/teacher/1/get-my-tasks" method="GET">
+<form action="/teacher/1/get-my-tasks" id = "getMyTasks">
     <input type="submit" value="Get my tasks">
 </form>
-
-<form action="/teacher/1/get-all-tasks" method="GET">
+<form action= "/teacher/1/get-all-tasks" id = "getAllTasks">
     <input type="submit" value="Get all tasks">
 </form>
+
+<div style="overflow: hidden;">
+    <div style="width: 1000%;">
+        <div id = "result" style="float: left; width: 300px; height: 500px; word-wrap: break-word;"></div>
+        <div id = "task" style="float: left; width: 500px; height: 500px; word-wrap: break-word;"></div>
+    </div>
+</div>
+
+
+
+<script>
+    jQuery( "#createTask" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='problem']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, problem:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+            jQuery( "#result" ).empty().append( data.data );
+        });
+    });
+    jQuery( "#addStudent" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='id']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, id:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+    jQuery( "#addStudent" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='id']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, id:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+
+    jQuery( "#showAnswer" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='id']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, id:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+    jQuery( "#changeTask" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='newProblem']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, newProblem:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+    jQuery( "#addStudent" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='id']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, id:term2 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+    jQuery( "#deleteTask" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1 } );
+        posting.done(function( data ) {
+            alert(data.data);
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+    jQuery('#getAllTasks').submit(function (event) {
+        event.preventDefault();
+        var $form = jQuery(this);
+        var url = $form.attr("action");
+        var getting = $.get(url);
+        var br = '<br>';
+        getting.done(function (data) {
+            jQuery('#result').empty();
+            jQuery('#task').empty();
+            $.each(
+                data.tasks,
+                function (intIndex, objValue) {
+                    jQuery('#result').append(objValue);
+                    var r = $('<button/>',
+                        {id: "getTask",
+                            value: 'choose',
+                            text: 'choose',
+                            click: function () {
+                                var posting = $.post( '/teacher/1/get-task', { header: objValue } );
+                                posting.done(function( data ) {
+                                    jQuery('#task').empty();
+                                    jQuery('#task').append( 'Header: '+ data.header + br
+                                        + 'Problem:' + br + data.problem);
+                                }).fail(function() {
+                                    alert( "error" );
+                                })
+                            }
+                        });
+                    jQuery('#result').append(r);
+                    jQuery('#result').append(br);
+
+                }
+            );
+        }).fail(function() {
+            alert( "error" );
+        })
+    });
+</script>
 
 </body>
 </html>

@@ -3,8 +3,8 @@ package services;
 public class Task {
     private String header;
     private String problem;
-    Task(){};
-    Task(String header, String problem) {
+    public Task(){};
+    public Task(String header, String problem) {
         this.header = header;
         this.problem = problem;
     }

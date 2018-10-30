@@ -1,15 +1,10 @@
 package main;
-
-import example.Calculator;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-
-import services.Student;
-import services.Teacher;
 
 
 public class Main {
@@ -33,8 +28,8 @@ public class Main {
 
 
         jerseyServlet1.setInitParameter(
-                "jersey.config.server.provider.classnames",
-                "services.Teacher, services.Student");
+                "jersey.config.server.provider.packages",
+                "resources");
 
         try {
             jettyServer.start();

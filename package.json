@@ -1,0 +1,23 @@
+{
+  "name": "assist-uni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "WEB-INF/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edu-nc-spb/assist-uni.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edu-nc-spb/assist-uni/issues"
+  },
+  "homepage": "https://github.com/edu-nc-spb/assist-uni#readme",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "riot": "^3.13.0"
+  }
+}
