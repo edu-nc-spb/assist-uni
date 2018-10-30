@@ -60,21 +60,9 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1, problem:term2 } );
         posting.done(function( data ) {
-            alert(data.data);
-            jQuery( "#result" ).empty().append( data.data );
-        });
-    });
-    jQuery( "#addStudent" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='id']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, id:term2 } );
-        posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
     jQuery( "#addStudent" ).submit(function( event ) {
@@ -85,9 +73,22 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1, id:term2 } );
         posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
+        })
+    });
+    jQuery( "#addStudent" ).submit(function( event ) {
+        event.preventDefault();
+        var $form = jQuery( this ),
+            term1 = $form.find( "input[name='header']" ).val(),
+            term2 = $form.find( "input[name='id']" ).val(),
+            url = $form.attr( "action" );
+        var posting = $.post( url, { header: term1, id:term2 } );
+        posting.done(function( data ) {
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
 
@@ -99,9 +100,9 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1, id:term2 } );
         posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
     jQuery( "#changeTask" ).submit(function( event ) {
@@ -112,9 +113,9 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1, newProblem:term2 } );
         posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
     jQuery( "#addStudent" ).submit(function( event ) {
@@ -125,9 +126,9 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1, id:term2 } );
         posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
     jQuery( "#deleteTask" ).submit(function( event ) {
@@ -137,9 +138,9 @@
             url = $form.attr( "action" );
         var posting = $.post( url, { header: term1 } );
         posting.done(function( data ) {
-            alert(data.data);
-        }).fail(function() {
-            alert( "error" );
+            alert(data);
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
     jQuery('#getAllTasks').submit(function (event) {
@@ -165,8 +166,8 @@
                                     jQuery('#task').empty();
                                     jQuery('#task').append( 'Header: '+ data.header + br
                                         + 'Problem:' + br + data.problem);
-                                }).fail(function() {
-                                    alert( "error" );
+                                }).fail( function(request) {
+                                    alert(request.responseText);
                                 })
                             }
                         });
@@ -175,8 +176,8 @@
 
                 }
             );
-        }).fail(function() {
-            alert( "error" );
+        }).fail( function(request) {
+            alert(request.responseText);
         })
     });
 </script>

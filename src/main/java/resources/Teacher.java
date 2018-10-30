@@ -6,6 +6,7 @@ import services.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -13,104 +14,108 @@ import java.util.NoSuchElementException;
 @Path("/teacher/{id}")
 public class Teacher {
     private TaskByStudents myTasks;
-    int cur= 0;
+    int cur = 0;
     private ListOfTasks tasks;
 
     @Path("/get-all-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ListOfHeader getTasks() {
+    public Response getTasks() {
         ArrayList<String> t = tasks.getInstance().getHeader();
         System.out.println(t.toString());
-        return new ListOfHeader(t);
+        return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
     }
 
 
     @Path("/get-my-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ListOfHeader getMyTasks() {
+    public Response getMyTasks() {
         ArrayList<String> res = new ArrayList<>();
-        return new ListOfHeader(myTasks.getInstance().get());
+        ListOfHeader json = new ListOfHeader(myTasks.getInstance().get());
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/get-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Task getTask(MultivaluedMap<String, String> formParams) throws NoSuchElementException {
-        String header = formParams.get("header").get(0);
+    public Response getTask(@FormParam("header") String header) throws IOException {
         System.out.println("get " + header);
-        if(tasks.getInstance().contain(header)) {
-            return tasks.getInstance().getTask(header);
+        if (tasks.getInstance().contain(header)) {
+            Task json =  tasks.getInstance().getTask(header);
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
         }
-        throw new NoSuchElementException();
+        return Response.status(Response.Status.NOT_FOUND).
+                entity("ERROR. Task '" + header + "' wasn't created.").build();
     }
 
-    //@Context
-    //private HttpServletRequest httpRequest;
     @Path("/add-student")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public StringJson addStudent(@PathParam("id")int id, MultivaluedMap<String, String> formParams) throws IOException {
-        String header = formParams.get("header").get(0);
-        int idStudent  = Integer.parseInt(formParams.get("id").get(0));
-        if(tasks.getInstance().contain(header)) {
+    public Response addStudent(@PathParam("id") int id, @FormParam("header") String header,
+                               @FormParam("id") int idStudent) {
+        if (tasks.getInstance().contain(header)) {
             myTasks.getInstance().addStudent(new LocalTask(tasks.getInstance().getTask(header), idStudent));
-            return new StringJson("OK. Task '"+ header + "' was added for student '" + idStudent + "'.");
+            String json = ("OK. Task '" + header + "' was added for student '" + idStudent + "'.");
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
         } else
-            return new StringJson("Error. You don't have task '" + header + "'.");
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity("Error. You don't have task '" + header + "'.").build();
     }
 
     @Path("/show-answer")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public StringJson showAnswer(@PathParam("id")int id, MultivaluedMap<String, String> formParams) throws IOException {
-        String header = formParams.get("header").get(0);
-        int idStudent  = Integer.parseInt(formParams.get("id").get(0));
-        if(myTasks.getInstance().contain(idStudent, header)) {
-            return new StringJson("OK. Answer for task '"+ header + "' by student '" + idStudent + "' is: '"
-            + myTasks.getInstance().getTask(idStudent, header).getAnswer() + "'.");
+    public Response showAnswer(@PathParam("id") int id, @FormParam("header") String header,
+                               @FormParam("id") int idStudent) throws IOException {
+        if (myTasks.getInstance().contain(idStudent, header)) {
+            String json = "OK. Answer for task '" + header +
+                    "' by student '" + idStudent + "' is: '"
+                    + myTasks.getInstance().getTask(idStudent, header).getAnswer() + "'.";
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
         } else
-            return new StringJson("Error. You don't have task '" + header + "'.");
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity("Error. You don't have task '" + header + "'.").build();
     }
 
     @Path("/create-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    //@Consumes(MediaType.APPLICATION_JSON)
-    public StringJson createTask(MultivaluedMap<String, String> formParams) throws IOException {
-        System.out.println(formParams.toString());
-        String header = formParams.get("header").get(0);
-        String problem = formParams.get("problem").get(0);
-//        tasks.getInstance().add(new Task("H1", "P1"));
+    public Response createTask(@FormParam("header") String header,
+                               @FormParam("problem") String problem) throws IOException {
         Task newTask = new Task(header, problem);
-        if(tasks.getInstance().contain(newTask))
-            return new StringJson("ERROR. Task '" + header + "' has been created.");
+        if (tasks.getInstance().contain(newTask))
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity("ERROR. Task '" + header + "' has been created.").build();
+
         tasks.getInstance().add(newTask);
-        return new StringJson("OK. You create new task '" + header + "'.");
+        String json = "OK. You create new task '" + header + "'.";
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/change-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public StringJson changeTask(MultivaluedMap<String, String> formParams) {
-        String header = formParams.get("header").get(0);
-        String newProblem = formParams.get("newProblem").get(0);
+    public Response changeTask(@FormParam("header") String header,
+                               @FormParam("newProblem") String newProblem) throws IOException {
         if (!tasks.getInstance().contain(header))
-            return new StringJson("ERROR. Task '" + header + "' hasn't been created.");
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity("ERROR. Task '" + header + "' hasn't been created.").build();
         tasks.getInstance().getTask(header).setProblem(newProblem);
-        return new StringJson("OK. You changed task '" + header + "'.");
+        String json ="OK. You changed task '" + header + "'.";
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 
 
     @Path("/delete-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public StringJson deleteTask(MultivaluedMap<String, String> formParams) {
-        String header = formParams.get("header").get(0);
+    public Response deleteTask(@FormParam("header") String header) throws IOException {
         if (!tasks.getInstance().contain(header))
-            return new StringJson("ERROR. Task '" + header + "' hasn't been created.");
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity("ERROR. Task '" + header + "' hasn't been created.").build();
         tasks.getInstance().delete(header);
-        return new StringJson("OK. You deleted task '" + header + "'.");
+        String json = "OK. You deleted task '" + header + "'.";
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
 }
