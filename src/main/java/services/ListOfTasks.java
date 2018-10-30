@@ -9,9 +9,7 @@ public class ListOfTasks {
     private ArrayList<Task> tasks = new ArrayList<>();
 
     private ListOfTasks() {
-    }
-
-    ;
+    };
 
     public static ListOfTasks getInstance() {
         if (instance == null) {

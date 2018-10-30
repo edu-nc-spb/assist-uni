@@ -12,137 +12,38 @@
     Task problem: <input type="text" name="problem" placeholder="Problem...">
     <input type="submit" value="Create">
 </form>
-<form action="/teacher/1/add-student" id="addStudent">
-    Task header: <input type="text" name="header"/>
-    Student id: <input type="text" name="id"/>
-    <input type="submit" value="Add">
-</form>
 
-<form action="/teacher/1/show-answer"id = "showAnswer">
-    Task header: <input type="text" name="header"/>
-    Student id: <input type="text" name="id"/>
-    <input type="submit" value="Show answer">
-</form>
-
-<form action="/teacher/1/change-task" id = "changeTask">
-    Task header: <input type="text" name="header"/>
-    New problem: <input type="text" name="newProblem"/>
-    <input type="submit" value="Change">
-</form>
-
-<form action="/teacher/1/delete-task" id = "deleteTask">
-    Task header: <input type="text" name="header"/>
-    <input type="submit" value="Delete task">
-</form>
-
-<form action="/teacher/1/get-my-tasks" id = "getMyTasks">
+<form action="/teacher/1/get-my-tasks" id="getMyTasks">
     <input type="submit" value="Get my tasks">
 </form>
-<form action= "/teacher/1/get-all-tasks" id = "getAllTasks">
+
+<form action="/teacher/1/get-all-tasks" id="getAllTasks">
     <input type="submit" value="Get all tasks">
 </form>
 
 <div style="overflow: hidden;">
     <div style="width: 1000%;">
-        <div id = "result" style="float: left; width: 300px; height: 500px; word-wrap: break-word;"></div>
-        <div id = "task" style="float: left; width: 500px; height: 500px; word-wrap: break-word;"></div>
+        <div id="result" style="float: left; width: 300px; height: 500px; word-wrap: break-word;"></div>
+        <div id="task" style="float: left; width: 500px; height: 500px; word-wrap: break-word;"></div>
     </div>
 </div>
 
 
-
 <script>
-    jQuery( "#createTask" ).submit(function( event ) {
+    jQuery("#createTask").submit(function (event) {
         event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='problem']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, problem:term2 } );
-        posting.done(function( data ) {
+        var $form = jQuery(this),
+            term1 = $form.find("input[name='header']").val(),
+            term2 = $form.find("input[name='problem']").val(),
+            url = $form.attr("action");
+        var posting = $.post(url, {header: term1, problem: term2});
+        posting.done(function (data) {
             alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
-    jQuery( "#addStudent" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='id']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, id:term2 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
-    jQuery( "#addStudent" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='id']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, id:term2 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
+        }).fail(function (request) {
             alert(request.responseText);
         })
     });
 
-    jQuery( "#showAnswer" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='id']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, id:term2 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
-    jQuery( "#changeTask" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='newProblem']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, newProblem:term2 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
-    jQuery( "#addStudent" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            term2 = $form.find( "input[name='id']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1, id:term2 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
-    jQuery( "#deleteTask" ).submit(function( event ) {
-        event.preventDefault();
-        var $form = jQuery( this ),
-            term1 = $form.find( "input[name='header']" ).val(),
-            url = $form.attr( "action" );
-        var posting = $.post( url, { header: term1 } );
-        posting.done(function( data ) {
-            alert(data);
-        }).fail( function(request) {
-            alert(request.responseText);
-        })
-    });
     jQuery('#getAllTasks').submit(function (event) {
         event.preventDefault();
         var $form = jQuery(this);
@@ -156,27 +57,123 @@
                 data.tasks,
                 function (intIndex, objValue) {
                     jQuery('#result').append(objValue);
-                    var r = $('<button/>',
-                        {id: "getTask",
-                            value: 'choose',
-                            text: 'choose',
-                            click: function () {
-                                var posting = $.post( '/teacher/1/get-task', { header: objValue } );
-                                posting.done(function( data ) {
-                                    jQuery('#task').empty();
-                                    jQuery('#task').append( 'Header: '+ data.header + br
-                                        + 'Problem:' + br + data.problem);
-                                }).fail( function(request) {
-                                    alert(request.responseText);
-                                })
-                            }
-                        });
-                    jQuery('#result').append(r);
-                    jQuery('#result').append(br);
+                    var chooseTask = $('<button/>', {
+                        id: "getTask",
+                        value: 'choose',
+                        text: 'choose',
+                        click: function () {
+                            var changeTaskForm = jQuery('<form/>', {
+                                id: "changeTask",
+                                submit: function (event) {
+                                    event.preventDefault();
+                                    var $form = jQuery(this),
+                                        term = $form.find("input[name='newProblem']").val();
+                                    var posting = $.post('teacher/1/change-task', {
+                                        header: objValue, newProblem: term
+                                    });
+                                    posting.done(function (data) {
+                                        alert(data);
+                                        jQuery('#task').empty();
+                                    }).fail(function (request) {
+                                        alert(request.responseText);
+                                    })
+                                }
+                            }).append(jQuery('<input/>', {
+                                name: 'newProblem',
+                                type: 'text',
+                                placeholder: "новая формулировка задания..."
+
+                            })).append(jQuery('<input/>', {
+                                type: 'submit',
+                                value: 'Change Task'
+                            }));
+
+                            var deleteTaskButton = $('<button/>', {
+                                id: "deleteTask",
+                                value: 'deleteTask',
+                                text: 'Delete task',
+                                click: function () {
+                                    var posting = $.post('/teacher/1/delete-task', {header: objValue});
+                                    posting.done(function (data) {
+                                        alert(data);
+                                        jQuery('#result').empty();
+                                        jQuery('#task').empty();
+                                    }).fail(function (request) {
+                                        alert(request.responseText);
+                                    })
+                                }
+                            });
+
+                            var $select = $('<select/>', {
+                                name:'name'
+                            });
+                            var getting = $.get('/teacher/1/get-students');
+                            getting.done(function (data) {
+                                $.each(
+                                    data.data,
+                                    function (intIndex, objValue) {
+                                        $select.append($("<option/>", {
+                                            value: objValue.id,
+                                            text: objValue.name
+                                        }))
+                                    })
+                            });
+
+                            var addStudentButton = jQuery('<form/>', {
+                                submit: function (event) {
+                                    event.preventDefault();
+                                    var term = $select.val();
+                                    var posting = $.post('/teacher/1/add-student',
+                                        {header: objValue, id: term});
+                                    posting.done(function (data) {
+                                        alert(data);
+                                    }).fail(function (request) {
+                                        alert(request.responseText);
+                                    })
+                                }
+                            }).append($select);
+                            addStudentButton.append(jQuery('<input/>', {
+                                type: 'submit',
+                                value: 'назначить студенту'
+                            }));
+                            var showAnswerButton = jQuery('<form/>', {
+                                submit: function (event) {
+                                    event.preventDefault();
+                                    var term = $select.val();
+                                    var posting = $.post('/teacher/1/show-answer',
+                                        {header: objValue, id: term});
+                                    posting.done(function (data) {
+                                        alert(data);
+                                    }).fail(function (request) {
+                                        alert(request.responseText);
+                                    })
+                                }
+                            }).append($select);
+                            showAnswerButton.append(jQuery('<input/>', {
+                                type: 'submit',
+                                value: 'показать ответ студента'
+                            }));
+
+                            var posting = $.post('/teacher/1/get-task', {header: objValue});
+                            posting.done(function (data) {
+                                jQuery('#task').empty().
+                                append('Header: ' + data.header + br
+                                    + 'Problem:' + br + data.problem + br).
+                                append(changeTaskForm).
+                                append(deleteTaskButton).
+                                append(addStudentButton).
+                                append(showAnswerButton).
+                                append(br);
+                            }).fail(function (request) {
+                                alert(request.responseText);
+                            })
+                        }
+                    });
+                    jQuery('#result').append(chooseTask).append(br);
 
                 }
             );
-        }).fail( function(request) {
+        }).fail(function (request) {
             alert(request.responseText);
         })
     });

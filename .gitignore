@@ -46,6 +46,7 @@ bin
 
 # Other
 node_modules/*
+package-lock.json
 *.log
 *.swp
 *.bak
