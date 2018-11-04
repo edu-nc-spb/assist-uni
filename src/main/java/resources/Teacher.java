@@ -24,6 +24,7 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTasks() {
         ArrayList<String> t = tasks.getInstance().getHeader();
+        System.out.println("GET");
         return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
     }
 
@@ -76,6 +77,7 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAnswer(@PathParam("id") int id, @FormParam("header") String header,
                                @FormParam("id") int idStudent) throws IOException {
+
         if (myTasks.getInstance().contain(idStudent, header)) {
             String json = "OK. Answer for task '" + header +
                     "' by student '" + idStudent + "' is: '"
