@@ -14,7 +14,7 @@
         <h1>Список заданий</h1>
         <ul if="{tasks}">
             <li each="{p, i in tasks}">
-                <listObj all = "{opts.all}"  my = "{opts.my}" name = "listObj" header = '{p}' />
+                <listObj all = "{opts.all}"  my = "{opts.my}" st = "{opts.st}" name = "listObj" header = '{p}' />
             </li>
         </ul>
         <button onclick="{updateList}">Update</button>

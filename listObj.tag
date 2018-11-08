@@ -17,7 +17,7 @@
             left: 10px;
             top: 10px;
         }
-        #optall, #optmy {
+        #optall, #optmy, #optst {
             position: absolute;
             width: 700px;
             left: 10px;
@@ -30,6 +30,7 @@
                 <card id = "card" name = "card" header = '{p.header}', problem = '{p.problem}'></card>
                 <opt-teacher-all-tasks if="{opts.all}" id = "optall" header = '{p.header}'></opt-teacher-all-tasks>
                 <opt-teacher-my-tasks if="{opts.my}" id = "optmy" header = '{p.header}'></opt-teacher-my-tasks>
+                <opt-student-my-tasks if="{opts.st}" id = "optst" header = '{p.header}'></opt-student-my-tasks>
             </li>
         </ul>
     <script>
