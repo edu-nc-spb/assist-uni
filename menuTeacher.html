@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="node_modules/riot/riot+compiler.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="card.tag" type = "riot/tag"></script>
+    <script src="listObj.tag" type = "riot/tag"></script>
+    <script src="my-tag.tag" type = "riot/tag"></script>
+    <script src="create-task.tag" type = "riot/tag"></script>
+    <script src="list.tag" type = "riot/tag"></script>
+    <script src="list-my-tasks.tag" type = "riot/tag"></script>
+    <script src="list-all-tasks.tag" type = "riot/tag"></script>
+    <script src="opt-teacher-all-tasks.tag" type = "riot/tag"></script>
+    <script src="opt-teacher-my-tasks.tag" type = "riot/tag"></script>
+</head>
+<body>
+<my-tag></my-tag>
+<script>
+    riot.compile(function() {
+        riot.mount('*')
+    });
+</script>
+</body>
+</html>
