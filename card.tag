@@ -12,17 +12,16 @@
 
     <style type="text/css">
         body { margin: 0; }
-        #card { position: absolute; }
+        #card { position: static; }
         #card {
             width: 700px;
             left: 10px;
-            right: 400px;
-            top:75px;
+            top:10px;
             border: 4px double black;
         }
     </style>
 
-    <div id = "card">
+    <div id = "card" if = {opts.flag}>
     <h5>{header}</h5>
     <h5>{problem}</h5>
     </div>

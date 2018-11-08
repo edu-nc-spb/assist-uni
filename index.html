@@ -2,28 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Title</title>
-    <!--<link rel="stylesheet" type="text/css" href="./jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <link rel="stylesheet" type="text/css" href="./stylesheet.css" /> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="node_modules/riot/riot+compiler.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="card.tag" type = "riot/tag"></script>
-    <script src="menu.tag" type = "riot/tag"></script>
     <script src="listObj.tag" type = "riot/tag"></script>
-    <script src="listOfTasks.tag" type = "riot/tag"></script>
-
+    <script src="my-tag.tag" type = "riot/tag"></script>
+    <script src="create-task.tag" type = "riot/tag"></script>
+    <script src="list.tag" type = "riot/tag"></script>
+    <script src="list-my-tasks.tag" type = "riot/tag"></script>
+    <script src="list-all-tasks.tag" type = "riot/tag"></script>
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous" charset="UTF-8"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/riot/2.3.18/riot+compiler.js'></script>
-<menu id = "menu"></menu>
-<listOfTasks id = "listOfTasks"></listOfTasks>
+<my-tag></my-tag>
 <script>
     riot.compile(function() {
         riot.mount('*')

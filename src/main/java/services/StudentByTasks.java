@@ -38,7 +38,7 @@ public class StudentByTasks {
             ArrayList<LocalTask>a = new ArrayList<>();
             a.add(task);
             localTasks.put(id, a);
-            System.out.println(id + " " + task.getHeader());
+            //System.out.println(id + " " + task.getHeader());
         } else {
             this.getInstance().localTasks.get(id).add(task);
         }
