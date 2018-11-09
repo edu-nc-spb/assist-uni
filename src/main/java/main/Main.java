@@ -21,6 +21,15 @@ public class Main {
 
         jettyServer.setHandler(context);
 
+        ServletHolder jerseyServlet1 = context.addServlet(
+                org.glassfish.jersey.servlet.ServletContainer.class, "/*");
+        jerseyServlet1.setInitOrder(0);
+
+
+        jerseyServlet1.setInitParameter(
+                "jersey.config.server.provider.packages",
+                "resources");
+
         try {
             jettyServer.start();
             jettyServer.join();
