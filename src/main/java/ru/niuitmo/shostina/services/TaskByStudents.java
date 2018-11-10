@@ -1,4 +1,4 @@
-package services;
+package ru.niuitmo.shostina.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;

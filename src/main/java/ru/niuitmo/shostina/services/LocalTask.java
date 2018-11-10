@@ -1,7 +1,4 @@
-package services;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+package ru.niuitmo.shostina.services;
 
 public class LocalTask {
     Task task;

@@ -1,4 +1,4 @@
-package resources;
+package ru.niuitmo.shostina.resources;
 
 import java.util.ArrayList;
 

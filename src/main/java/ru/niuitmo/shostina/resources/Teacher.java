@@ -1,15 +1,13 @@
 
-package resources;
+package ru.niuitmo.shostina.resources;
 
-import services.*;
+import ru.niuitmo.shostina.services.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 @Path("/teacher/{id}")
 public class Teacher {

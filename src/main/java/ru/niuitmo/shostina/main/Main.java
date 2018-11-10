@@ -1,4 +1,4 @@
-package main;
+package ru.niuitmo.shostina.main;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -30,7 +30,7 @@ public class Main {
 
         jerseyServlet1.setInitParameter(
                 "jersey.config.server.provider.packages",
-                "resources");
+                "ru/niuitmo/shostina/resources");
 
         try {
             jettyServer.start();

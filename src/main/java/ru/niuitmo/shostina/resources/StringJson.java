@@ -1,4 +1,4 @@
-package resources;
+package ru.niuitmo.shostina.resources;
 
 public class StringJson {
     private String data = "";

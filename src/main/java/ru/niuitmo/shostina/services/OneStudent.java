@@ -1,4 +1,4 @@
-package services;
+package ru.niuitmo.shostina.services;
 
 public class OneStudent {
     String name;
