@@ -2,6 +2,7 @@ group 'assist-uni-2'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'pmd'
 
 sourceCompatibility = 1.8
 repositories {
