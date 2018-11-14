@@ -1,10 +1,12 @@
 <opt-student-my-tasks>
-    <button onclick="{addAnswer}"> Ответить </button>
+    <button class="btn btn-primary" onclick="{addAnswer}"> Ответить </button>
     <div id = "context"></div>
     <script>
+        var header = this.parent.header
+        this.on('update', (e) => {
+            header = this.parent.header
+        })
         addAnswer() {
-            console.log("addA " + opts.header )
-            this.header = opts.header;
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
                 submit: function (event) {
@@ -12,13 +14,14 @@
                     var $form = jQuery(this),
                         term = $form.find("input[name='answer']").val();
                     var posting = $.post('/student/2/add-answer', {
-                        header: opts.header, answer: term
+                        header: header, answer: term
                     });
                     posting.done(function (data) {
                         alert(data.data);
                     }).fail(function (request) {
                         alert(request.responseText);
                     })
+                    jQuery('#context').empty();
                 }
             }).append(jQuery('<input/>', {
                 name: 'answer',

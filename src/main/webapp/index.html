@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <title>Welcome</title>
+    <!--script src="../../../../node_modules/riot/riot+compiler.js"></script-->
+    <script src="https://cdn.jsdelivr.net/riot/3.2.0/riot+compiler.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="app.tag" type = "riot/tag"></script>
+    <script src="auth.tag" type = "riot/tag"></script>
+    <script src="card.tag" type = "riot/tag"></script>
+    <script src="list.tag" type = "riot/tag"></script>
+    <script src="opt-student-my-tasks.tag" type = "riot/tag"></script>
+    <script src="menu-student.tag" type = "riot/tag"></script>
+    <script src="menu-teacher.tag" type = "riot/tag"></script>
+    <script src="create-task.tag" type = "riot/tag"></script>
+    <script src="opt-teacher-all-tasks.tag" type = "riot/tag"></script>
+    <script src="opt-teacher-my-tasks.tag" type = "riot/tag"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 <body>
-<p>Welcome</p>
-<a href="menuTeacher.html">Teacher</a>
-<a href="menuStudent.html">Student</a>
+<app></app>
+<script>
+    riot.compile(function() {
+        riot.mount('*')
+    });
+</script>
 </body>
 </html>

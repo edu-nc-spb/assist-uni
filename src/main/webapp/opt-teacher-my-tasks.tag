@@ -1,7 +1,13 @@
 <opt-teacher-my-tasks>
-    <button onclick="{showA}"> Посмотреть ответ </button>
+    <button class="btn btn-primary btn-block" onclick="{showA}"> Посмотреть ответ </button>
     <div id = "context"></div>
     <script>
+        var header = this.parent.header
+        var parent = this.parent
+        this.on('update', (e) => {
+            header = this.parent.header
+            parent = this.parent;
+        })
         showA () {
             var $select = $('<select/>', {
                 name:'name'
@@ -22,7 +28,7 @@
                     event.preventDefault();
                     var term = $select.val();
                     var posting = $.post('/teacher/1/show-answer',
-                        {header: opts.header, id: term});
+                        {header: header, id: term});
                     posting.done(function (data) {
                         alert(data);
                     }).fail(function (request) {
@@ -31,6 +37,7 @@
                 }
             }).append($select);
             showAnswerButton.append(jQuery('<input/>', {
+                class: "btn btn-primary",
                 type: 'submit',
                 value: 'показать ответ студента'
             }));

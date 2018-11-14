@@ -1,12 +1,25 @@
 <opt-teacher-all-tasks>
-    <button onclick="{change}"> Изменить условие </button>
-    <button onclick="{deleteT}"> Удалить задание</button>
-    <button onclick="{addStudent}"> Назначить студенту</button>
-    <div id = "context"></div>
+    <div class="container">
+    <div class="row">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" onclick="{change}">
+            Изменить условие</button>
+        <button type="button" class="btn btn-primary" onclick="{deleteT}">
+            Удалить задание</button>
+        <button type="button" class="btn btn-primary" onclick="{addStudent}">
+            Назначить студенту</button>
+    </div>
+    </div>
+    </div>
+    <div class="row" id = "context"></div>
     <script>
+        var header = this.parent.header
+        var parent = this.parent;
+        this.on('update', (e) => {
+            header = this.parent.header
+            parent = this.parent;
+        })
         change() {
-            this.header = opts.header;
-            console.log("change")
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
                 submit: function (event) {
@@ -14,13 +27,15 @@
                     var $form = jQuery(this),
                         term = $form.find("input[name='newProblem']").val();
                     var posting = $.post('teacher/1/change-task', {
-                        header: opts.header, newProblem: term
+                        header: header, newProblem: term
                     });
                     posting.done(function (data) {
-                        //alert(data);
+                        alert(data);
                     }).fail(function (request) {
                         alert(request.responseText);
                     })
+                    jQuery('#context').empty();
+                    parent.update({events : "changeTask", header:header})
                 }
             }).append(jQuery('<input/>', {
                 name: 'newProblem',
@@ -28,6 +43,7 @@
                 placeholder: "новая формулировка задания..."
 
             })).append(jQuery('<input/>', {
+                class:"btn btn-primary",
                 type: 'submit',
                 value: 'Изменить'
             }));
@@ -35,16 +51,15 @@
             this.update()
         }
         deleteT(){
-            var posting = $.post('/teacher/1/delete-task', {header: opts.header});
+            var posting = $.post('/teacher/1/delete-task', {header: header});
+            //var parent = this.parent;
             posting.done(function (data) {
                 alert(data);
-                jQuery('#result').empty();
-                jQuery('#task').empty();
             }).fail(function (request) {
                 alert(request.responseText);
             })
             jQuery('#context').empty();
-            this.update();
+            this.parent.update({events : "deleteTask"});
         }
         addStudent() {
             var $select = $('<select/>', {
@@ -67,15 +82,18 @@
                     event.preventDefault();
                     var term = $select.val();
                     var posting = $.post('/teacher/1/add-student',
-                        {header: opts.header, id: term});
+                        {header: header, id: term});
                     posting.done(function (data) {
                         alert(data);
-                    }).fail(function (request) {
+                    }.bind(this)).fail(function (request) {
                         alert(request.responseText);
-                    })
+                    }.bind(this))
+                    jQuery('#context').empty();
+                    this.update()
                 }
             }).append($select);
             addStudentButton.append(jQuery('<input/>', {
+                class:"btn btn-primary",
                 type: 'submit',
                 value: 'назначить студенту'
             }));

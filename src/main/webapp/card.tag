@@ -1,35 +1,16 @@
 <card>
-
-    <style>
-        li {
-            list-style-type: none; /* Убираем маркеры */
-        }
-        ul {
-            margin-left: 0; /* Отступ слева в браузере IE и Opera */
-            padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
-        }
-    </style>
-
-    <style type="text/css">
-        body { margin: 0; }
-        #card { position: static; }
-        #card {
-            width: 700px;
-            left: 10px;
-            top:10px;
-            border: 4px double black;
-        }
-    </style>
-
     <div id = "card">
-    <h5>{header}</h5>
-    <h5>{problem}</h5>
+        <h4>{header}</h4>
+        <p5> Условие:</p5>
+        <br/>
+        <p5>{problem}</p5>
     </div>
     <script>
-    this.header = opts.header
-    this.problem = opts.problem
-    console.log("card")
-    console.log(this.header)
-    console.log(this.problem)
+    this.header = this.parent.header
+    this.problem = this.parent.problem
+    this.on('update', (e) => {
+        this.header = this.parent.header
+        this.problem = this.parent.problem
+    })
     </script>
 </card>

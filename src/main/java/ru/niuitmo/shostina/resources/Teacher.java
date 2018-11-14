@@ -22,7 +22,6 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTasks() {
         ArrayList<String> t = tasks.getInstance().getHeader();
-        System.out.println("GET");
         return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
     }
 
@@ -47,7 +46,6 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTask(@FormParam("header") String header) throws IOException {
-        System.out.println("get " + header);
         if (tasks.getInstance().contain(header)) {
             Task json =  tasks.getInstance().getTask(header);
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
@@ -92,7 +90,6 @@ public class Teacher {
     public Response createTask(@FormParam("header") String header,
                                @FormParam("problem") String problem) throws IOException {
         Task newTask = new Task(header, problem);
-        System.out.println("createTask");
         if (tasks.getInstance().contain(newTask))
             return Response.status(Response.Status.NOT_FOUND).
                     entity("ERROR. Task '" + header + "' has been created.").build();

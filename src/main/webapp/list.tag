@@ -10,33 +10,35 @@
         }
     </style>
 
-    <div style="float: right">
-        <h1>Список заданий</h1>
+    <div>
+        <h2>Список заданий</h2>
         <ul if="{tasks}">
-            <li each="{p, i in tasks}">
-                <listObj all = "{opts.all}"  my = "{opts.my}" st = "{opts.st}" name = "listObj" header = '{p}' />
+            <li each="{header, i in tasks}">
+                <button id = "choose" class="btn btn-success btn-sm btn-block" data-message="{header}" onclick="{choose}" value = "{header}">{header}</button>
             </li>
         </ul>
-        <button onclick="{updateList}">Update</button>
     </div>
+
     <script>
-        this.flag = opts.flag
-        this.aaa = "";
-        console.log(this.flag);
-        this.tasks = [];
-        updateList(e) {
-            if(this.tasks.length > 0) {
+        this.update();
+        this.on('update', (e) => {
+            if(e == null) {
+            this.tasks = []
+            this.flag = this.parent.flag
+            jQuery.get(this.flag).done(function (data) {
                 this.tasks = []
-            }
-            jQuery.get(this.flag).done(function(data) {
                 $.each(
                     data.tasks,
                     function (intIndex, objValue) {
                         this.tasks.push(objValue);
                     }.bind(this))
-                this.update();
-            }.bind(this));
+                this.update({first: false})
+            }.bind(this))
         }
+        })
 
+        choose(e) {
+            this.parent.update({events : "get", header: e.target.dataset.message, flag: this.flag})
+        }
     </script>
 </list>
