@@ -4,17 +4,14 @@
         li {
             list-style-type: none;
         }
-        ul {
-            margin-left: 0;
-            padding-left: 0;
-        }
     </style>
-
     <div>
-        <h2>Список заданий</h2>
-        <ul if="{tasks}">
-            <li each="{header, i in tasks}">
-                <button id = "choose" class="btn btn-success btn-sm btn-block" data-message="{header}" onclick="{choose}" value = "{header}">{header}</button>
+        <ul>
+            <h3 style="text-align: center;">Список заданий</h3>
+            <li if="{tasks}" each="{header, i in tasks}">
+                <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db"
+                        class="btn btn-sm btn-block" data-message="{header}"
+                        onclick="{choose}" value = "{header}">{header}</button>
             </li>
         </ul>
     </div>

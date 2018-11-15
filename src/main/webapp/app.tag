@@ -3,8 +3,8 @@
         <div class="row">
             <div id = "left" class = "col-sm-3 order-1" if = "{flagL}" data-is = "{left}"></div>
             <div class = "col-sm-6 order-2">
-                <div class="row" id = "center0" if = {flagC0} data-is = "{center0}"></div>
-                <div class="row" id = "center" if = "{flagC}" data-is = "{center}"></div>
+                <div class="row-offset-2" id = "center0" if = {flagC0} data-is = "{center0}"></div>
+                <div class="row-offset-2" id = "center" if = "{flagC}" data-is = "{center}"></div>
             </div>
             <div id = "right" class = "col-sm-3 order-3" if = "{flagR}" data-is = "{right}"></div>
         </div>
@@ -64,13 +64,13 @@
                     this.problem =  data.problem
                     this.update()
                 }.bind(this))
-                this.center = 'card'
+                this.center0 = 'card'
                 if(e.flag == "teacher/1/get-my-tasks") {
-                    this.center0 = ('opt-teacher-my-tasks')
+                    this.center = ('opt-teacher-my-tasks')
                 } else if(e.flag == "teacher/1/get-all-tasks") {
-                    this.center0 = ('opt-teacher-all-tasks')
+                    this.center = ('opt-teacher-all-tasks')
                 } else if (e.flag == "student/2/get-my-tasks") {
-                    this.center0 = ('opt-student-my-tasks')
+                    this.center = ('opt-student-my-tasks')
                 }
                 riot.update()
             } else if (e != null && e.events == "myTasksStudent") {
