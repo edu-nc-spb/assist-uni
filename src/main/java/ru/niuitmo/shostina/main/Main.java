@@ -8,13 +8,18 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        int port=8080;
-        try{
-            port = Integer.parseInt(args[0]);
-        } catch (Exception ignore) {}
+        int port = 8080;
+        if(args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.out.println("First argument should be number of port.");
+                System.out.println(e.getMessage());
+            }
+        }
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setResourceBase("src/main/webapp");
@@ -35,6 +40,8 @@ public class Main {
         try {
             jettyServer.start();
             jettyServer.join();
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
         } finally {
             jettyServer.destroy();
         }
