@@ -1,6 +1,12 @@
 <opt-student-my-tasks>
-    <button class="btn btn-primary" onclick="{addAnswer}"> Ответить </button>
+    <div class="container" style="margin-top: 20px;">
+    <div class="row">
+    <button style="background-color: #00bed6" onclick="{addAnswer}"> Ответить </button>
+    </div>
+    <div class="row">
     <div id = "context"></div>
+    </div>
+    </div>
     <script>
         var header = this.parent.header
         this.on('update', (e) => {
@@ -9,6 +15,7 @@
         addAnswer() {
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
+                style:"padding-top: 10px;",
                 submit: function (event) {
                     event.preventDefault();
                     var $form = jQuery(this),
@@ -23,12 +30,13 @@
                     })
                     jQuery('#context').empty();
                 }
-            }).append(jQuery('<input/>', {
+            }).append(jQuery('<label>Ответ:</label>')).append(jQuery('<input/>', {
                 name: 'answer',
                 type: 'text',
                 placeholder: "ваш ответ..."
 
             })).append(jQuery('<input/>', {
+                style: "background-color: #00bed6",
                 type: 'submit',
                 value: 'Записать ответ'
             }));

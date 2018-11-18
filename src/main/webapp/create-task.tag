@@ -3,12 +3,13 @@
         <div class="form-group">
             <label for="header">Заголовок</label>
             <input type="text" class="form-control" id = "header"  value="{header}" placeholder="Заголовок">
+            </input>
         </div>
         <div class="form-group">
-            <label for="problem">Password</label>
+            <label for="problem">Условие задания</label>
             <input type="text" class="form-control" id = "problem" placeholder="Формулировка задания...">
         </div>
-        <button onclick='{createm}' class="btn btn-primary">Создать</button>
+        <button onclick='{createm}' style="background-color:  #51C5D4">Создать</button>
     </form>
 
     <script>

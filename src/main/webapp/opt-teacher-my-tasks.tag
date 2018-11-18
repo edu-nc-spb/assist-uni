@@ -1,6 +1,8 @@
 <opt-teacher-my-tasks>
-    <button class="btn btn-primary btn-block" onclick="{showA}"> Посмотреть ответ </button>
+    <div style="margin-top: 20px;">
+    <button style="background-color: #00bed6" onclick="{showA}"> Посмотреть ответ </button>
     <div id = "context"></div>
+    </div>
     <script>
         var header = this.parent.header
         var parent = this.parent
@@ -37,7 +39,7 @@
                 }
             }).append($select);
             showAnswerButton.append(jQuery('<input/>', {
-                class: "btn btn-primary",
+                style: "background-color: #00bed6",
                 type: 'submit',
                 value: 'показать ответ студента'
             }));

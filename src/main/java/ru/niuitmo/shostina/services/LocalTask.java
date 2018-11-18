@@ -40,12 +40,12 @@ public class LocalTask {
         return task.getHeader();
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         LocalTask other = (LocalTask) o;
-        return (this.task.getHeader().equals(other.getTask().getHeader()) && this.getIdSudent() == other.getIdSudent());
-    }
+        return this.task.getHeader().equals(other.getTask().getHeader()) && this.getIdSudent() == other.getIdSudent();
+    }*/
 }
