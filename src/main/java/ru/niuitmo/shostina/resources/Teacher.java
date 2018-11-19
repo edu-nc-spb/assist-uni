@@ -8,15 +8,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/teacher/{id}")
 public class Teacher {
     private TaskByStudents myTasks;
+    private TeacherService service;
     int cur = 0;
     private ListOfTasks tasks;
 
     private ListOfStudent students;
-
+/*
     @Path("/get-all-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -24,7 +26,22 @@ public class Teacher {
         ArrayList<String> t = tasks.getInstance().getHeader();
         return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
     }
+    */
 
+    @Path("/get-all-tasks")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTasks() {
+        try {
+            List<String> t = service.instance().getAllTasks();
+            System.out.println(t);
+            return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
 
     @Path("/get-students")
     @GET
@@ -89,6 +106,25 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createTask(@FormParam("header") String header,
                                @FormParam("problem") String problem) throws IOException {
+
+        try {
+            service.instance().addTask(header, problem);
+            String json = "OK. You create new task '" + header + "'.";
+            System.out.println(json);
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
+    /*
+    @Path("/create-task")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createTask(@FormParam("header") String header,
+                               @FormParam("problem") String problem) throws IOException {
         Task newTask = new Task(header, problem);
         if (tasks.getInstance().contain(newTask))
             return Response.status(Response.Status.NOT_FOUND).
@@ -98,6 +134,7 @@ public class Teacher {
         String json = "OK. You create new task '" + header + "'.";
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
+    */
 
     @Path("/change-task")
     @POST
