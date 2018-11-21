@@ -4,7 +4,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import ru.niuitmo.shostina.services.dataSets.ObjectTypesDataSet;
 import ru.niuitmo.shostina.services.dataSets.ObjectsDataSet;
+import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
 
 import java.util.List;
 

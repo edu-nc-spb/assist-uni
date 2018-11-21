@@ -2,6 +2,7 @@ package ru.niuitmo.shostina.services.dataSets;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "object_types")
@@ -9,9 +10,9 @@ public class ObjectTypesDataSet implements Serializable {
     private static final long serialVersionUID = -8706689714326132798L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "object_types_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int object_types_id;
 
     @Column(name = "name", unique = true, updatable = false)
     private String name;
@@ -19,16 +20,28 @@ public class ObjectTypesDataSet implements Serializable {
     @Column(name = "parent_id", unique = true, updatable = false)
     private int parent_id;
 
-    @SuppressWarnings("UnusedDeclaration")
+    @OneToMany(mappedBy = "object_type", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ObjectsDataSet> objects;
+
     public ObjectTypesDataSet() {
     }
 
+    public ObjectTypesDataSet(int id, String name) {
+        this.setId(id);
+        this.setName(name);
+    }
+
+    public ObjectTypesDataSet(String name) {
+        this.setId(-1);
+        this.setName(name);
+    }
+
     public int getId() {
-        return id;
+        return object_types_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.object_types_id = id;
     }
 
     public String getName() {
@@ -45,5 +58,13 @@ public class ObjectTypesDataSet implements Serializable {
 
     public void setParent_id(int parent_id) {
         this.parent_id = parent_id;
+    }
+
+    public List<ObjectsDataSet> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<ObjectsDataSet> objects) {
+        this.objects = objects;
     }
 }

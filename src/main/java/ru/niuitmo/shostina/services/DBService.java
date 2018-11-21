@@ -8,19 +8,35 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import ru.niuitmo.shostina.services.dao.ObjectsDAO;
-import ru.niuitmo.shostina.services.dao.ParamsDAO;
-import ru.niuitmo.shostina.services.dataSets.ObjectsDataSet;
-import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
+import ru.niuitmo.shostina.services.dao.*;
+
+import ru.niuitmo.shostina.services.dataSets.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBService {
     private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "update";
-    //private static final String hibernate_hbm2ddl_auto = "create";
+    //private static final String hibernate_hbm2ddl_auto = "update";
+    private static final String hibernate_hbm2ddl_auto = "create";
     private final SessionFactory sessionFactory;
+
+    private static DBService dbService;
+
+    public static DBService instance(){
+        if (dbService == null) {
+            dbService = new DBService();
+            try {
+                dbService.addType("task");
+                dbService.addTask("Header1", "Problem1");
+            } catch (ServiceException e){
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        return dbService;
+    }
 
     public DBService() {
         Configuration configuration = getH2Configuration();
@@ -31,7 +47,7 @@ public class DBService {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(ParamsDataSet.class);
         configuration.addAnnotatedClass(ObjectsDataSet.class);
-
+        configuration.addAnnotatedClass(ObjectTypesDataSet.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:h2:./h2db");
@@ -61,12 +77,43 @@ public class DBService {
         }
     }
 
+    public void addType(String type) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+
+            session.save(new ObjectTypesDataSet(type));
+
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     public void addTask(String header, String problem) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            ParamsDAO dao = new ParamsDAO(session);
-            dao.addTask(header, problem);
+
+            List<ParamsDataSet> params = new ArrayList<>();
+            ObjectsDataSet object = new ObjectsDataSet();
+            ParamsDataSet param1 = new ParamsDataSet("header", header);
+            ParamsDataSet param2 = new ParamsDataSet("problem", problem);
+            param1.setObject(object);
+            param2.setObject(object);
+            params.add(param1);
+            params.add(param2);
+            object.setParams(params);
+
+            ObjectTypesDataSet type = new ObjectTypesDAO(session).getByName("task");
+            object.setObject_type(type);
+            type.getObjects().add(object);
+
+            session.save(param1);
+            session.save(param2);
+            session.save(object);
+            session.update(type);
             transaction.commit();
             session.close();
         } catch (HibernateException e) {
@@ -76,13 +123,17 @@ public class DBService {
     public List<String> getAllTasks() throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
-            ParamsDAO paramsDAO = new ParamsDAO(session);
-            ObjectsDAO objectsDAO = new ObjectsDAO(session);
-            List<ObjectsDataSet> objects = objectsDAO.getObjectsByType(4);
+            ObjectTypesDAO objectTypesDAO= new ObjectTypesDAO(session);
+            List<ObjectsDataSet>objects = (objectTypesDAO.getByName("task")).getObjects();
             List<String> res = new ArrayList<>();
             for(ObjectsDataSet i : objects) {
-                ParamsDataSet dataSet = paramsDAO.get(i.getId(), 4);
-                res.add(dataSet.getText_value());
+                List<ParamsDataSet> params = i.getParams();
+                for(ParamsDataSet j : params) {
+                    if(j.getAttr().equals("header")) {
+                        res.add(j.getText_value());
+                        break;
+                    }
+                }
             }
             session.close();
             return res;

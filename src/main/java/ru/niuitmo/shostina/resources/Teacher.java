@@ -13,7 +13,7 @@ import java.util.List;
 @Path("/teacher/{id}")
 public class Teacher {
     private TaskByStudents myTasks;
-    private TeacherService service;
+    private DBService service;
     int cur = 0;
     private ListOfTasks tasks;
 
