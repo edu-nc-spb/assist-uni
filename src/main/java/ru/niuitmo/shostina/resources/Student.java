@@ -1,25 +1,36 @@
 package ru.niuitmo.shostina.resources;
 
+import ru.niuitmo.shostina.services.DBService;
 import ru.niuitmo.shostina.services.ListOfTasks;
+import ru.niuitmo.shostina.services.ServiceException;
 import ru.niuitmo.shostina.services.StudentByTasks;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Path("/student/{id}")
 public class Student {
     private StudentByTasks myTasks;
     private ListOfTasks tasks;
+    private DBService service;
 
     @Path("/get-my-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMyTasks(@PathParam("id") int id) {
-        return Response.ok(new ListOfHeader(myTasks.getInstance().getHeader(id)),
-                MediaType.APPLICATION_JSON).build();
+    public Response getMyTasks() {
+        try {
+            List<Data> t = service.instance().getMyTasks(2);
+            System.out.println(t);
+            return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
     }
 
     @Path("/get-task")

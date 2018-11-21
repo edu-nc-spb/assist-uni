@@ -1,5 +1,7 @@
 package ru.niuitmo.shostina.resources;
 
+import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 

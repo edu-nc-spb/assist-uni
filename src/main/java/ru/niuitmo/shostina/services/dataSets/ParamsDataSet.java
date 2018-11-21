@@ -25,24 +25,30 @@ public class ParamsDataSet implements Serializable {
     private String text_value;
 
 
+    @OneToMany(/*mappedBy="param_parent",*/ fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ObjectsDataSet> set_of_values;
+
     public ParamsDataSet() {
     }
 
     public ParamsDataSet(long id, String attr, String text_value) {
-        this.setId(id);
-        this.setAttr_id(attr);
+        this.setParam_id(id);
+        this.setAttr(attr);
         this.setText_value(text_value);
+    }
+
+    public ParamsDataSet(String attr, List<ObjectsDataSet> value) {
+        this.setParam_id(-1);
+        this.setAttr(attr);
+        this.setSet_of_values(value);
     }
 
     public ParamsDataSet(String attr, String text_value) {
-        this.setId(-1);
-        this.setAttr_id(attr);
+        this.setParam_id(-1);
+        this.setAttr(attr);
         this.setText_value(text_value);
     }
 
-    public long getId() {
-        return param_id;
-    }
 
     public ObjectsDataSet getObject() {
         return object;
@@ -56,19 +62,31 @@ public class ParamsDataSet implements Serializable {
         return text_value;
     }
 
-    public void setId(long id) {
-        this.param_id = id;
-    }
-
     public void setObject(ObjectsDataSet object) {
         this.object = object;
     }
 
-    public void setAttr_id(String attr) {
+    public void setText_value(String text_value) {
+        this.text_value = text_value;
+    }
+
+    public long getParam_id() {
+        return param_id;
+    }
+
+    public void setParam_id(long param_id) {
+        this.param_id = param_id;
+    }
+
+    public void setAttr(String attr) {
         this.attr = attr;
     }
 
-    public void setText_value(String text_value) {
-        this.text_value = text_value;
+    public List<ObjectsDataSet> getSet_of_values() {
+        return set_of_values;
+    }
+
+    public void setSet_of_values(List<ObjectsDataSet> set_of_values) {
+        this.set_of_values = set_of_values;
     }
 }

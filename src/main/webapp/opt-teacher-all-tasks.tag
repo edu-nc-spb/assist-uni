@@ -68,7 +68,7 @@
                     function (intIndex, objValue) {
                         $select.append($("<option/>", {
                             value: objValue.id,
-                            text: objValue.name
+                            text: objValue.data
                         }))
                     })
             });

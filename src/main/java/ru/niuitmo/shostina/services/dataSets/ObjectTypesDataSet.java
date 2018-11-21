@@ -17,9 +17,6 @@ public class ObjectTypesDataSet implements Serializable {
     @Column(name = "name", unique = true, updatable = false)
     private String name;
 
-    @Column(name = "parent_id", unique = true, updatable = false)
-    private int parent_id;
-
     @OneToMany(mappedBy = "object_type", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ObjectsDataSet> objects;
 
@@ -50,14 +47,6 @@ public class ObjectTypesDataSet implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getParent_id() {
-        return parent_id;
-    }
-
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
     }
 
     public List<ObjectsDataSet> getObjects() {

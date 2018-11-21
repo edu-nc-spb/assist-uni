@@ -12,7 +12,8 @@
         })
         showA () {
             var $select = $('<select/>', {
-                name:'name'
+                name:'name',
+                style: 'width: 100%; margin-top: 10px'
             });
             var getting = $.get('/teacher/1/get-students');
             getting.done(function (data) {
@@ -21,7 +22,7 @@
                     function (intIndex, objValue) {
                         $select.append($("<option/>", {
                             value: objValue.id,
-                            text: objValue.name
+                            text: objValue.data
                         }))
                     })
             });
@@ -39,7 +40,7 @@
                 }
             }).append($select);
             showAnswerButton.append(jQuery('<input/>', {
-                style: "background-color: #00bed6",
+                style: "background-color: #00bed6; width: 100%; margin-top: 10px;",
                 type: 'submit',
                 value: 'показать ответ студента'
             }));

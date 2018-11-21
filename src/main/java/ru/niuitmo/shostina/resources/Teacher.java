@@ -2,41 +2,60 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
+import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/teacher/{id}")
 public class Teacher {
-    private TaskByStudents myTasks;
     private DBService service;
-    int cur = 0;
-    private ListOfTasks tasks;
 
-    private ListOfStudent students;
-/*
-    @Path("/get-all-tasks")
-    @GET
+    @Path("/create-task")
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasks() {
-        ArrayList<String> t = tasks.getInstance().getHeader();
-        return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
+    public Response createTask(@FormParam("header") String header,
+                               @FormParam("problem") String problem) throws IOException {
+
+        try {
+            service.instance().addTask(header, problem);
+            String json = "OK. You create new task '" + header + "'.";
+            System.out.println(json);
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
     }
-    */
 
     @Path("/get-all-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTasks() {
         try {
-            List<String> t = service.instance().getAllTasks();
+            List<Data> t = service.instance().getAllTasks();
             System.out.println(t);
-            return Response.ok(new ListOfHeader(t), MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
         } catch (ServiceException e){
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
+    @Path("/get-my-tasks")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getMyTasks() {
+        try {
+            List<Data> t = service.instance().getMyTasks(1);
+            System.out.println(t);
+            return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -47,28 +66,40 @@ public class Teacher {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStudents() {
-        return Response.ok(students.getInstance(), MediaType.APPLICATION_JSON).build();
-    }
-
-    @Path("/get-my-tasks")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getMyTasks() {
-        ArrayList<String> res = new ArrayList<>();
-        ListOfHeader json = new ListOfHeader(myTasks.getInstance().get());
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        try {
+            return Response.ok(new ListOfData(service.instance().getStudents()),
+                    MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e) {
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
     }
 
     @Path("/get-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTask(@FormParam("header") String header) throws IOException {
-        if (tasks.getInstance().contain(header)) {
-            Task json =  tasks.getInstance().getTask(header);
+    public Response getTask(@FormParam("task_id") long task_id) throws IOException {
+        System.out.println("GET TASK: ");
+        System.out.println(task_id);
+        try {
+            Task json =  service.instance().getTask(task_id);
+            System.out.println("GET TASK: " + json.getHeader() + " " + json.getProblem());
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).
-                entity("ERROR. Task '" + header + "' wasn't created.").build();
+    }
+
+
+/*
+    @Path("/get-students")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStudents() {
+        return Response.ok(students.getInstance(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/add-student")
@@ -101,42 +132,7 @@ public class Teacher {
                     entity("Error. You don't have task '" + header + "'.").build();
     }
 
-    @Path("/create-task")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createTask(@FormParam("header") String header,
-                               @FormParam("problem") String problem) throws IOException {
-
-        try {
-            service.instance().addTask(header, problem);
-            String json = "OK. You create new task '" + header + "'.";
-            System.out.println(json);
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e){
-            System.out.println(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity(e.getMessage()).build();
-        }
-    }
-
-    /*
-    @Path("/create-task")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createTask(@FormParam("header") String header,
-                               @FormParam("problem") String problem) throws IOException {
-        Task newTask = new Task(header, problem);
-        if (tasks.getInstance().contain(newTask))
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity("ERROR. Task '" + header + "' has been created.").build();
-
-        tasks.getInstance().add(newTask);
-        String json = "OK. You create new task '" + header + "'.";
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-    }
-    */
-
-    @Path("/change-task")
+     @Path("/change-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response changeTask(@FormParam("header") String header,
@@ -161,4 +157,5 @@ public class Teacher {
         String json = "OK. You deleted task '" + header + "'.";
         return Response.ok(json, MediaType.APPLICATION_JSON).build();
     }
+*/
 }

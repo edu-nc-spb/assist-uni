@@ -57,10 +57,11 @@
             } else if(e != null && e.events == "get") {
                 console.log("get " + e.header)
                 this.flagC = true;
-                this.header = e.header
+                //this.header = e.header
                 this.flagC0 = true;
-                var posting = $.post('/teacher/1/get-task', {header: this.header});
+                var posting = $.post('/teacher/1/get-task', {task_id: e.header});
                 posting.done(function (data) {
+                    this.header = data.header
                     this.problem =  data.problem
                     this.update()
                 }.bind(this))

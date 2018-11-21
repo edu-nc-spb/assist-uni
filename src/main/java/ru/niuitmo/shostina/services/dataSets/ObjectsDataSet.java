@@ -19,21 +19,18 @@ public class ObjectsDataSet implements Serializable{
 
     @OneToMany(mappedBy = "object", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ParamsDataSet> params;
-
+/*
+    @ManyToOne()
+    @JoinColumn(name="param_parent_id")
+    private ParamsDataSet param_parent;
+   */
     public ObjectsDataSet() {
     }
 
     public ObjectsDataSet(long id) {
-        this.setId(id);
+        this.setObject_id(id);
     }
 
-    public long getId() {
-        return object_id;
-    }
-
-    public void setId(long id) {
-        this.object_id = id;
-    }
 
     public ObjectTypesDataSet getObject_type() {
 
@@ -51,5 +48,13 @@ public class ObjectsDataSet implements Serializable{
 
     public void setParams(List<ParamsDataSet> params) {
         this.params = params;
+    }
+
+    public long getObject_id() {
+        return object_id;
+    }
+
+    public void setObject_id(long object_id) {
+        this.object_id = object_id;
     }
 }

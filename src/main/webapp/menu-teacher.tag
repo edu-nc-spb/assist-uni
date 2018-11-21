@@ -34,11 +34,9 @@
             {value: "Назначенные задания", ev:"myTaskTeacher"},
             {value: "Создать задание", ev:"createTask"}]
         allTasks() {
-            console.log("hi")
             parent.update({events : "allTaskTeacher"})
         }
         myTasks() {
-            console.log("hiii")
             parent.update({events : "myTaskTeacher"})
         }
         createTask() {

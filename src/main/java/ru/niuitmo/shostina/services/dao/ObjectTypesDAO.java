@@ -35,7 +35,7 @@ public class ObjectTypesDAO {
         Criteria criteria = session.createCriteria(ObjectTypesDataSet.class);
         ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq("name", name)).uniqueResult();
         if(res == null) {
-            throw new HibernateException("wrong name");
+            throw new HibernateException("wrong name " + name);
         }
         return res;
     }
