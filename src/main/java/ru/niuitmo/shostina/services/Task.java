@@ -3,6 +3,7 @@ package ru.niuitmo.shostina.services;
 public class Task {
     private String header;
     private String problem;
+    private long id;
     public Task(){};
     public Task(String header, String problem) {
         this.header = header;
@@ -25,15 +26,11 @@ public class Task {
         return problem;
     }
 
+    public long getId() {
+        return id;
+    }
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Task other = (Task) o;
-        return (this.header.equals(other.header) &&
-                this.problem.equals(other.problem) &&
-                this.subject.equals(other.subject));
-    }*/
+    public void setId(long id) {
+        this.id = id;
+    }
 }

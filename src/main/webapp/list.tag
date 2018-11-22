@@ -10,8 +10,8 @@
             <h3 style="text-align: center;">Список заданий</h3>
             <li if="{tasks}" each="{header, i in tasks}">
                 <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db"
-                        class="btn btn-sm btn-block" data-message="{header}"
-                        onclick="{choose}" value = "{header}">{header}</button>
+                        class="btn btn-sm btn-block" data-message="{header.id}"
+                        onclick="{choose}" value = "{header.id}">{header.data}</button>
             </li>
         </ul>
     </div>
@@ -25,7 +25,7 @@
             jQuery.get(this.flag).done(function (data) {
                 this.tasks = []
                 $.each(
-                    data.tasks,
+                    data.data,
                     function (intIndex, objValue) {
                         this.tasks.push(objValue);
                     }.bind(this))

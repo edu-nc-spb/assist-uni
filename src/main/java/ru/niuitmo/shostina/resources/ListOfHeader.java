@@ -1,21 +1,24 @@
 package ru.niuitmo.shostina.resources;
 
+import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListOfHeader {
-    ArrayList<String> tasks;
+    List<String> tasks;
 
     public ListOfHeader(){};
 
-    public ListOfHeader(ArrayList<String> tasks) {
+    public ListOfHeader(List<String> tasks) {
         this.tasks = tasks;
     }
 
-    public ArrayList<String> getTasks() {
+    public List<String> getTasks() {
         return tasks;
     }
 
-    public void setTasks(ArrayList<String> tasks) {
+    public void setTasks(List<String> tasks) {
         this.tasks = tasks;
     }
 }
