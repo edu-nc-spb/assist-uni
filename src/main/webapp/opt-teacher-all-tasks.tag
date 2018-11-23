@@ -49,7 +49,7 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            var posting = $.post('/teacher/1/delete-task', {header: id_task});
+            var posting = $.post('/teacher/1/delete-task', {id_task: id_task});
             posting.done(function (data) {
                 alert(data);
             }).fail(function (request) {

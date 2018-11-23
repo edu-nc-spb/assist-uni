@@ -13,6 +13,7 @@ import ru.niuitmo.shostina.services.dao.*;
 
 import ru.niuitmo.shostina.services.dataSets.*;
 
+import javax.management.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -329,6 +330,24 @@ public class DBService {
             transaction.commit();
             session.close();
         } catch (HibernateException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public void deleteTask(long id) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ObjectsDAO objectsDAO = new ObjectsDAO(session);
+            ObjectsDataSet task = (objectsDAO.get(id));
+            if(task.getChildren().size() > 0) {
+                throw new ServiceException("Ошибка.Это задание назначено студенту, вы не можете его удалить");
+            }
+            session.delete(task);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
             throw new ServiceException(e);
         }
     }

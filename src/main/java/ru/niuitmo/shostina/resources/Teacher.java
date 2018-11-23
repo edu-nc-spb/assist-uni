@@ -136,20 +136,24 @@ public class Teacher {
         }
     }
 
+    @Path("/delete-task")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteTask(@FormParam("id_task") long idTask) throws IOException {
+        try {
+            service.instance().deleteTask(idTask);
+            String json = "OK. Task was deleted";
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
 
 /*
 
 
-    @Path("/delete-task")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTask(@FormParam("header") String header) throws IOException {
-        if (!tasks.getInstance().contain(header))
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity("ERROR. Task '" + header + "' hasn't been created.").build();
-        tasks.getInstance().delete(header);
-        String json = "OK. You deleted task '" + header + "'.";
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-    }
+
 */
 }

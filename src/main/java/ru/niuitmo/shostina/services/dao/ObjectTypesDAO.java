@@ -18,13 +18,13 @@ public class ObjectTypesDAO {
         this.session = session;
     }
 
-    public ObjectTypesDAO get(long id) throws HibernateException {
+    public ObjectTypesDAO get(int id) throws HibernateException {
         return (ObjectTypesDAO) session.get(ObjectTypesDAO.class, id);
     }
 
     public ObjectTypesDataSet getById(int id) throws HibernateException {
         Criteria criteria = session.createCriteria(ObjectTypesDataSet.class);
-        ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq("id", id)).uniqueResult();
+        ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq("object_id", id)).uniqueResult();
         if(res == null) {
             throw new HibernateException("wrong id");
         }
