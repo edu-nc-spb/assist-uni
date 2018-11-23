@@ -11,10 +11,11 @@
         <div id = "context"></div>
     </div>
     <script>
-        var header = this.parent.header
+        //var header = this.parent.header
         var parent = this.parent;
+        var id_task = this.parent.id_task;
         this.on('update', (e) => {
-            header = this.parent.header
+            id_task = this.parent.id_task;
             parent = this.parent;
         })
         change() {
@@ -25,7 +26,7 @@
                     var $form = jQuery(this),
                         term = $form.find("textarea[name='newProblem']").val();
                     var posting = $.post('teacher/1/change-task', {
-                        header: header, newProblem: term
+                        id_task: id_task, newProblem: term
                     });
                     posting.done(function (data) {
                         alert(data);
@@ -33,7 +34,7 @@
                         alert(request.responseText);
                     })
                     jQuery('#context').empty();
-                    parent.update({events : "changeTask", header:header})
+                    parent.update({events : "changeTask", header:id_task})
                 }
             }).append(jQuery('<textarea/>', {
                 name: 'newProblem',
@@ -48,7 +49,7 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            var posting = $.post('/teacher/1/delete-task', {header: header});
+            var posting = $.post('/teacher/1/delete-task', {header: id_task});
             posting.done(function (data) {
                 alert(data);
             }).fail(function (request) {
@@ -79,7 +80,7 @@
                     event.preventDefault();
                     var term = $select.val();
                     var posting = $.post('/teacher/1/add-student',
-                        {header: header, id: term});
+                        {id_task: id_task, id_student: term});
                     posting.done(function (data) {
                         alert(data);
                     }.bind(this)).fail(function (request) {

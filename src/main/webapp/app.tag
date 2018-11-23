@@ -63,6 +63,7 @@
                 posting.done(function (data) {
                     this.header = data.header
                     this.problem =  data.problem
+                    this.id_task = data.id
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'

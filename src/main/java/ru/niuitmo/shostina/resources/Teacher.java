@@ -93,28 +93,23 @@ public class Teacher {
         }
     }
 
-
-/*
-    @Path("/get-students")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getStudents() {
-        return Response.ok(students.getInstance(), MediaType.APPLICATION_JSON).build();
-    }
-
     @Path("/add-student")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addStudent(@PathParam("id") int id, @FormParam("header") String header,
-                               @FormParam("id") int idStudent) {
-        if (tasks.getInstance().contain(header)) {
-            myTasks.getInstance().addStudent(new LocalTask(tasks.getInstance().getTask(header), idStudent));
-            String json = ("OK. Task '" + header + "' was added for student '" + idStudent + "'.");
+    public Response addStudent(@PathParam("id") int id, @FormParam("id_task") long idTask,
+                               @FormParam("id_student") int idStudent) {
+        try {
+            service.instance().assignTask(id, idStudent, idTask);
+            String json = ("OK. Task was added for student '" + idStudent + "'.");
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        } else
+        } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
-                    entity("Error. You don't have task '" + header + "'.").build();
+                    entity(e.getMessage()).build();
+        }
     }
+
+
+/*
 
     @Path("/show-answer")
     @POST

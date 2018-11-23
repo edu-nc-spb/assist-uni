@@ -88,23 +88,36 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-
             ParamsDAO paramsDAO = new ParamsDAO(session);
             ObjectTypesDAO typesDAO = new ObjectTypesDAO(session);
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
 
-            ObjectsDataSet teacher = new ObjectsDAO(session).get(teacher_id);
-            List<ParamsDataSet> teacherParams = teacher.getParams();
+            //create new object 'mytask' with param answer for teacher and student
+            ObjectsDataSet myTaskObject = new ObjectsDataSet();
+            myTaskObject.setParent(objectsDAO.get(task_id));
+            ParamsDataSet answer = new ParamsDataSet();
+            answer.setObject(myTaskObject);
+            List<ParamsDataSet> params = new ArrayList<>();
+            params.add(answer);
+            myTaskObject.setParams(params);
+            session.save(answer);
+            long idMyTask = (long)session.save(myTaskObject);
 
-            for (ListIterator<ParamsDataSet> iter = teacherParams.listIterator(); iter.hasNext(); ) {
-                ParamsDataSet p = iter.next();
-                if (p.getAttr().equals("mytasks")) {
-                    p.getSet_of_values().add(objectsDAO.get(task_id));
-                    session.update(p);
-                    break;
-                }
-            }
+            //create new teacher's param 'mytask'
+            ObjectsDataSet teacher = objectsDAO.get(teacher_id);
+            ParamsDataSet myTaskParam = new ParamsDataSet("mytask", idMyTask);
+            myTaskParam.setObject(teacher);
+            teacher.getParams().add(myTaskParam);
+            session.save(myTaskParam);
             session.update(teacher);
+
+            //create new students's param 'mytask'
+            ObjectsDataSet student = objectsDAO.get(student_id);
+            myTaskParam = new ParamsDataSet("mytask", idMyTask);
+            myTaskParam.setObject(student);
+            student.getParams().add(myTaskParam);
+            session.save(myTaskParam);
+            session.update(student);
             transaction.commit();
             session.close();
         } catch (HibernateException e) {
@@ -121,17 +134,12 @@ public class DBService {
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
             ParamsDataSet param1 = new ParamsDataSet("name", name);
-            ParamsDataSet param2 = new ParamsDataSet("mytasks", new ArrayList<ObjectsDataSet>());
             param1.setObject(object);
-            param2.setObject(object);
             params.add(param1);
-            params.add(param2);
             object.setParams(params);
             ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
             object.setObject_type(objectType);
-
             session.save(param1);
-            session.save(param2);
             long res = (long) session.save(object);
             session.update(objectType);
             transaction.commit();
@@ -196,26 +204,28 @@ public class DBService {
         }
     }
 
+    //return list of data, which include header and id of 'mytask'(NOT 'task')
     public List<Data> getMyTasks(long id) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
-            ObjectTypesDAO objectTypesDAO = new ObjectTypesDAO(session);
+            ParamsDAO paramsDAO = new ParamsDAO(session);
+            ObjectTypesDAO typesDAO = new ObjectTypesDAO(session);
+            ObjectsDAO objectsDAO = new ObjectsDAO(session);
 
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
             List<Data> res = new ArrayList<>();
             List<ParamsDataSet> params = user.getParams();
             System.out.println(params);
             for (ParamsDataSet j : params) {
-                System.out.println(j.getAttr());
-                if (j.getAttr().equals("mytasks")) {
-                    for (ObjectsDataSet k : j.getSet_of_values()) {
-                        for (ParamsDataSet l : k.getParams()) {
-                            if (l.getAttr().equals("header")) {
-                                res.add(new Data(l.getText_value(), k.getObject_id()));
-                            }
+                if (j.getAttr().equals("mytask")) {
+                    ObjectsDataSet myTaskObject = objectsDAO.get(j.getNum_value());
+                    ObjectsDataSet task = myTaskObject.getParent();
+                    List<ParamsDataSet> taskParams = task.getParams();
+                    for(ParamsDataSet i : taskParams) {
+                        if(i.getAttr().equals("header")) {
+                            res.add(new Data(i.getText_value(), myTaskObject.getObject_id()));
                         }
                     }
-                    break;
                 }
             }
             session.close();

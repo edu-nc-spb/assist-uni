@@ -25,8 +25,8 @@ public class ParamsDataSet implements Serializable {
     private String text_value;
 
 
-    @OneToMany(/*mappedBy="param_parent",*/ fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ObjectsDataSet> set_of_values;
+    @Column(name="num_value")
+    private long num_value;
 
     public ParamsDataSet() {
     }
@@ -37,18 +37,23 @@ public class ParamsDataSet implements Serializable {
         this.setText_value(text_value);
     }
 
-    public ParamsDataSet(String attr, List<ObjectsDataSet> value) {
-        this.setParam_id(-1);
-        this.setAttr(attr);
-        this.setSet_of_values(value);
-    }
-
     public ParamsDataSet(String attr, String text_value) {
         this.setParam_id(-1);
         this.setAttr(attr);
         this.setText_value(text_value);
     }
 
+    public ParamsDataSet(long id, String attr, long num_value) {
+        this.setParam_id(id);
+        this.setAttr(attr);
+        this.setNum_value(num_value);
+    }
+
+    public ParamsDataSet(String attr, long num_value) {
+        this.setParam_id(-1);
+        this.setAttr(attr);
+        this.setNum_value(num_value);
+    }
 
     public ObjectsDataSet getObject() {
         return object;
@@ -82,11 +87,11 @@ public class ParamsDataSet implements Serializable {
         this.attr = attr;
     }
 
-    public List<ObjectsDataSet> getSet_of_values() {
-        return set_of_values;
+    public long getNum_value() {
+        return num_value;
     }
 
-    public void setSet_of_values(List<ObjectsDataSet> set_of_values) {
-        this.set_of_values = set_of_values;
+    public void setNum_value(long num_value) {
+        this.num_value = num_value;
     }
 }
