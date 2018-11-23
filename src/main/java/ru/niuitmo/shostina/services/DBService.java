@@ -15,7 +15,6 @@ import ru.niuitmo.shostina.services.dataSets.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class DBService {
     private static final String HIBERNATE_SHOW_SQL = "true";
@@ -84,7 +83,7 @@ public class DBService {
         }
     }
 
-    public void assignTask(long teacher_id, long student_id, long task_id) throws ServiceException {
+    public void assignTask(long idTeacher, long idStudent, long idTask) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
@@ -94,8 +93,8 @@ public class DBService {
 
             //create new object 'mytask' with param answer for teacher and student
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
-            myTaskObject.setParent(objectsDAO.get(task_id));
-            ParamsDataSet answer = new ParamsDataSet();
+            myTaskObject.setParent(objectsDAO.get(idTask));
+            ParamsDataSet answer = new ParamsDataSet("answer", "my answer");
             answer.setObject(myTaskObject);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(answer);
@@ -104,7 +103,7 @@ public class DBService {
             long idMyTask = (long)session.save(myTaskObject);
 
             //create new teacher's param 'mytask'
-            ObjectsDataSet teacher = objectsDAO.get(teacher_id);
+            ObjectsDataSet teacher = objectsDAO.get(idTeacher);
             ParamsDataSet myTaskParam = new ParamsDataSet("mytask", idMyTask);
             myTaskParam.setObject(teacher);
             teacher.getParams().add(myTaskParam);
@@ -112,7 +111,7 @@ public class DBService {
             session.update(teacher);
 
             //create new students's param 'mytask'
-            ObjectsDataSet student = objectsDAO.get(student_id);
+            ObjectsDataSet student = objectsDAO.get(idStudent);
             myTaskParam = new ParamsDataSet("mytask", idMyTask);
             myTaskParam.setObject(student);
             student.getParams().add(myTaskParam);
@@ -235,6 +234,28 @@ public class DBService {
         }
     }
 
+    public String showAnswer(long idTeacher, long idStudent, long idMyTask) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            ParamsDAO paramsDAO = new ParamsDAO(session);
+            ObjectTypesDAO typesDAO = new ObjectTypesDAO(session);
+            ObjectsDAO objectsDAO = new ObjectsDAO(session);
+            String res = "";
+            ObjectsDataSet myTaskObject = objectsDAO.get(idMyTask);
+            List<ParamsDataSet> taskParams = myTaskObject.getParams();
+            for(ParamsDataSet p : taskParams) {
+                if(p.getAttr().equals("answer")) {
+                    res=p.getText_value();
+                    break;
+                }
+            }
+            session.close();
+            return res;
+        } catch (HibernateException e) {
+            throw new ServiceException(e);
+        }
+    }
+
     public List<Data> getStudents() throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
@@ -262,11 +283,16 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
-            ObjectsDataSet object = (objectsDAO.get(id));
+            ObjectsDataSet task = (objectsDAO.get(id));
             Task res = new Task();
             res.setId(id);
-            List<ParamsDataSet> params = object.getParams();
-            for (ParamsDataSet j : params) {
+            List<ParamsDataSet> taskParams;
+            if(task.getParent() != null) {
+                taskParams = task.getParent().getParams();
+            } else {
+                taskParams = task.getParams();
+            }
+            for (ParamsDataSet j : taskParams) {
                 if (j.getAttr().equals("header")) {
                     res.setHeader(j.getText_value());
                 }
@@ -275,7 +301,6 @@ public class DBService {
                 }
 
             }
-            System.out.println(res);
             session.close();
             return res;
         } catch (HibernateException e) {

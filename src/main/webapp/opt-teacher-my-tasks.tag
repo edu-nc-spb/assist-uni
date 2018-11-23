@@ -4,10 +4,10 @@
     <div id = "context"></div>
     </div>
     <script>
-        var header = this.parent.header
+        var id_task = this.parent.id_task;
         var parent = this.parent
         this.on('update', (e) => {
-            header = this.parent.header
+            id_task = this.parent.id_task
             parent = this.parent;
         })
         showA () {
@@ -31,7 +31,7 @@
                     event.preventDefault();
                     var term = $select.val();
                     var posting = $.post('/teacher/1/show-answer',
-                        {header: header, id: term});
+                        {id_task: id_task, id: term});
                     posting.done(function (data) {
                         alert(data);
                     }).fail(function (request) {

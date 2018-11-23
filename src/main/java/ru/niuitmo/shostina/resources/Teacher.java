@@ -2,7 +2,6 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
-import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -101,6 +100,20 @@ public class Teacher {
         try {
             service.instance().assignTask(id, idStudent, idTask);
             String json = ("OK. Task was added for student '" + idStudent + "'.");
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
+    @Path("/show-answer")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response showAnswer(@PathParam("id") int id, @FormParam("id_task") long idTask,
+                               @FormParam("id") int idStudent) throws IOException {
+        try {
+            String json = service.instance().showAnswer(id, idStudent, idTask);
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
