@@ -121,37 +121,23 @@ public class Teacher {
         }
     }
 
+    @Path("/change-task")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response changeTask(@FormParam("id_task") long idTask,
+                               @FormParam("newProblem") String newProblem) throws IOException {
+        try {
+            service.instance().changeTask(idTask, newProblem);
+            String json = "OK. Task was changed";
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
 
 /*
-
-    @Path("/show-answer")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response showAnswer(@PathParam("id") int id, @FormParam("header") String header,
-                               @FormParam("id") int idStudent) throws IOException {
-
-        if (myTasks.getInstance().contain(idStudent, header)) {
-            String json = "OK. Answer for task '" + header +
-                    "' by student '" + idStudent + "' is: '"
-                    + myTasks.getInstance().getTask(idStudent, header).getAnswer() + "'.";
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        } else
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity("Error. You don't have task '" + header + "'.").build();
-    }
-
-     @Path("/change-task")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response changeTask(@FormParam("header") String header,
-                               @FormParam("newProblem") String newProblem) throws IOException {
-        if (!tasks.getInstance().contain(header))
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity("ERROR. Task '" + header + "' hasn't been created.").build();
-        tasks.getInstance().getTask(header).setProblem(newProblem);
-        String json ="OK. You changed task '" + header + "'.";
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-    }
 
 
     @Path("/delete-task")

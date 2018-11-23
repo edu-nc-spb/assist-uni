@@ -15,6 +15,7 @@ import ru.niuitmo.shostina.services.dataSets.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class DBService {
     private static final String HIBERNATE_SHOW_SQL = "true";
@@ -279,6 +280,7 @@ public class DBService {
         }
     }
 
+    //it's important that task doesn't have parent and myTask has;
     public Task getTask(long id) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
@@ -303,6 +305,29 @@ public class DBService {
             }
             session.close();
             return res;
+        } catch (HibernateException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    public void changeTask(long id, String newProblem) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ObjectsDAO objectsDAO = new ObjectsDAO(session);
+            ObjectsDataSet task = (objectsDAO.get(id));
+            List<ParamsDataSet> taskParams = task.getParams();
+            ListIterator<ParamsDataSet> iter = taskParams.listIterator();
+            while (iter.hasNext()) {
+                ParamsDataSet curr = iter.next();
+                if (curr.getAttr().equals("problem")) {
+                    curr.setText_value(newProblem);
+                }
+                session.update(curr);
+            }
+            session.update(task);
+            transaction.commit();
+            session.close();
         } catch (HibernateException e) {
             throw new ServiceException(e);
         }

@@ -88,7 +88,7 @@
                 riot.update()
             } else if (e != null && e.events == "changeTask") {
             this.update({events:"get", header:e.header});
-            console.log("changeTask")
+            console.log("changeTask " + e.header)
             riot.update()
         }
         })
