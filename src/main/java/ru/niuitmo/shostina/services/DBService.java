@@ -96,7 +96,7 @@ public class DBService {
             //create new object 'mytask' with param answer for teacher and student
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
             myTaskObject.setParent(objectsDAO.get(idTask));
-            ParamsDataSet answer = new ParamsDataSet("answer", "my answer");
+            ParamsDataSet answer = new ParamsDataSet("answer", "no answer");
             answer.setObject(myTaskObject);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(answer);
@@ -348,6 +348,30 @@ public class DBService {
             session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
+            throw new ServiceException(e);
+        }
+    }
+
+    public void addAnswer(long id, long idMyTask, String newAnswer) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ParamsDAO paramsDAO = new ParamsDAO(session);
+            ObjectTypesDAO typesDAO = new ObjectTypesDAO(session);
+            ObjectsDAO objectsDAO = new ObjectsDAO(session);
+            ObjectsDataSet myTaskObject = objectsDAO.get(idMyTask);
+            List<ParamsDataSet> taskParams = myTaskObject.getParams();
+            ListIterator<ParamsDataSet> iter = taskParams.listIterator();
+            while (iter.hasNext()) {
+                ParamsDataSet curr = iter.next();
+                if (curr.getAttr().equals("answer")) {
+                    curr.setText_value(newAnswer);
+                }
+                session.update(curr);
+            }
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
             throw new ServiceException(e);
         }
     }

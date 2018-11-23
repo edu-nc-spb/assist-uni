@@ -8,9 +8,10 @@
     </div>
     </div>
     <script>
-        var header = this.parent.header
+        //var header = this.parent.header
+        var id_task = this.parent.id_task
         this.on('update', (e) => {
-            header = this.parent.header
+            id_task = this.parent.id_task
         })
         addAnswer() {
             var changeTaskForm = jQuery('<form/>', {
@@ -21,7 +22,7 @@
                     var $form = jQuery(this),
                         term = $form.find("input[name='answer']").val();
                     var posting = $.post('/student/2/add-answer', {
-                        header: header, answer: term
+                        id_task: id_task, answer: term
                     });
                     posting.done(function (data) {
                         alert(data.data);

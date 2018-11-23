@@ -1,9 +1,6 @@
 package ru.niuitmo.shostina.resources;
 
-import ru.niuitmo.shostina.services.DBService;
-import ru.niuitmo.shostina.services.ListOfTasks;
-import ru.niuitmo.shostina.services.ServiceException;
-import ru.niuitmo.shostina.services.StudentByTasks;
+import ru.niuitmo.shostina.services.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -14,8 +11,6 @@ import java.util.NoSuchElementException;
 
 @Path("/student/{id}")
 public class Student {
-    private StudentByTasks myTasks;
-    private ListOfTasks tasks;
     private DBService service;
 
     @Path("/get-my-tasks")
@@ -36,24 +31,30 @@ public class Student {
     @Path("/get-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTask(@PathParam("id") int id, @FormParam("header") String header)
-            throws NoSuchElementException {
-        return Response.ok(myTasks.getInstance().getTask(id, header),
-                MediaType.APPLICATION_JSON).build();
+    public Response getTask(@FormParam("task_id") long task_id) throws IOException {
+        try {
+            Task json =  service.instance().getTask(task_id);
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
     }
 
     @Path("/add-answer")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response addAnswer(@PathParam("id")int id,
-                                @FormParam("header") String header,
-                                @FormParam("answer") String answer) throws IOException {
-        if(myTasks.getInstance().contain(id, header)) {
-            myTasks.getInstance().getTask(id, header).setAnswer(answer);
-            String resp = "OK. You add answer for task '" + header + "'.";
-            return Response.ok(resp, MediaType.APPLICATION_JSON).build();
-        } else
-            return Response.status(Response.Status.NOT_FOUND).
-                    entity("ERROR. Task '" + header + "' wasn't created.").build();
+                                @FormParam("id_task") long idTask,
+                                @FormParam("answer") String answer){
+        try {
+            service.instance().addAnswer(id, idTask, answer);
+            String json =  "OK. You add answer for task.";
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        } catch (ServiceException e){
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 }

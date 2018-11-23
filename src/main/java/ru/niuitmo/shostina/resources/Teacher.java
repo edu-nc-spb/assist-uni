@@ -79,8 +79,6 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTask(@FormParam("task_id") long task_id) throws IOException {
-        System.out.println("GET TASK: ");
-        System.out.println(task_id);
         try {
             Task json =  service.instance().getTask(task_id);
             System.out.println("GET TASK: " + json.getHeader() + " " + json.getProblem());
@@ -149,11 +147,4 @@ public class Teacher {
                     entity(e.getMessage()).build();
         }
     }
-
-
-/*
-
-
-
-*/
 }
