@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@Path("/student/{id}")
+@Path("/user/student/{id}")
+@AuthNeeded
 public class Student {
     private DBService service;
 

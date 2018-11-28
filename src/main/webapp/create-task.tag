@@ -7,7 +7,7 @@
         </div>
         <div class="form-group">
             <label for="problem">Условие задания</label>
-            <input type="text" class="form-control" id = "problem" placeholder="Формулировка задания...">
+            <input type="text" class="form-control" id = "problem" placeholder="Формулировка задания..."></input>
         </div>
         <button onclick='{createm}' style="background-color:  #51C5D4">Создать</button>
     </form>
@@ -15,7 +15,7 @@
     <script>
         createm(e) {
             e.preventDefault();
-            var posting = $.post('/teacher/1/create-task', {header: jQuery("#header").val(),
+            var posting = $.post('user/teacher/1/create-task', {header: jQuery("#header").val(),
             problem: jQuery("#problem").val()});
             posting.done(function (data) {
                 alert(data)

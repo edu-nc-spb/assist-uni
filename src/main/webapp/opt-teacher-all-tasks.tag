@@ -9,7 +9,6 @@
                 Назначить студенту</button>
         </div>
         <div id = "context"></div>
-    </div>
     <script>
         //var header = this.parent.header
         var parent = this.parent;
@@ -25,7 +24,7 @@
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("textarea[name='newProblem']").val();
-                    var posting = $.post('teacher/1/change-task', {
+                    var posting = $.post('user/teacher/1/change-task', {
                         id_task: id_task, newProblem: term
                     });
                     posting.done(function (data) {
@@ -49,7 +48,7 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            var posting = $.post('/teacher/1/delete-task', {id_task: id_task});
+            var posting = $.post('user/teacher/1/delete-task', {id_task: id_task});
             posting.done(function (data) {
                 alert(data);
             }).fail(function (request) {
@@ -62,7 +61,7 @@
             var $select = $('<select/>', {
                 name:'name'
             });
-            var getting = $.get('/teacher/1/get-students');
+            var getting = $.get('/user/teacher/1/get-students');
             getting.done(function (data) {
                 $.each(
                     data.data,
@@ -79,7 +78,7 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
-                    var posting = $.post('/teacher/1/add-student',
+                    var posting = $.post('/user/teacher/1/add-student',
                         {id_task: id_task, id_student: term});
                     posting.done(function (data) {
                         alert(data);

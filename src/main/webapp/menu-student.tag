@@ -13,7 +13,7 @@
             </li>
             <li>
                 <button style="background-color: #80D4DF; border-color: #0ec3db"
-                        class="btn btn-sm btn-block" onclick={ myTasks }>
+                        class="btn btn-sm btn-block" onclick="{ myTasks }">
                     Назначенные мне задания
                 </button>
             </li>

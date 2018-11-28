@@ -9,7 +9,8 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
 
-@Path("/teacher/{id}")
+@Path("/user/teacher/{id}")
+@AuthNeeded
 public class Teacher {
     private DBService service;
 

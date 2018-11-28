@@ -12,17 +12,17 @@
                 <h3 style="text-align: center;">Меню</h3>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ allTasks }>
+                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick="{ allTasks }">
                     База заданий
                 </button>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ myTasks }>
+                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick="{ myTasks }">
                     Назначенные задания
                 </button>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ createTask}>
+                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick="{ createTask}">
                     Создать задание
                 </button>
             </li>

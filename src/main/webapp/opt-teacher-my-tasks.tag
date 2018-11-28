@@ -15,7 +15,7 @@
                 name:'name',
                 style: 'width: 100%; margin-top: 10px'
             });
-            var getting = $.get('/teacher/1/get-students');
+            var getting = $.get('/user/teacher/1/get-students');
             getting.done(function (data) {
                 $.each(
                     data.data,
@@ -30,7 +30,7 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
-                    var posting = $.post('/teacher/1/show-answer',
+                    var posting = $.post('/user/teacher/1/show-answer',
                         {id_task: id_task, id: term});
                     posting.done(function (data) {
                         alert(data);

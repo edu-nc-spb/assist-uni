@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        //context.addFilter(AuthFilter.class.getCanonicalName(), "/user/*", null);
         int port = 8080;
         if(args.length > 0) {
             try {
@@ -31,7 +32,7 @@ public class Main {
 
         ServletHolder jerseyServlet1 = context.addServlet(
                 org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-        jerseyServlet1.setInitOrder(0);
+        jerseyServlet1.setInitOrder(1);
 
         jerseyServlet1.setInitParameter(
                 "jersey.config.server.provider.packages",

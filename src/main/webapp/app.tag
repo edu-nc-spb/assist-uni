@@ -36,14 +36,14 @@
                 this.flagC = false;
                 this.flagR = true;
                 this.flagC0 = false;
-                this.flag = "teacher/1/get-all-tasks";
+                this.flag = "user/teacher/1/get-all-tasks";
                 this.right = 'list'
             riot.update()
             } else if (e != null && e.events == "myTaskTeacher") {
                 this.flagC=false;
                 this.flagR = true;
                 this.flagC0 = false;
-                this.flag = "teacher/1/get-my-tasks";
+                this.flag = "user/teacher/1/get-my-tasks";
                 console.log("myTaskTeacher")
                 this.right = 'list'
             riot.update()
@@ -59,7 +59,7 @@
                 this.flagC = true;
                 //this.header = e.header
                 this.flagC0 = true;
-                var posting = $.post('/teacher/1/get-task', {task_id: e.header});
+                var posting = $.post('user/teacher/1/get-task', {task_id: e.header});
                 posting.done(function (data) {
                     this.header = data.header
                     this.problem =  data.problem
@@ -67,18 +67,18 @@
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'
-                if(e.flag == "teacher/1/get-my-tasks") {
+                if(e.flag == "user/teacher/1/get-my-tasks") {
                     this.center = ('opt-teacher-my-tasks')
-                } else if(e.flag == "teacher/1/get-all-tasks") {
+                } else if(e.flag == "user/teacher/1/get-all-tasks") {
                     this.center = ('opt-teacher-all-tasks')
-                } else if (e.flag == "student/2/get-my-tasks") {
+                } else if (e.flag == "user/student/2/get-my-tasks") {
                     this.center = ('opt-student-my-tasks')
                 }
                 riot.update()
             } else if (e != null && e.events == "myTasksStudent") {
                 this.flagC = false;
                 this.flagR = true;
-                this.flag = "student/2/get-my-tasks";
+                this.flag = "user/student/2/get-my-tasks";
                 this.right = 'list'
                 riot.update()
             } else if (e != null && e.events == "deleteTask") {

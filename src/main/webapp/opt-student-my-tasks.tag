@@ -21,7 +21,7 @@
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("input[name='answer']").val();
-                    var posting = $.post('/student/2/add-answer', {
+                    var posting = $.post('user/student/2/add-answer', {
                         id_task: id_task, answer: term
                     });
                     posting.done(function (data) {
