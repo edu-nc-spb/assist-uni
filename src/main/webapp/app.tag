@@ -13,18 +13,22 @@
 
     <script>
         this.left = 'auth'
+        this.token = "";
         this.flagL = true
         this.flagC = false;
         this.flagC0 = false;
         this.flagR = false;
+
+
         this.on('update', (e) => {
-            if (e != null && e.events == "signInTeacher") {
+            if ((e != null) && (e.events == "signInTeacher")) {
                 this.left = 'menu-teacher';
                 this.flagC = false;
                 this.flagR = false;
                 this.flagL = true;
                 this.flagC0 = false;
-            riot.update()
+                this.token = e.token;
+                riot.update()
             } else if (e != null && e.events == "signInStudent") {
                 this.left = 'menu-student';
                 this.flagC = false;
@@ -57,7 +61,6 @@
             } else if(e != null && e.events == "get") {
                 console.log("get " + e.header)
                 this.flagC = true;
-                //this.header = e.header
                 this.flagC0 = true;
                 var posting = $.post('user/teacher/1/get-task', {task_id: e.header});
                 posting.done(function (data) {

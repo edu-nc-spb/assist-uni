@@ -22,15 +22,22 @@
             if(e == null) {
             this.tasks = []
             this.flag = this.parent.flag
-            jQuery.get(this.flag).done(function (data) {
-                this.tasks = []
-                $.each(
-                    data.data,
-                    function (intIndex, objValue) {
-                        this.tasks.push(objValue);
-                    }.bind(this))
-                this.update({first: false})
-            }.bind(this))
+            this.token = this.parent.token
+
+            $.ajax({
+                url: this.flag,
+                type: "GET",
+                headers: {AUTHORIZATION : this.token},
+            }).done(function (data) {
+                console.log(this.token)
+            this.tasks = []
+            $.each(
+                data.data,
+                function (intIndex, objValue) {
+                    this.tasks.push(objValue);
+                }.bind(this))
+            this.update({first: false})
+        }.bind(this))
         }
         })
 

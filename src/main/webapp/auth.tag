@@ -8,32 +8,33 @@
         <input type="text" id="login" class="form-control" placeholder="Login"></input>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required=""></input>
-        <button class="btn btn-lg btn-primary btn-block" onclick="{signInTeacher}">Sign in teacher</button>
-        <button class="btn btn-lg btn-primary btn-block" onclick="{signInStudent}">Sign in student</button>
+        <button class="btn btn-lg btn-primary btn-block" onclick="{signIn}">Sign in</button>
     </form>
 
     <script>
-        var parent = this.parent
-        signInStudent() {
-            parent.update({events : "signInStudent"})
+        //var parent = this.parent
+/*
+        this.on('update', (e) => {
+            console.log(e);
+            if(e != null) {
+                console.log( e.token);
+            //this.parent.update({events: "signInTeacher", token: e.token})
         }
-        signInTeacher() {
+        })
+*/
+        signIn(e) {
+            e.preventDefault();
             console.log("sign in")
-            var auth = false
-            var posting = $.post('auth/teacher/', {login : jQuery("#login").val(),
-                password : jQuery("#inputPassword").val()});
-            posting.done(function (data) {
-                console.log("OK, auth " + data);
-                console.log(this)
-                //this.parent.update({events: "signInTeacher"})
-                //riot.update({events: "signInTeacher"});
-                //this.update();
+            $.post('auth/', {login : jQuery("#login").val(),
+                password : jQuery("#inputPassword").val()}).
+            done(function (data) {
+                alert("OK, auth " + data);
+                //riot.update({events: "signInTeacher", token: data})
             }.bind(this)).fail(function (data) {
-                console.log("fail " + data.responseText);
-                console.log(this)
+                alert("fail " + data.responseText);
+                this.parent.update({events: "signInTeacher", token : data.responseText})
             }.bind(this))
-            //this.update();
-            parent.update({events: "signInTeacher"})
+            //parent.update({events: "signInTeacher", token: this.token})
 
 
         }

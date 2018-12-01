@@ -1,15 +1,10 @@
 package ru.niuitmo.shostina.resources;
 
-import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("/auth")
@@ -23,8 +18,9 @@ public class Authorisation {
                 String token = issueToken("1");
                 System.out.println("OK: " + token);
                 return Response.ok("Bearer " + token).build();
+            } else {
+                throw new NotAuthorizedException("No auth");
             }
-            throw new NotAuthorizedException("No auth");
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(UNAUTHORIZED).build();

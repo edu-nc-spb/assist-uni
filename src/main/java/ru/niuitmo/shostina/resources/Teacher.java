@@ -3,9 +3,10 @@ package ru.niuitmo.shostina.resources;
 import ru.niuitmo.shostina.services.*;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
 
 @Path("/user/teacher/{id}")
@@ -34,8 +35,10 @@ public class Teacher {
     @Path("/get-all-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasks() {
+    public Response getTasks(ContainerRequestContext requestContext) {
         try {
+            String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+            System.out.println(authorizationHeader);
             List<Data> t = service.instance().getAllTasks();
             System.out.println(t);
             return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
