@@ -10,6 +10,7 @@ import org.hibernate.service.ServiceRegistry;
 import ru.niuitmo.shostina.resources.Data;
 import ru.niuitmo.shostina.services.dao.*;
 import ru.niuitmo.shostina.services.dataSets.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -90,7 +91,7 @@ public class DBService {
             params.add(answer);
             myTaskObject.setParams(params);
             session.save(answer);
-            long idMyTask = (long)session.save(myTaskObject);
+            long idMyTask = (long) session.save(myTaskObject);
             ObjectsDataSet teacher = objectsDAO.get(idTeacher);
             ParamsDataSet myTaskParam = new ParamsDataSet("mytask", idMyTask);
             myTaskParam.setObject(teacher);
@@ -200,8 +201,8 @@ public class DBService {
                     ObjectsDataSet myTaskObject = objectsDAO.get(j.getNum_value());
                     ObjectsDataSet task = myTaskObject.getParent();
                     List<ParamsDataSet> taskParams = task.getParams();
-                    for(ParamsDataSet i : taskParams) {
-                        if(i.getAttr().equals("header")) {
+                    for (ParamsDataSet i : taskParams) {
+                        if (i.getAttr().equals("header")) {
                             res.add(new Data(i.getText_value(), myTaskObject.getObject_id()));
                         }
                     }
@@ -221,9 +222,9 @@ public class DBService {
             String res = "";
             ObjectsDataSet myTaskObject = objectsDAO.get(idMyTask);
             List<ParamsDataSet> taskParams = myTaskObject.getParams();
-            for(ParamsDataSet p : taskParams) {
-                if(p.getAttr().equals("answer")) {
-                    res=p.getText_value();
+            for (ParamsDataSet p : taskParams) {
+                if (p.getAttr().equals("answer")) {
+                    res = p.getText_value();
                     break;
                 }
             }
@@ -265,7 +266,7 @@ public class DBService {
             Task res = new Task();
             res.setId(id);
             List<ParamsDataSet> taskParams;
-            if(task.getParent() != null) {
+            if (task.getParent() != null) {
                 taskParams = task.getParent().getParams();
             } else {
                 taskParams = task.getParams();
@@ -315,7 +316,7 @@ public class DBService {
             Transaction transaction = session.beginTransaction();
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
             ObjectsDataSet task = (objectsDAO.get(id));
-            if(task.getChildren().size() > 0) {
+            if (task.getChildren().size() > 0) {
                 throw new ServiceException("Ошибка.Это задание назначено студенту, вы не можете его удалить");
             }
             session.delete(task);

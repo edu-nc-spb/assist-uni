@@ -5,7 +5,8 @@ import java.util.List;
 public class ListOfData {
     List<Data> data;
 
-    ListOfData(){}
+    ListOfData() {
+    }
 
     public ListOfData(List<Data> data) {
         this.data = data;

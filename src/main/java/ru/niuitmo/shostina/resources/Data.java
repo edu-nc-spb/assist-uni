@@ -3,7 +3,9 @@ package ru.niuitmo.shostina.resources;
 public class Data {
     String data;
     long id;
-    public Data(){}
+
+    public Data() {
+    }
 
     public Data(String data, long id) {
         this.data = data;

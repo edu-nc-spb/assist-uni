@@ -18,7 +18,7 @@ import java.io.IOException;
 public class AuthFilter implements ContainerRequestFilter {
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter(ContainerRequestContext requestContext) {
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         String token = "No token";
         System.out.println("Filter " + authorizationHeader);

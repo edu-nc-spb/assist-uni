@@ -1,6 +1,7 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,14 +17,14 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createTask(@FormParam("header") String header,
-                               @FormParam("problem") String problem) throws IOException {
+                               @FormParam("problem") String problem) {
 
         try {
             service.instance().addTask(header, problem);
             String json = "OK. You create new task '" + header + "'.";
             System.out.println(json);
             return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -38,7 +39,7 @@ public class Teacher {
             List<Data> t = service.instance().getAllTasks();
             System.out.println(t);
             return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -52,7 +53,7 @@ public class Teacher {
         try {
             List<Data> t = service.instance().getMyTasks(1);
             System.out.println(t);
-            return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ListOfData(t)).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -65,8 +66,7 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStudents() {
         try {
-            return Response.ok(new ListOfData(service.instance().getStudents()),
-                    MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ListOfData(service.instance().getStudents())).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -77,12 +77,12 @@ public class Teacher {
     @Path("/get-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTask(@FormParam("task_id") long task_id) throws IOException {
+    public Response getTask(@FormParam("task_id") long task_id) {
         try {
-            Task json =  service.instance().getTask(task_id);
+            Task json = service.instance().getTask(task_id);
             System.out.println("GET TASK: " + json.getHeader() + " " + json.getProblem());
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e){
+            return Response.ok(json).build();
+        } catch (ServiceException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -97,7 +97,7 @@ public class Teacher {
         try {
             service.instance().assignTask(id, idStudent, idTask);
             String json = ("OK. Task was added for student '" + idStudent + "'.");
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            return Response.ok(json).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -108,10 +108,10 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response showAnswer(@PathParam("id") int id, @FormParam("id_task") long idTask,
-                               @FormParam("id") int idStudent) throws IOException {
+                               @FormParam("id") int idStudent) {
         try {
             String json = service.instance().showAnswer(id, idStudent, idTask);
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            return Response.ok(json).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -122,11 +122,11 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response changeTask(@FormParam("id_task") long idTask,
-                               @FormParam("newProblem") String newProblem) throws IOException {
+                               @FormParam("newProblem") String newProblem) {
         try {
             service.instance().changeTask(idTask, newProblem);
             String json = "OK. Task was changed";
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            return Response.ok(json).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
@@ -136,11 +136,11 @@ public class Teacher {
     @Path("/delete-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteTask(@FormParam("id_task") long idTask) throws IOException {
+    public Response deleteTask(@FormParam("id_task") long idTask) {
         try {
             service.instance().deleteTask(idTask);
             String json = "OK. Task was deleted";
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            return Response.ok(json).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();

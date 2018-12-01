@@ -4,7 +4,9 @@ public class Task {
     long id;
     String header;
     String problem;
-    Task(){}
+
+    Task() {
+    }
 
     public long getId() {
         return id;
