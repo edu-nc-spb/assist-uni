@@ -14,9 +14,6 @@
 
     <script>
         var parent = this.parent
-        /*signInTeacher() {
-            parent.update({events : "signInTeacher"})
-        }*/
         signInStudent() {
             parent.update({events : "signInStudent"})
         }
@@ -27,10 +24,13 @@
                 password : jQuery("#inputPassword").val()});
             posting.done(function (data) {
                 console.log("OK, auth " + data);
+                console.log(this)
+                //this.parent.update({events: "signInTeacher"})
                 //riot.update({events: "signInTeacher"});
                 //this.update();
             }.bind(this)).fail(function (data) {
                 console.log("fail " + data.responseText);
+                console.log(this)
             }.bind(this))
             //this.update();
             parent.update({events: "signInTeacher"})

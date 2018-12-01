@@ -1,7 +1,5 @@
 package ru.niuitmo.shostina.resources;
 
-import java.util.List;
-
 public class Data {
     String data;
     long id;

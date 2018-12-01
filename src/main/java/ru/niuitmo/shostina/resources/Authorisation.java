@@ -1,29 +1,18 @@
 package ru.niuitmo.shostina.resources;
 
-
-import javax.crypto.KeyGenerator;
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import java.security.Key;
-
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("/auth")
+@Transactional
 public class Authorisation {
-
-    //@Inject
-    //private KeyGenerator keyGenerator;
-
     @POST
     @Path("/teacher")
     @Produces(MediaType.APPLICATION_JSON)
