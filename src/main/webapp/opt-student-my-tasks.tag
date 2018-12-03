@@ -10,6 +10,7 @@
     <script>
         //var header = this.parent.header
         var id_task = this.parent.id_task
+        var token = this.parent.token;
         this.on('update', (e) => {
             id_task = this.parent.id_task
         })
@@ -21,10 +22,14 @@
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("input[name='answer']").val();
-                    var posting = $.post('user/student/2/add-answer', {
-                        id_task: id_task, answer: term
-                    });
-                    posting.done(function (data) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: 'user/student/2/add-answer',
+                        data: {id_task: id_task, answer: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data.data);
                     }).fail(function (request) {
                         alert(request.responseText);
