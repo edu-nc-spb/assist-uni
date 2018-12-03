@@ -10,9 +10,9 @@
         </div>
         <div id = "context"></div>
     <script>
-        //var header = this.parent.header
         var parent = this.parent;
         var id_task = this.parent.id_task;
+        var token = this.parent.token;
         this.on('update', (e) => {
             id_task = this.parent.id_task;
             parent = this.parent;
@@ -24,10 +24,13 @@
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("textarea[name='newProblem']").val();
-                    var posting = $.post('user/teacher/1/change-task', {
-                        id_task: id_task, newProblem: term
-                    });
-                    posting.done(function (data) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'user/teacher/1/change-task',
+                        data: {id_task: id_task, newProblem: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data);
                     }).fail(function (request) {
                         alert(request.responseText);
@@ -48,8 +51,13 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            var posting = $.post('user/teacher/1/delete-task', {id_task: id_task});
-            posting.done(function (data) {
+            $.ajax({
+                type: "POST",
+                url: 'user/teacher/1/delete-task',
+                data: {id_task: id_task},
+                dataType: 'json',
+                headers: {AUTHORIZATION : token}
+            }).done(function (data) {
                 alert(data);
             }).fail(function (request) {
                 alert(request.responseText);
@@ -61,8 +69,12 @@
             var $select = $('<select/>', {
                 name:'name'
             });
-            var getting = $.get('/user/teacher/1/get-students');
-            getting.done(function (data) {
+
+            $.ajax({
+                url: '/user/teacher/1/get-students',
+                type: "GET",
+                headers: {AUTHORIZATION : token},
+            }).done(function (data) {
                 $.each(
                     data.data,
                     function (intIndex, objValue) {
@@ -78,9 +90,13 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
-                    var posting = $.post('/user/teacher/1/add-student',
-                        {id_task: id_task, id_student: term});
-                    posting.done(function (data) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/user/teacher/1/add-student',
+                        data: {id_task: id_task, id_student: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data);
                     }.bind(this)).fail(function (request) {
                         alert(request.responseText);
@@ -95,6 +111,5 @@
             }));
             jQuery('#context').empty().append(addStudentButton);
         }
-
     </script>
 </opt-teacher-all-tasks>

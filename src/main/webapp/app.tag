@@ -48,7 +48,6 @@
                 this.flagR = true;
                 this.flagC0 = false;
                 this.flag = "user/teacher/1/get-my-tasks";
-                console.log("myTaskTeacher")
                 this.right = 'list'
             riot.update()
 
@@ -59,7 +58,6 @@
                 this.flagR = false
                 riot.update()
             } else if(e != null && e.events == "get") {
-                console.log("get " + e.header)
                 this.flagC = true;
                 this.flagC0 = true;
                 $.ajax({
@@ -92,11 +90,9 @@
             } else if (e != null && e.events == "deleteTask") {
                 this.flagC = false;
                 this.flagC0 = false;
-                console.log("deleteTask")
                 riot.update()
             } else if (e != null && e.events == "changeTask") {
             this.update({events:"get", header:e.header});
-            console.log("changeTask " + e.header)
             riot.update()
         }
         })

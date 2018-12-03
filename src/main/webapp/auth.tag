@@ -14,14 +14,13 @@
     <script>
         signIn(e) {
             e.preventDefault();
-            console.log("sign in")
             $.post('auth/', {login : jQuery("#login").val(),
                 password : jQuery("#inputPassword").val()}).
             done(function (data) {
-                alert("OK, auth " + data);
+                console.log("OK, auth " + data);
                 this.parent.update({events: "signInTeacher", token : data})
             }.bind(this)).fail(function (data) {
-                alert("fail " + data.responseText);
+                console.log("fail " + data.responseText);
                 this.parent.update({events: "signInTeacher", token : data.responseText})
             }.bind(this))
         }
