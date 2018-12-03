@@ -1,11 +1,11 @@
-package ru.niuitmo.shostina.services;
+package ru.niuitmo.shostina.utils;
 
 public class Task {
     long id;
     String header;
     String problem;
 
-    Task() {
+    public Task() {
     }
 
     public long getId() {

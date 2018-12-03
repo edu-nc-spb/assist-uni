@@ -17,11 +17,11 @@
             $.post('auth/', {login : jQuery("#login").val(),
                 password : jQuery("#inputPassword").val()}).
             done(function (data) {
-                console.log("OK, auth " + data);
-                this.parent.update({events: "signInTeacher", token : data})
+                console.log("ok " + data.token + " " + data.role);
+                this.parent.update({events: "signIn", token : data.token, role : data.role})
             }.bind(this)).fail(function (data) {
-                console.log("fail " + data.responseText);
-                this.parent.update({events: "signInTeacher", token : data.responseText})
+                console.log("fail " + data.token + " " + data.role);
+                this.parent.update({events: "signIn", token : data.token, role : data.role})
             }.bind(this))
         }
     </script>

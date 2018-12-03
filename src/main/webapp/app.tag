@@ -21,21 +21,16 @@
 
 
         this.on('update', (e) => {
-            if ((e != null) && (e.events == "signInTeacher")) {
-                this.left = 'menu-teacher';
+             if (e != null && e.events == "signIn") {
+                if(e.role == 2)
+                this.left = 'menu-student';
+                if(e.role == 1)
+                    this.left = 'menu-teacher';
                 this.flagC = false;
                 this.flagR = false;
                 this.flagL = true;
                 this.flagC0 = false;
-                this.token = e.token;
                 riot.update()
-            } else if (e != null && e.events == "signInStudent") {
-                this.left = 'menu-student';
-                this.flagC = false;
-                this.flagR = false;
-                this.flagL = true;
-            this.flagC0 = false;
-            riot.update()
             } else if (e != null && e.events == "allTaskTeacher") {
                 this.flagC = false;
                 this.flagR = true;

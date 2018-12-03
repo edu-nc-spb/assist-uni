@@ -1,6 +1,9 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
+import ru.niuitmo.shostina.utils.Data;
+import ru.niuitmo.shostina.utils.ListOfData;
+import ru.niuitmo.shostina.utils.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

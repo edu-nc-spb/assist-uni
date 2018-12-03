@@ -8,7 +8,7 @@
         var parent = this.parent;
         var token = this.parent.token;
         this.on('update', (e) => {
-            id_task = this.parent.id_task
+            id_task = this.parent.id_task;
             parent = this.parent;
         })
         showAnswer () {
@@ -53,7 +53,7 @@
                 value: 'показать ответ студента'
             }));
             jQuery('#context').empty().append(showAnswerButton);
-            this.update()
+            this.update();
         }
     </script>
 </opt-teacher-my-tasks>

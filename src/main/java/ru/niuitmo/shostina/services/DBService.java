@@ -7,9 +7,10 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.niuitmo.shostina.resources.Data;
+import ru.niuitmo.shostina.utils.Data;
 import ru.niuitmo.shostina.services.dao.*;
 import ru.niuitmo.shostina.services.dataSets.*;
+import ru.niuitmo.shostina.utils.Task;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.niuitmo.shostina.resources;
+package ru.niuitmo.shostina.utils;
 
 public class Data {
     String data;
