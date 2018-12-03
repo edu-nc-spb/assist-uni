@@ -1,22 +1,26 @@
 <opt-teacher-my-tasks>
     <div style="margin-top: 20px;">
-    <button style="background-color: #00bed6" onclick="{showA}"> Посмотреть ответ </button>
+    <button style="background-color: #00bed6" onclick="{showAnswer}"> Посмотреть ответ </button>
     <div id = "context"></div>
     </div>
     <script>
         var id_task = this.parent.id_task;
-        var parent = this.parent
+        var parent = this.parent;
+        var token = this.parent.token;
         this.on('update', (e) => {
             id_task = this.parent.id_task
             parent = this.parent;
         })
-        showA () {
+        showAnswer () {
             var $select = $('<select/>', {
                 name:'name',
                 style: 'width: 100%; margin-top: 10px'
             });
-            var getting = $.get('/user/teacher/1/get-students');
-            getting.done(function (data) {
+            $.ajax({
+                url: '/user/teacher/1/get-students',
+                type: "GET",
+                headers: {AUTHORIZATION : token},
+            }).done(function (data) {
                 $.each(
                     data.data,
                     function (intIndex, objValue) {
@@ -30,9 +34,13 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
-                    var posting = $.post('/user/teacher/1/show-answer',
-                        {id_task: id_task, id: term});
-                    posting.done(function (data) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/user/teacher/1/show-answer',
+                        data: {id_task: id_task, id: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data);
                     }).fail(function (request) {
                         alert(request.responseText);
