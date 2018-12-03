@@ -12,16 +12,6 @@
     </form>
 
     <script>
-        //var parent = this.parent
-/*
-        this.on('update', (e) => {
-            console.log(e);
-            if(e != null) {
-                console.log( e.token);
-            //this.parent.update({events: "signInTeacher", token: e.token})
-        }
-        })
-*/
         signIn(e) {
             e.preventDefault();
             console.log("sign in")
@@ -29,14 +19,11 @@
                 password : jQuery("#inputPassword").val()}).
             done(function (data) {
                 alert("OK, auth " + data);
-                //riot.update({events: "signInTeacher", token: data})
+                this.parent.update({events: "signInTeacher", token : data})
             }.bind(this)).fail(function (data) {
                 alert("fail " + data.responseText);
                 this.parent.update({events: "signInTeacher", token : data.responseText})
             }.bind(this))
-            //parent.update({events: "signInTeacher", token: this.token})
-
-
         }
     </script>
 </auth>

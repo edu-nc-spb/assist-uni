@@ -3,8 +3,6 @@ package ru.niuitmo.shostina.resources;
 import ru.niuitmo.shostina.services.*;
 
 import javax.ws.rs.*;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -24,7 +22,7 @@ public class Teacher {
             service.instance().addTask(header, problem);
             String json = "OK. You create new task '" + header + "'.";
             System.out.println(json);
-            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            return Response.ok(json).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -35,13 +33,11 @@ public class Teacher {
     @Path("/get-all-tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasks(ContainerRequestContext requestContext) {
+    public Response getTasks() {
         try {
-            String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-            System.out.println(authorizationHeader);
             List<Data> t = service.instance().getAllTasks();
             System.out.println(t);
-            return Response.ok(new ListOfData(t), MediaType.APPLICATION_JSON).build();
+            return Response.ok(new ListOfData(t)).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
