@@ -20,8 +20,7 @@
                 console.log("ok " + data.token + " " + data.role);
                 this.parent.update({events: "signIn", token : data.token, role : data.role})
             }.bind(this)).fail(function (data) {
-                console.log("fail " + data.token + " " + data.role);
-                this.parent.update({events: "signIn", token : data.token, role : data.role})
+                console.log("fail " + data.responseText);
             }.bind(this))
         }
     </script>

@@ -7,6 +7,8 @@ import org.hibernate.criterion.Restrictions;
 import ru.niuitmo.shostina.services.dataSets.ObjectsDataSet;
 import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
 
+import java.util.List;
+
 public class ParamsDAO {
     private Session session;
 
@@ -18,11 +20,10 @@ public class ParamsDAO {
         return (ParamsDataSet) session.get(ParamsDataSet.class, id);
     }
 
-    public ParamsDataSet getByAttr(String attr) throws HibernateException {
+    public List<ParamsDataSet> getByValue(String value) throws HibernateException {
         Criteria criteria = session.createCriteria(ParamsDataSet.class);
-        criteria.add(Restrictions.eq("attr", attr)).uniqueResult();
-        ParamsDataSet res = (ParamsDataSet)criteria;
-        return res;
+        criteria.add(Restrictions.eq("text_value", value));
+        return criteria.list();
     }
 
     public long add(long object_id, String attr, String text_value) {

@@ -5,27 +5,31 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import ru.niuitmo.shostina.services.DBService;
+import ru.niuitmo.shostina.utils.Data;
 import ru.niuitmo.shostina.utils.User;
+
+import java.util.List;
+
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("/auth")
-public class Authorisation {
+public class Authorization {
+
+    private DBService service;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticateTeacher(@FormParam("login") String login,
                                         @FormParam("password") String password) {
         try {
-            if (login.equals("teacher1") && password.equals("t1")) {
-                String token = issueToken("1");
-                System.out.println("OK: " + token);
-                return Response.ok(new User("Bearer " + token, 1)).build();
-            } else if (login.equals("student1") && password.equals("s1")){
-                String token = issueToken("2");
-                System.out.println("OK: " + token);
-                return Response.ok(new User("Bearer " + token, 2)).build();
-            } else {
-                throw new NotAuthorizedException("No auth");
+            List<Data> a = service.instance().getStudents();
+            for(Data d : a) {
+                System.out.println(d.getData() + " " + d.getId());
             }
+            System.out.println(login + " " + password);
+            User user = service.instance().checkUser(login, password);
+            System.out.println("OK " + user.getToken());
+            return Response.ok(new User("Bearer " + issueToken(user.getToken()), user.getRole())).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(UNAUTHORIZED).build();

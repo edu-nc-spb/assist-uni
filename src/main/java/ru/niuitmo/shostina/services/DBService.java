@@ -11,6 +11,7 @@ import ru.niuitmo.shostina.utils.Data;
 import ru.niuitmo.shostina.services.dao.*;
 import ru.niuitmo.shostina.services.dataSets.*;
 import ru.niuitmo.shostina.utils.Task;
+import ru.niuitmo.shostina.utils.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +22,24 @@ public class DBService {
     private static final String HIBERNATE_HBM2DDL_AUTO = "update";
     private final SessionFactory sessionFactory;
     private static DBService dbService;
+    private final String NAME = "name";
+    private final String LOGIN = "login";
+    private final String PASS = "password";
+    private final static String STUDENT = "student";
+    private final static String TEACHER = "teacher";
+
 
     public static DBService instance() {
         if (dbService == null) {
             dbService = new DBService();
             try {
-                dbService.addType("teacher");
-                long idT = dbService.addUser("Teacher1", "teacher");
-                dbService.addType("student");
-                long idS = dbService.addUser("Student1", "student");
+                dbService.addType(TEACHER);
+                dbService.addType(STUDENT);
+                long idT = dbService.addUser("Teacher1", TEACHER, "teacher1", "t1");
+                long idS = dbService.addUser("Student1", STUDENT, "student1", "s1");
+                dbService.addUser("Teacher2", TEACHER, "teacher2", "t2");
+                dbService.addUser("Student2", STUDENT, "student2", "s2");
+
                 dbService.addType("task");
                 long idTask = dbService.addTask("Header1", "Problem1");
                 dbService.assignTask(idT, idS, idTask);
@@ -65,6 +75,37 @@ public class DBService {
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    public User checkUser(String login, String password) throws ServiceException {
+        Session session = sessionFactory.openSession();
+        ObjectsDAO objectsDAO = new ObjectsDAO(session);
+        ParamsDAO paramsDAO = new ParamsDAO(session);
+        List<ParamsDataSet> users = paramsDAO.getByValue(login);
+        if (users.size() == 0) {
+            throw new ServiceException("wrong password");
+        }
+        if (users.size() > 1) {
+            throw new ServiceException("not unique login");
+        }
+        ObjectsDataSet object = users.get(0).getObject();
+        List<ParamsDataSet> usersParams = object.getParams();
+        for (ParamsDataSet p : usersParams) {
+            if (p.getAttr().equals(PASS)) {
+                if (p.getText_value().equals(password)) {
+                    int role = 0;
+                    if (object.getObject_type().getName().equals(TEACHER)) {
+                        role = 1;
+                    } else if (object.getObject_type().getName().equals(STUDENT)) {
+                        role = 2;
+                    }
+                    return new User(Long.toString(object.getObject_id()), role);
+                }
+                else
+                    throw new ServiceException("wrong password");
+            }
+        }
+        throw new ServiceException("wrong password");
     }
 
     public void addType(String type) throws ServiceException {
@@ -114,19 +155,35 @@ public class DBService {
 
     }
 
-    public long addUser(String name, String type) throws ServiceException {
+    private ParamsDataSet createParam(Session session, ObjectsDataSet object, String param, String value) {
+        ParamsDataSet newParam = new ParamsDataSet(param, value);
+        newParam.setObject(object);
+        session.save(newParam);
+        return newParam;
+    }
+
+    public long addUser(String name, String type, String login, String password) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
+
             ParamsDataSet param1 = new ParamsDataSet("name", name);
             param1.setObject(object);
             params.add(param1);
+            ParamsDataSet param2 = new ParamsDataSet("login", login);
+            param2.setObject(object);
+            ParamsDataSet param3 = new ParamsDataSet("password", password);
+            param3.setObject(object);
+
             object.setParams(params);
             ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
             object.setObject_type(objectType);
+
             session.save(param1);
+            session.save(param2);
+            session.save(param3);
             long res = (long) session.save(object);
             session.update(objectType);
             transaction.commit();
@@ -137,13 +194,36 @@ public class DBService {
         }
     }
 
+    /*public long addUser(String name, String type, String login, String password) throws ServiceException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            List<ParamsDataSet> params = new ArrayList<>();
+            ObjectsDataSet object = new ObjectsDataSet();
+            params.add(createParam(session, object, NAME, name));
+            params.add(createParam(session, object, LOGIN, login));
+            params.add(createParam(session, object, PASS, password));
+            object.setParams(params);
+            ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
+            object.setObject_type(objectType);
+            objectType.getObjects().add(object);
+            long res = (long) session.save(object);
+            session.update(objectType);
+            transaction.commit();
+            session.close();
+            return res;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+    }*/
+
     public long addTask(String header, String problem) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
-            System.out.println("!!!ADDTASK: " + header + " " + problem);
             ParamsDataSet param1 = new ParamsDataSet("header", header);
             ParamsDataSet param2 = new ParamsDataSet("problem", problem);
             param1.setObject(object);
@@ -181,7 +261,6 @@ public class DBService {
                     }
                 }
             }
-            System.out.println(res);
             session.close();
             return res;
         } catch (HibernateException e) {
@@ -196,7 +275,6 @@ public class DBService {
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
             List<Data> res = new ArrayList<>();
             List<ParamsDataSet> params = user.getParams();
-            System.out.println(params);
             for (ParamsDataSet j : params) {
                 if (j.getAttr().equals("mytask")) {
                     ObjectsDataSet myTaskObject = objectsDAO.get(j.getNum_value());
@@ -240,12 +318,12 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             ObjectTypesDAO objectTypesDAO = new ObjectTypesDAO(session);
-            List<ObjectsDataSet> objects = (objectTypesDAO.getByName("student")).getObjects();
+            List<ObjectsDataSet> objects = (objectTypesDAO.getByName(STUDENT)).getObjects();
             List<Data> res = new ArrayList<>();
             for (ObjectsDataSet i : objects) {
                 List<ParamsDataSet> params = i.getParams();
                 for (ParamsDataSet j : params) {
-                    if (j.getAttr().equals("name")) {
+                    if (j.getAttr().equals(NAME)) {
                         res.add(new Data(j.getText_value(), j.getObject().getObject_id()));
                         break;
                     }
