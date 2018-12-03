@@ -62,29 +62,13 @@
                 console.log("get " + e.header)
                 this.flagC = true;
                 this.flagC0 = true;
-
-           /* $.ajax({
-                type: "POST",
-                url: 'user/teacher/1/get-task',
-                data: {task_id: e.header},
-                dataType: 'json'
-            }).done(function (data) {
-                this.header = data.header
-                this.problem =  data.problem
-                this.id_task = data.id
-                this.update()
-            }.bind(this))
-            this.center0 = 'card'
-            if(e.flag == "user/teacher/1/get-my-tasks") {
-                this.center = ('opt-teacher-my-tasks')
-            } else if(e.flag == "user/teacher/1/get-all-tasks") {
-                this.center = ('opt-teacher-all-tasks')
-            } else if (e.flag == "user/student/2/get-my-tasks") {
-                this.center = ('opt-student-my-tasks')
-            }*/
-
-                var posting = $.post('user/teacher/1/get-task', {task_id: e.header});
-                posting.done(function (data) {
+                $.ajax({
+                    type: "POST",
+                    url: 'user/teacher/1/get-task',
+                    data: {task_id: e.header},
+                    dataType: 'json',
+                    headers: {AUTHORIZATION : this.token}
+                }).done(function (data) {
                     this.header = data.header
                     this.problem =  data.problem
                     this.id_task = data.id
