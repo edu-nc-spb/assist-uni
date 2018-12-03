@@ -36,14 +36,14 @@
                 this.flagC = false;
                 this.flagR = true;
                 this.flagC0 = false;
-                this.flag = "user/teacher/1/get-all-tasks";
+                this.flag = "user/teacher/get-all-tasks";
                 this.right = 'list'
             riot.update()
             } else if (e != null && e.events == "myTaskTeacher") {
                 this.flagC=false;
                 this.flagR = true;
                 this.flagC0 = false;
-                this.flag = "user/teacher/1/get-my-tasks";
+                this.flag = "user/teacher/get-my-tasks";
                 this.right = 'list'
             riot.update()
 
@@ -58,7 +58,7 @@
                 this.flagC0 = true;
                 $.ajax({
                     type: "POST",
-                    url: 'user/teacher/1/get-task',
+                    url: 'user/teacher/get-task',
                     data: {task_id: e.header},
                     dataType: 'json',
                     headers: {AUTHORIZATION : this.token}
@@ -69,18 +69,18 @@
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'
-                if(e.flag == "user/teacher/1/get-my-tasks") {
+                if(e.flag == "user/teacher/get-my-tasks") {
                     this.center = ('opt-teacher-my-tasks')
-                } else if(e.flag == "user/teacher/1/get-all-tasks") {
+                } else if(e.flag == "user/teacher/get-all-tasks") {
                     this.center = ('opt-teacher-all-tasks')
-                } else if (e.flag == "user/student/2/get-my-tasks") {
+                } else if (e.flag == "user/student/get-my-tasks") {
                     this.center = ('opt-student-my-tasks')
                 }
                 riot.update()
             } else if (e != null && e.events == "myTasksStudent") {
                 this.flagC = false;
                 this.flagR = true;
-                this.flag = "user/student/2/get-my-tasks";
+                this.flag = "user/student/get-my-tasks";
                 this.right = 'list'
                 riot.update()
             } else if (e != null && e.events == "deleteTask") {

@@ -17,7 +17,7 @@
                 style: 'width: 100%; margin-top: 10px'
             });
             $.ajax({
-                url: '/user/teacher/1/get-students',
+                url: '/user/teacher/get-students',
                 type: "GET",
                 headers: {AUTHORIZATION : token},
             }).done(function (data) {
@@ -36,7 +36,7 @@
                     var term = $select.val();
                     $.ajax({
                         type: "POST",
-                        url: '/user/teacher/1/show-answer',
+                        url: '/user/teacher/show-answer',
                         data: {id_task: id_task, id: term},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}

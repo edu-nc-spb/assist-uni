@@ -26,7 +26,7 @@
                         term = $form.find("textarea[name='newProblem']").val();
                     $.ajax({
                         type: "POST",
-                        url: 'user/teacher/1/change-task',
+                        url: 'user/teacher/change-task',
                         data: {id_task: id_task, newProblem: term},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}
@@ -53,7 +53,7 @@
         deleteT(){
             $.ajax({
                 type: "POST",
-                url: 'user/teacher/1/delete-task',
+                url: 'user/teacher/delete-task',
                 data: {id_task: id_task},
                 dataType: 'json',
                 headers: {AUTHORIZATION : token}
@@ -71,7 +71,7 @@
             });
 
             $.ajax({
-                url: '/user/teacher/1/get-students',
+                url: '/user/teacher/get-students',
                 type: "GET",
                 headers: {AUTHORIZATION : token},
             }).done(function (data) {
@@ -92,7 +92,7 @@
                     var term = $select.val();
                     $.ajax({
                         type: "POST",
-                        url: '/user/teacher/1/add-student',
+                        url: '/user/teacher/add-student',
                         data: {id_task: id_task, id_student: term},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}

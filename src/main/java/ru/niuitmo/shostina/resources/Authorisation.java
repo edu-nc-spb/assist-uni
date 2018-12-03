@@ -6,7 +6,6 @@ import javax.ws.rs.core.Response;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ru.niuitmo.shostina.utils.User;
-
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path("/auth")

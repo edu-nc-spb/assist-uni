@@ -18,7 +18,7 @@
             this.token = this.parent.token
             $.ajax({
                 type: "POST",
-                url: 'user/teacher/1/create-task',
+                url: 'user/teacher/create-task',
                 data: {header: jQuery("#header").val(),
                     problem: jQuery("#problem").val()},
                 dataType: "json",

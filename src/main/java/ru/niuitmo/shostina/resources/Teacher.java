@@ -6,13 +6,20 @@ import ru.niuitmo.shostina.utils.ListOfData;
 import ru.niuitmo.shostina.utils.Task;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/user/teacher/{id}")
+
+@Path("/user/teacher")
 @AuthNeeded
 public class Teacher {
+
+    @Context
+    ContainerRequestContext requestContext;
+
     private DBService service;
 
     @Path("/create-task")
@@ -53,7 +60,8 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMyTasks() {
         try {
-            List<Data> t = service.instance().getMyTasks(1);
+            long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
+            List<Data> t = service.instance().getMyTasks(id);
             System.out.println(t);
             return Response.ok(new ListOfData(t)).build();
         } catch (ServiceException e) {
@@ -94,9 +102,10 @@ public class Teacher {
     @Path("/add-student")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addStudent(@PathParam("id") int id, @FormParam("id_task") long idTask,
+    public Response addStudent(@FormParam("id_task") long idTask,
                                @FormParam("id_student") int idStudent) {
         try {
+            long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
             service.instance().assignTask(id, idStudent, idTask);
             String json = ("OK. Task was added for student '" + idStudent + "'.");
             return Response.ok(json).build();
@@ -109,9 +118,10 @@ public class Teacher {
     @Path("/show-answer")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response showAnswer(@PathParam("id") int id, @FormParam("id_task") long idTask,
+    public Response showAnswer(@FormParam("id_task") long idTask,
                                @FormParam("id") int idStudent) {
         try {
+            long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
             String json = service.instance().showAnswer(id, idStudent, idTask);
             return Response.ok(json).build();
         } catch (ServiceException e) {

@@ -25,7 +25,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: 'user/student/2/add-answer',
+                        url: 'user/student/add-answer',
                         data: {id_task: id_task, answer: term},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}
