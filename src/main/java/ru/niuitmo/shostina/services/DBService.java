@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import ru.niuitmo.shostina.utils.Data;
 import ru.niuitmo.shostina.services.dao.*;
-import ru.niuitmo.shostina.services.dataSets.*;
+import ru.niuitmo.shostina.services.datasets.*;
 import ru.niuitmo.shostina.utils.Task;
 import ru.niuitmo.shostina.utils.User;
 
@@ -22,11 +22,16 @@ public class DBService {
     private static final String HIBERNATE_HBM2DDL_AUTO = "update";
     private final SessionFactory sessionFactory;
     private static DBService dbService;
-    private final String NAME = "name";
-    private final String LOGIN = "login";
-    private final String PASS = "password";
-    private final static String STUDENT = "student";
-    private final static String TEACHER = "teacher";
+    private static final String NAME = "name";
+    private static final String LOGIN = "login";
+    private static final String PASS = "password";
+    private static final String STUDENT = "student";
+    private static final String TEACHER = "teacher";
+    private static final String HEADER = "header";
+    private static final String PROBLEM = "problem";
+    private static final String TASK = "task";
+    private static final String MYTASK = "mytask";
+    private static final String ANSWER = "answer";
 
 
     public static DBService instance() {
@@ -40,7 +45,7 @@ public class DBService {
                 dbService.addUser("Teacher2", TEACHER, "teacher2", "t2");
                 dbService.addUser("Student2", STUDENT, "student2", "s2");
 
-                dbService.addType("task");
+                dbService.addType(TASK);
                 long idTask = dbService.addTask("Header1", "Problem1");
                 dbService.assignTask(idT, idS, idTask);
             } catch (ServiceException e) {
@@ -79,10 +84,9 @@ public class DBService {
 
     public User checkUser(String login, String password) throws ServiceException {
         Session session = sessionFactory.openSession();
-        ObjectsDAO objectsDAO = new ObjectsDAO(session);
         ParamsDAO paramsDAO = new ParamsDAO(session);
         List<ParamsDataSet> users = paramsDAO.getByValue(login);
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             throw new ServiceException("wrong password");
         }
         if (users.size() > 1) {
@@ -90,16 +94,16 @@ public class DBService {
         }
         ObjectsDataSet object = users.get(0).getObject();
         List<ParamsDataSet> usersParams = object.getParams();
-        for (ParamsDataSet p : usersParams) {
-            if (p.getAttr().equals(PASS)) {
-                if (p.getText_value().equals(password)) {
+        for (ParamsDataSet param : usersParams) {
+            if (param.getAttr().equals(PASS)) {
+                if (param.getTextValue().equals(password)) {
                     int role = 0;
-                    if (object.getObject_type().getName().equals(TEACHER)) {
+                    if (object.getObjectType().getName().equals(TEACHER)) {
                         role = 1;
-                    } else if (object.getObject_type().getName().equals(STUDENT)) {
+                    } else if (object.getObjectType().getName().equals(STUDENT)) {
                         role = 2;
                     }
-                    return new User(Long.toString(object.getObject_id()), role);
+                    return new User(Long.toString(object.getObjectId()), role);
                 }
                 else
                     throw new ServiceException("wrong password");
@@ -127,7 +131,7 @@ public class DBService {
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
             myTaskObject.setParent(objectsDAO.get(idTask));
-            ParamsDataSet answer = new ParamsDataSet("answer", "no answer");
+            ParamsDataSet answer = new ParamsDataSet(ANSWER, "no answer");
             answer.setObject(myTaskObject);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(answer);
@@ -135,13 +139,13 @@ public class DBService {
             session.save(answer);
             long idMyTask = (long) session.save(myTaskObject);
             ObjectsDataSet teacher = objectsDAO.get(idTeacher);
-            ParamsDataSet myTaskParam = new ParamsDataSet("mytask", idMyTask);
+            ParamsDataSet myTaskParam = new ParamsDataSet(MYTASK, idMyTask);
             myTaskParam.setObject(teacher);
             teacher.getParams().add(myTaskParam);
             session.save(myTaskParam);
             session.update(teacher);
             ObjectsDataSet student = objectsDAO.get(idStudent);
-            myTaskParam = new ParamsDataSet("mytask", idMyTask);
+            myTaskParam = new ParamsDataSet(MYTASK, idMyTask);
             myTaskParam.setObject(student);
             student.getParams().add(myTaskParam);
             session.save(myTaskParam);
@@ -168,44 +172,12 @@ public class DBService {
             Transaction transaction = session.beginTransaction();
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
-
-            ParamsDataSet param1 = new ParamsDataSet("name", name);
-            param1.setObject(object);
-            params.add(param1);
-            ParamsDataSet param2 = new ParamsDataSet("login", login);
-            param2.setObject(object);
-            ParamsDataSet param3 = new ParamsDataSet("password", password);
-            param3.setObject(object);
-
-            object.setParams(params);
-            ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
-            object.setObject_type(objectType);
-
-            session.save(param1);
-            session.save(param2);
-            session.save(param3);
-            long res = (long) session.save(object);
-            session.update(objectType);
-            transaction.commit();
-            session.close();
-            return res;
-        } catch (HibernateException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    /*public long addUser(String name, String type, String login, String password) throws ServiceException {
-        try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
-            List<ParamsDataSet> params = new ArrayList<>();
-            ObjectsDataSet object = new ObjectsDataSet();
             params.add(createParam(session, object, NAME, name));
             params.add(createParam(session, object, LOGIN, login));
             params.add(createParam(session, object, PASS, password));
             object.setParams(params);
             ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
-            object.setObject_type(objectType);
+            object.setObjectType(objectType);
             objectType.getObjects().add(object);
             long res = (long) session.save(object);
             session.update(objectType);
@@ -216,7 +188,7 @@ public class DBService {
             e.printStackTrace();
             throw new ServiceException(e);
         }
-    }*/
+    }
 
     public long addTask(String header, String problem) throws ServiceException {
         try {
@@ -224,15 +196,15 @@ public class DBService {
             Transaction transaction = session.beginTransaction();
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
-            ParamsDataSet param1 = new ParamsDataSet("header", header);
-            ParamsDataSet param2 = new ParamsDataSet("problem", problem);
+            ParamsDataSet param1 = new ParamsDataSet(HEADER, header);
+            ParamsDataSet param2 = new ParamsDataSet(PROBLEM, problem);
             param1.setObject(object);
             param2.setObject(object);
             params.add(param1);
             params.add(param2);
             object.setParams(params);
-            ObjectTypesDataSet type = new ObjectTypesDAO(session).getByName("task");
-            object.setObject_type(type);
+            ObjectTypesDataSet type = new ObjectTypesDAO(session).getByName(TASK);
+            object.setObjectType(type);
             type.getObjects().add(object);
             session.save(param1);
             session.save(param2);
@@ -250,13 +222,13 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             ObjectTypesDAO objectTypesDAO = new ObjectTypesDAO(session);
-            List<ObjectsDataSet> objects = (objectTypesDAO.getByName("task")).getObjects();
+            List<ObjectsDataSet> objects = (objectTypesDAO.getByName(TASK)).getObjects();
             List<Data> res = new ArrayList<>();
-            for (ObjectsDataSet i : objects) {
-                List<ParamsDataSet> params = i.getParams();
-                for (ParamsDataSet j : params) {
-                    if (j.getAttr().equals("header")) {
-                        res.add(new Data(j.getText_value(), i.getObject_id()));
+            for (ObjectsDataSet object : objects) {
+                List<ParamsDataSet> params = object.getParams();
+                for (ParamsDataSet param : params) {
+                    if (param.getAttr().equals(HEADER)) {
+                        res.add(new Data(param.getTextValue(), object.getObjectId()));
                         break;
                     }
                 }
@@ -275,14 +247,14 @@ public class DBService {
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
             List<Data> res = new ArrayList<>();
             List<ParamsDataSet> params = user.getParams();
-            for (ParamsDataSet j : params) {
-                if (j.getAttr().equals("mytask")) {
-                    ObjectsDataSet myTaskObject = objectsDAO.get(j.getNum_value());
+            for (ParamsDataSet param : params) {
+                if (param.getAttr().equals(MYTASK)) {
+                    ObjectsDataSet myTaskObject = objectsDAO.get(param.getNumValue());
                     ObjectsDataSet task = myTaskObject.getParent();
                     List<ParamsDataSet> taskParams = task.getParams();
-                    for (ParamsDataSet i : taskParams) {
-                        if (i.getAttr().equals("header")) {
-                            res.add(new Data(i.getText_value(), myTaskObject.getObject_id()));
+                    for (ParamsDataSet tParam : taskParams) {
+                        if (tParam.getAttr().equals(HEADER)) {
+                            res.add(new Data(tParam.getTextValue(), myTaskObject.getObjectId()));
                         }
                     }
                 }
@@ -301,9 +273,9 @@ public class DBService {
             String res = "";
             ObjectsDataSet myTaskObject = objectsDAO.get(idMyTask);
             List<ParamsDataSet> taskParams = myTaskObject.getParams();
-            for (ParamsDataSet p : taskParams) {
-                if (p.getAttr().equals("answer")) {
-                    res = p.getText_value();
+            for (ParamsDataSet param : taskParams) {
+                if (param.getAttr().equals(ANSWER)) {
+                    res = param.getTextValue();
                     break;
                 }
             }
@@ -320,11 +292,11 @@ public class DBService {
             ObjectTypesDAO objectTypesDAO = new ObjectTypesDAO(session);
             List<ObjectsDataSet> objects = (objectTypesDAO.getByName(STUDENT)).getObjects();
             List<Data> res = new ArrayList<>();
-            for (ObjectsDataSet i : objects) {
-                List<ParamsDataSet> params = i.getParams();
-                for (ParamsDataSet j : params) {
-                    if (j.getAttr().equals(NAME)) {
-                        res.add(new Data(j.getText_value(), j.getObject().getObject_id()));
+            for (ObjectsDataSet object : objects) {
+                List<ParamsDataSet> params = object.getParams();
+                for (ParamsDataSet param : params) {
+                    if (param.getAttr().equals(NAME)) {
+                        res.add(new Data(param.getTextValue(), param.getObject().getObjectId()));
                         break;
                     }
                 }
@@ -345,17 +317,16 @@ public class DBService {
             Task res = new Task();
             res.setId(id);
             List<ParamsDataSet> taskParams;
-            if (task.getParent() != null) {
+            if (task.getParent() != null)
                 taskParams = task.getParent().getParams();
-            } else {
+             else
                 taskParams = task.getParams();
-            }
-            for (ParamsDataSet j : taskParams) {
-                if (j.getAttr().equals("header")) {
-                    res.setHeader(j.getText_value());
+            for (ParamsDataSet param : taskParams) {
+                if (param.getAttr().equals(HEADER)) {
+                    res.setHeader(param.getTextValue());
                 }
-                if (j.getAttr().equals("problem")) {
-                    res.setProblem(j.getText_value());
+                if (param.getAttr().equals(PROBLEM)) {
+                    res.setProblem(param.getTextValue());
                 }
 
             }
@@ -376,8 +347,8 @@ public class DBService {
             ListIterator<ParamsDataSet> iter = taskParams.listIterator();
             while (iter.hasNext()) {
                 ParamsDataSet curr = iter.next();
-                if (curr.getAttr().equals("problem")) {
-                    curr.setText_value(newProblem);
+                if (curr.getAttr().equals(PROBLEM)) {
+                    curr.setTextValue(newProblem);
                 }
                 session.update(curr);
             }
@@ -417,8 +388,8 @@ public class DBService {
             ListIterator<ParamsDataSet> iter = taskParams.listIterator();
             while (iter.hasNext()) {
                 ParamsDataSet curr = iter.next();
-                if (curr.getAttr().equals("answer")) {
-                    curr.setText_value(newAnswer);
+                if (curr.getAttr().equals(ANSWER)) {
+                    curr.setTextValue(newAnswer);
                 }
                 session.update(curr);
             }

@@ -1,4 +1,4 @@
-package ru.niuitmo.shostina.services.dataSets;
+package ru.niuitmo.shostina.services.datasets;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ public class ObjectTypesDataSet implements Serializable {
     @Id
     @Column(name = "object_types_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int object_types_id;
+    private int objectTypeId;
 
     @Column(name = "name", unique = true, updatable = false)
     private String name;
@@ -24,21 +24,21 @@ public class ObjectTypesDataSet implements Serializable {
     }
 
     public ObjectTypesDataSet(int id, String name) {
-        this.setId(id);
-        this.setName(name);
+        this.objectTypeId = id;
+        this.name = name;
     }
 
     public ObjectTypesDataSet(String name) {
-        this.setId(-1);
-        this.setName(name);
+        this.objectTypeId = -1;
+        this.name = name;
     }
 
     public int getId() {
-        return object_types_id;
+        return objectTypeId;
     }
 
     public void setId(int id) {
-        this.object_types_id = id;
+        this.objectTypeId = id;
     }
 
     public String getName() {

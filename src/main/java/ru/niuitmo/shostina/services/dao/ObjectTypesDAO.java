@@ -3,16 +3,12 @@ package ru.niuitmo.shostina.services.dao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import org.hibernate.criterion.Restrictions;
-import ru.niuitmo.shostina.services.dataSets.ObjectTypesDataSet;
-import ru.niuitmo.shostina.services.dataSets.ObjectsDataSet;
-import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
-
-import java.util.List;
+import ru.niuitmo.shostina.services.datasets.ObjectTypesDataSet;
+import ru.niuitmo.shostina.services.datasets.ObjectsDataSet;
 
 public class ObjectTypesDAO {
-    private Session session;
+    private final Session session;
 
     public ObjectTypesDAO(Session session) {
         this.session = session;
@@ -44,11 +40,11 @@ public class ObjectTypesDAO {
        return (int)session.save(new ObjectTypesDataSet(name));
     }
 
-    public void addOb(String name, ObjectsDataSet e) throws HibernateException {
+    public void addOb(String name, ObjectsDataSet object) throws HibernateException {
         Criteria criteria = session.createCriteria(ObjectTypesDataSet.class);
         ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq(
                 "name", name)).uniqueResult();
-        res.getObjects().add(e);
+        res.getObjects().add(object);
         session.saveOrUpdate(res);
     }
 }

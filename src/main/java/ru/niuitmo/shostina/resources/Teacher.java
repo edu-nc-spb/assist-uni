@@ -1,16 +1,13 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
-import ru.niuitmo.shostina.utils.Data;
 import ru.niuitmo.shostina.utils.ListOfData;
-import ru.niuitmo.shostina.utils.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 
 @Path("/user/teacher")
@@ -45,9 +42,7 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTasks() {
         try {
-            List<Data> t = service.instance().getAllTasks();
-            System.out.println(t);
-            return Response.ok(new ListOfData(t)).build();
+            return Response.ok(new ListOfData(service.instance().getAllTasks())).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -61,9 +56,7 @@ public class Teacher {
     public Response getMyTasks() {
         try {
             long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
-            List<Data> t = service.instance().getMyTasks(id);
-            System.out.println(t);
-            return Response.ok(new ListOfData(t)).build();
+            return Response.ok(new ListOfData(service.instance().getMyTasks(id))).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -87,11 +80,9 @@ public class Teacher {
     @Path("/get-task")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTask(@FormParam("task_id") long task_id) {
+    public Response getTask(@FormParam("task_id") long idTask) {
         try {
-            Task json = service.instance().getTask(task_id);
-            System.out.println("GET TASK: " + json.getHeader() + " " + json.getProblem());
-            return Response.ok(json).build();
+            return Response.ok(service.instance().getTask(idTask)).build();
         } catch (ServiceException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).

@@ -36,8 +36,8 @@ public class Main {
         try {
             jettyServer.start();
             jettyServer.join();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch(Exception e) {
+            e.printStackTrace();
         } finally {
             jettyServer.destroy();
         }

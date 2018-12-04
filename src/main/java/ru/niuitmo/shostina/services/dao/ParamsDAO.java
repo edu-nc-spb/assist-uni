@@ -4,13 +4,12 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import ru.niuitmo.shostina.services.dataSets.ObjectsDataSet;
-import ru.niuitmo.shostina.services.dataSets.ParamsDataSet;
+import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
 
 import java.util.List;
 
 public class ParamsDAO {
-    private Session session;
+    private final Session session;
 
     public ParamsDAO(Session session) {
         this.session = session;
@@ -26,7 +25,7 @@ public class ParamsDAO {
         return criteria.list();
     }
 
-    public long add(long object_id, String attr, String text_value) {
-        return (long)session.save(new ParamsDataSet(object_id, attr, text_value));
+    public long add(long objectId, String attr, String textValue) {
+        return (long)session.save(new ParamsDataSet(objectId, attr, textValue));
     }
 }
