@@ -14,14 +14,18 @@ public class ObjectsDataSet implements Serializable {
     private long objectId;
 
     @ManyToOne
-    @JoinColumn(name = "object_types_id")
+    @JoinColumn(name = "objectTypeId")
     private ObjectTypesDataSet objectType;
+
+    @OneToMany(mappedBy = "refObject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ParamsDataSet> references;
+
 
     @OneToMany(mappedBy = "object", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ParamsDataSet> params;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parentId")
     private ObjectsDataSet parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,5 +76,13 @@ public class ObjectsDataSet implements Serializable {
 
     public void setChildren(List<ObjectsDataSet> children) {
         this.children = children;
+    }
+
+    public List<ParamsDataSet> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<ParamsDataSet> references) {
+        this.references = references;
     }
 }

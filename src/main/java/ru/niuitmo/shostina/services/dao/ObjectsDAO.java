@@ -21,6 +21,6 @@ public class ObjectsDAO {
 
     public List<ObjectsDataSet> getObjectsByType(int objectType) throws HibernateException {
         Criteria criteria = session.createCriteria(ObjectsDataSet.class);
-        return criteria.add(Restrictions.eq("object_type", objectType)).list();
+        return criteria.add(Restrictions.eq("objectType", objectType)).list();
     }
 }

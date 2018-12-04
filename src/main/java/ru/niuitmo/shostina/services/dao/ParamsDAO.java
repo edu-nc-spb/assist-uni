@@ -21,7 +21,7 @@ public class ParamsDAO {
 
     public List<ParamsDataSet> getByValue(String value) throws HibernateException {
         Criteria criteria = session.createCriteria(ParamsDataSet.class);
-        criteria.add(Restrictions.eq("text_value", value));
+        criteria.add(Restrictions.eq("textValue", value));
         return criteria.list();
     }
 

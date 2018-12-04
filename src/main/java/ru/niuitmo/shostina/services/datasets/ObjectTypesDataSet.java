@@ -17,7 +17,7 @@ public class ObjectTypesDataSet implements Serializable {
     @Column(name = "name", unique = true, updatable = false)
     private String name;
 
-    @OneToMany(mappedBy = "object_type", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "objectType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ObjectsDataSet> objects;
 
     public ObjectTypesDataSet() {

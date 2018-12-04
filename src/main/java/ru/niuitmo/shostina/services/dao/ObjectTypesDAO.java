@@ -20,7 +20,7 @@ public class ObjectTypesDAO {
 
     public ObjectTypesDataSet getById(int id) throws HibernateException {
         Criteria criteria = session.createCriteria(ObjectTypesDataSet.class);
-        ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq("object_id", id)).uniqueResult();
+        ObjectTypesDataSet res = (ObjectTypesDataSet) criteria.add(Restrictions.eq("objectId", id)).uniqueResult();
         if(res == null) {
             throw new HibernateException("wrong id");
         }

@@ -30,7 +30,10 @@ public class DBService {
     private static final String HEADER = "header";
     private static final String PROBLEM = "problem";
     private static final String TASK = "task";
-    private static final String MYTASK = "mytask";
+    private static final String ASTEACHER = "asteacher";
+    private static final String ASSTUDENT = "asstudent";
+
+
     private static final String ANSWER = "answer";
 
 
@@ -124,6 +127,13 @@ public class DBService {
         }
     }
 
+    private ParamsDataSet createParam(Session session, ObjectsDataSet object, String param, String value) {
+        ParamsDataSet newParam = new ParamsDataSet(param, value);
+        newParam.setObject(object);
+        session.save(newParam);
+        return newParam;
+    }
+
     public void assignTask(long idTeacher, long idStudent, long idTask) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
@@ -131,24 +141,29 @@ public class DBService {
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
             myTaskObject.setParent(objectsDAO.get(idTask));
-            ParamsDataSet answer = new ParamsDataSet(ANSWER, "no answer");
-            answer.setObject(myTaskObject);
+
             List<ParamsDataSet> params = new ArrayList<>();
-            params.add(answer);
-            myTaskObject.setParams(params);
-            session.save(answer);
-            long idMyTask = (long) session.save(myTaskObject);
+            params.add(createParam(session, myTaskObject, ANSWER, "no answer"));
+
             ObjectsDataSet teacher = objectsDAO.get(idTeacher);
-            ParamsDataSet myTaskParam = new ParamsDataSet(MYTASK, idMyTask);
-            myTaskParam.setObject(teacher);
-            teacher.getParams().add(myTaskParam);
-            session.save(myTaskParam);
-            session.update(teacher);
+            ParamsDataSet asTeacher = new ParamsDataSet(ASTEACHER);
+            asTeacher.setObject(myTaskObject);
+            asTeacher.setRefObject(teacher);
+            teacher.getReferences().add(asTeacher);
+            params.add(asTeacher);
+            session.save(asTeacher);
+
             ObjectsDataSet student = objectsDAO.get(idStudent);
-            myTaskParam = new ParamsDataSet(MYTASK, idMyTask);
-            myTaskParam.setObject(student);
-            student.getParams().add(myTaskParam);
-            session.save(myTaskParam);
+            ParamsDataSet asStudent = new ParamsDataSet(ASSTUDENT);
+            asStudent.setObject(myTaskObject);
+            asStudent.setRefObject(student);
+            student.getReferences().add(asStudent);
+            params.add(asStudent);
+            session.save(asStudent);
+
+            myTaskObject.setParams(params);
+            session.save(myTaskObject);
+            session.update(teacher);
             session.update(student);
             transaction.commit();
             session.close();
@@ -159,24 +174,17 @@ public class DBService {
 
     }
 
-    private ParamsDataSet createParam(Session session, ObjectsDataSet object, String param, String value) {
-        ParamsDataSet newParam = new ParamsDataSet(param, value);
-        newParam.setObject(object);
-        session.save(newParam);
-        return newParam;
-    }
-
     public long addUser(String name, String type, String login, String password) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
+            ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
             params.add(createParam(session, object, NAME, name));
             params.add(createParam(session, object, LOGIN, login));
             params.add(createParam(session, object, PASS, password));
             object.setParams(params);
-            ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
             object.setObjectType(objectType);
             objectType.getObjects().add(object);
             long res = (long) session.save(object);
@@ -243,19 +251,16 @@ public class DBService {
     public List<Data> getMyTasks(long id) throws ServiceException {
         try {
             Session session = sessionFactory.openSession();
-            ObjectsDAO objectsDAO = new ObjectsDAO(session);
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
             List<Data> res = new ArrayList<>();
-            List<ParamsDataSet> params = user.getParams();
+            List<ParamsDataSet> params = user.getReferences();
             for (ParamsDataSet param : params) {
-                if (param.getAttr().equals(MYTASK)) {
-                    ObjectsDataSet myTaskObject = objectsDAO.get(param.getNumValue());
-                    ObjectsDataSet task = myTaskObject.getParent();
-                    List<ParamsDataSet> taskParams = task.getParams();
-                    for (ParamsDataSet tParam : taskParams) {
-                        if (tParam.getAttr().equals(HEADER)) {
-                            res.add(new Data(tParam.getTextValue(), myTaskObject.getObjectId()));
-                        }
+                ObjectsDataSet myTaskObject = param.getObject();
+                ObjectsDataSet task = myTaskObject.getParent();
+                List<ParamsDataSet> taskParams = task.getParams();
+                for (ParamsDataSet taskParam : taskParams) {
+                    if (taskParam.getAttr().equals(HEADER)) {
+                        res.add(new Data(taskParam.getTextValue(), myTaskObject.getObjectId()));
                     }
                 }
             }

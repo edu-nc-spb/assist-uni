@@ -14,7 +14,7 @@ public class ParamsDataSet implements Serializable {
     private long paramId;
 
     @ManyToOne
-    @JoinColumn (name = "object_id")
+    @JoinColumn (name = "objectId")
     private ObjectsDataSet object;
 
     @Column(name = "attr")
@@ -23,9 +23,9 @@ public class ParamsDataSet implements Serializable {
     @Column(name = "text_value")
     private String textValue;
 
-
-    @Column(name="num_value")
-    private long numValue;
+    @ManyToOne
+    @JoinColumn(name = "object_id")
+    private ObjectsDataSet refObject;
 
     public ParamsDataSet() {
     }
@@ -42,16 +42,14 @@ public class ParamsDataSet implements Serializable {
         this.textValue = textValue;
     }
 
-    public ParamsDataSet(long id, String attr, long numValue) {
+    public ParamsDataSet(long id, String attr) {
         this.paramId = id;
         this.attr = attr;
-        this.numValue = numValue;
     }
 
-    public ParamsDataSet(String attr, long numValue) {
+    public ParamsDataSet(String attr) {
         this.paramId = -1;
         this.attr = attr;
-        this.numValue = numValue;
     }
 
     public ObjectsDataSet getObject() {
@@ -70,13 +68,6 @@ public class ParamsDataSet implements Serializable {
         this.attr = attr;
     }
 
-    public long getNumValue() {
-        return numValue;
-    }
-
-    public void setNumValue(long numValue) {
-        this.numValue = numValue;
-    }
 
     public long getParamId() {
         return paramId;
@@ -92,5 +83,13 @@ public class ParamsDataSet implements Serializable {
 
     public void setTextValue(String textValue) {
         this.textValue = textValue;
+    }
+
+    public ObjectsDataSet getRefObject() {
+        return refObject;
+    }
+
+    public void setRefObject(ObjectsDataSet refObject) {
+        this.refObject = refObject;
     }
 }
