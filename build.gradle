@@ -5,6 +5,11 @@ apply plugin: 'java'
 apply plugin: 'pmd'
 apply plugin: 'idea'
 
+pmd {
+  ruleSetFiles = files('ruleset.xml')
+  toolVersion = "6.9.0"
+}
+
 sourceCompatibility = 1.8
 repositories {
     mavenCentral()
