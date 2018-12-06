@@ -16,8 +16,10 @@
         this.on('update', (e) => {
             id_task = this.parent.id_task;
             parent = this.parent;
+            console.log(id_task + " update")
         })
         change() {
+            console.log(id_task + " change");
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
                 submit: function (event) {
@@ -32,11 +34,12 @@
                         headers: {AUTHORIZATION : token}
                     }).done(function (data) {
                         alert(data);
-                    }).fail(function (request) {
+                        jQuery('#context').empty();
+                        this.parent.update({events : "changeTask", header:id_task})
+                    }.bind(this)).fail(function (request) {
                         alert(request.responseText);
                     })
                     jQuery('#context').empty();
-                    parent.update({events : "changeTask", header:id_task})
                 }
             }).append(jQuery('<textarea/>', {
                 name: 'newProblem',
@@ -51,6 +54,7 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
+            console.log(id_task);
             $.ajax({
                 type: "POST",
                 url: 'user/teacher/delete-task',
@@ -59,11 +63,13 @@
                 headers: {AUTHORIZATION : token}
             }).done(function (data) {
                 alert(data);
-            }).fail(function (request) {
+                jQuery('#context').empty();
+                this.parent.update({events : "deleteTask"});
+            }.bind(this)).fail(function (request) {
                 alert(request.responseText);
             })
             jQuery('#context').empty();
-            this.parent.update({events : "deleteTask"});
+            //this.parent.update({events : "deleteTask"});
         }
         addStudent() {
             var $select = $('<select/>', {

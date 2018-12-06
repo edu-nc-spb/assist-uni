@@ -15,7 +15,9 @@ public class Student {
 
     @Context
     ContainerRequestContext requestContext;
-    private DBService service;
+
+    private final TaskService taskService = new TaskService();
+    private final AssignedTaskService assignedTaskService = new AssignedTaskService();
 
     @Path("/get-my-tasks")
     @GET
@@ -23,7 +25,7 @@ public class Student {
     public Response getMyTasks() {
         try {
             long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
-            return Response.ok(new ListOfData(service.instance().getMyTasks(id))).build();
+            return Response.ok(new ListOfData(assignedTaskService.getMyTasks(id))).build();
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).
@@ -36,7 +38,7 @@ public class Student {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTask(@FormParam("task_id") long idTask) {
         try {
-            return Response.ok(service.instance().getTask(idTask)).build();
+            return Response.ok(taskService.getTask(idTask)).build();
         } catch (ServiceException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).
@@ -51,7 +53,7 @@ public class Student {
                               @FormParam("answer") String answer) {
         try {
             long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
-            service.instance().addAnswer(id, idTask, answer);
+            assignedTaskService.addAnswer(id, idTask, answer);
             return Response.ok("OK. You add answer for task.").build();
         } catch (ServiceException e) {
             e.printStackTrace();

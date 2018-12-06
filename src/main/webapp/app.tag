@@ -59,7 +59,7 @@
                 $.ajax({
                     type: "POST",
                     url: 'user/teacher/get-task',
-                    data: {task_id: e.header},
+                    data: {id_task: e.header},
                     dataType: 'json',
                     headers: {AUTHORIZATION : this.token}
                 }).done(function (data) {
@@ -69,6 +69,7 @@
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'
+            console.log(this.id_task + " " + e.header);
                 if(e.flag == "user/teacher/get-my-tasks") {
                     this.center = ('opt-teacher-my-tasks')
                 } else if(e.flag == "user/teacher/get-all-tasks") {

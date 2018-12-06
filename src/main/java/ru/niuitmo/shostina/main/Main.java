@@ -8,11 +8,13 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 public class Main {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+
         int port = 8080;
-        if (args.length > 0) {
+        if(args.length > 0) {
             try {
                 port = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
@@ -20,26 +22,24 @@ public class Main {
                 System.out.println(e.getMessage());
             }
         }
+
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("src/main/webapp");
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resourceHandler, context});
+
         Server jettyServer = new Server(port);
         jettyServer.setHandler(handlers);
+
         ServletHolder jerseyServlet1 = context.addServlet(
                 org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-        jerseyServlet1.setInitOrder(1);
+        jerseyServlet1.setInitOrder(0);
 
         jerseyServlet1.setInitParameter(
                 "jersey.config.server.provider.packages",
                 "ru/niuitmo/shostina/resources");
-        try {
-            jettyServer.start();
-            jettyServer.join();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            jettyServer.destroy();
-        }
+
+        jettyServer.start();
+        jettyServer.join();
     }
 }

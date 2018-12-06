@@ -3,20 +3,20 @@ package ru.niuitmo.shostina.utils;
 import java.util.List;
 
 public class ListOfData {
-    List<Data> data;
+    List<DataElement> data;
 
     ListOfData() {
     }
 
-    public ListOfData(List<Data> data) {
+    public ListOfData(List<DataElement> data) {
         this.data = data;
     }
 
-    public List<Data> getData() {
+    public List<DataElement> getData() {
         return data;
     }
 
-    public void setData(List<Data> data) {
+    public void setData(List<DataElement> data) {
         this.data = data;
     }
 }

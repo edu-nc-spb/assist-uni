@@ -1,13 +1,13 @@
 package ru.niuitmo.shostina.utils;
 
-public class Data {
+public class DataElement {
     String data;
     long id;
 
-    public Data() {
+    public DataElement() {
     }
 
-    public Data(String data, long id) {
+    public DataElement(String data, long id) {
         this.data = data;
         this.id = id;
     }
