@@ -20,15 +20,25 @@ public class AssignedTaskService extends ServiceUtils {
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
             List<DataElement> res = new ArrayList<>();
             List<ParamsDataSet> params = user.getReferences();
+            String student = "";
             for (ParamsDataSet param : params) {
                 ObjectsDataSet myTaskObject = param.getObject();
+
+                for(ParamsDataSet myTaskParam : myTaskObject.getParams()) {
+                    if (myTaskParam.getAttr().equals(ASSTUDENT)) {
+                        student = myTaskParam.getTextValue();
+                    }
+                }
+
                 ObjectsDataSet task = myTaskObject.getParent();
                 List<ParamsDataSet> taskParams = task.getParams();
                 for (ParamsDataSet taskParam : taskParams) {
                     if (taskParam.getAttr().equals(HEADER)) {
-                        res.add(new DataElement(taskParam.getTextValue(), myTaskObject.getObjectId()));
+                        res.add(new DataElement("(" + student + ") " + taskParam.getTextValue(),
+                                myTaskObject.getObjectId()));
                     }
                 }
+
             }
             session.close();
             return res;
@@ -59,7 +69,7 @@ public class AssignedTaskService extends ServiceUtils {
         }
     }
 
-    public String showAnswer(long idTeacher, long idStudent, long idMyTask) throws ServiceException {
+    public String showAnswer(long idMyTask) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             ObjectsDAO objectsDAO = new ObjectsDAO(session);

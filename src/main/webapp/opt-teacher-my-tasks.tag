@@ -12,6 +12,21 @@
             parent = this.parent;
         })
         showAnswer () {
+
+            $.ajax({
+                type: "POST",
+                url: '/user/teacher/show-answer',
+                data: {id_task: id_task},
+                dataType: 'json',
+                headers: {AUTHORIZATION : token}
+            }).done(function (data) {
+                alert(data);
+            }).fail(function (request) {
+                alert(request.responseText);
+            })
+
+
+            /*
             var $select = $('<select/>', {
                 name:'name',
                 style: 'width: 100%; margin-top: 10px'
@@ -37,7 +52,7 @@
                     $.ajax({
                         type: "POST",
                         url: '/user/teacher/show-answer',
-                        data: {id_task: id_task, id: term},
+                        data: {id_task: id_task, id_student: term},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}
                     }).done(function (data) {
@@ -53,7 +68,7 @@
                 value: 'показать ответ студента'
             }));
             jQuery('#context').empty().append(showAnswerButton);
-            this.update();
+            this.update();*/
         }
     </script>
 </opt-teacher-my-tasks>

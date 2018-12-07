@@ -112,11 +112,9 @@ public class Teacher {
     @Path("/show-answer")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response showAnswer(@FormParam(TASKID) long idTask,
-                               @FormParam("id") int idStudent) {
+    public Response showAnswer(@FormParam(TASKID) long idTask) {
         try {
-            long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
-            String json = assignedTaskService.showAnswer(id, idStudent, idTask);
+            String json = assignedTaskService.showAnswer(idTask);
             return Response.ok(json).build();
         } catch (ServiceException e) {
             return Response.status(Response.Status.NOT_FOUND).

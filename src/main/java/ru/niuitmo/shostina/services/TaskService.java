@@ -163,9 +163,16 @@ public class TaskService extends ServiceUtils {
             session.save(asTeacher);
 
             ObjectsDataSet student = objectsDAO.get(idStudent);
+            String studentName = "";
+            for(ParamsDataSet param : student.getParams()) {
+                if(param.getAttr().equals(NAME)) {
+                    studentName = param.getTextValue();
+                }
+            }
             ParamsDataSet asStudent = new ParamsDataSet(ASSTUDENT);
             asStudent.setObject(myTaskObject);
             asStudent.setRefObject(student);
+            asStudent.setTextValue(studentName);
             student.getReferences().add(asStudent);
             params.add(asStudent);
             session.save(asStudent);
