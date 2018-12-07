@@ -351,6 +351,9 @@
     </rule>
     <rule ref="rulesets/java/typeresolution.xml/SignatureDeclareThrowsException">
         <priority>5</priority>
+        <properties>
+            <property name="violationSuppressXPath" value="//PackageDeclaration/Name[starts-with(@Image, 'ru.niuitmo.shostina.main')]" />
+        </properties>
     </rule>
 
     <!-- unusedcode.xml -->
@@ -521,6 +524,9 @@
     </rule>
     <rule ref="rulesets/java/strictexception.xml/SignatureDeclareThrowsException">
         <priority>5</priority>
+        <properties>
+            <property name="violationSuppressXPath" value="//PackageDeclaration/Name[starts-with(@Image, 'ru.niuitmo.shostina.main')]" />
+        </properties>
     </rule>
     <rule ref="rulesets/java/strictexception.xml/ExceptionAsFlowControl">
         <priority>3</priority>
