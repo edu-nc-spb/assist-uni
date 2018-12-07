@@ -10,7 +10,7 @@ public class ObjectTypesDataSet implements Serializable {
     private static final long serialVersionUID = -8706689714326132798L;
 
     @Id
-    @Column(name = "object_types_id")
+    @Column(name = "object_type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int objectTypeId;
 

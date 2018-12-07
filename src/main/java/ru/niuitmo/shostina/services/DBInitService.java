@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DBInitService extends ServiceUtils {
 
-    public static void initEntry() {
+    public void initEntry() {
         TaskService taskService = new TaskService();
 
         try {
@@ -33,7 +33,7 @@ public class DBInitService extends ServiceUtils {
         }
     }
 
-    private static void addType(String type) throws ServiceException {
+    private void addType(String type) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             Transaction transaction = session.beginTransaction();
@@ -45,7 +45,7 @@ public class DBInitService extends ServiceUtils {
         }
     }
 
-    private static long addUser(String name, String type, String login, String password) throws ServiceException {
+    private long addUser(String name, String type, String login, String password) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             Transaction transaction = session.beginTransaction();

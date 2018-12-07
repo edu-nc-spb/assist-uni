@@ -24,8 +24,4 @@ public class ParamsDAO {
         criteria.add(Restrictions.eq("textValue", value));
         return criteria.list();
     }
-
-    public long add(long objectId, String attr, String textValue) {
-        return (long)session.save(new ParamsDataSet(objectId, attr, textValue));
-    }
 }

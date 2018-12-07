@@ -6,10 +6,18 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import ru.niuitmo.shostina.services.DBInitService;
 
 public class Main {
 
+    private static void initDB() {
+        new DBInitService().initEntry();
+    }
+
     public static void main(String[] args) throws Exception {
+
+        initDB();
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
 

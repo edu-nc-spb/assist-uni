@@ -14,7 +14,7 @@ public class ParamsDataSet implements Serializable {
     private long paramId;
 
     @ManyToOne
-    @JoinColumn (name = "objectId")
+    @JoinColumn (name = "object_id")
     private ObjectsDataSet object;
 
     @Column(name = "attr")
@@ -24,7 +24,7 @@ public class ParamsDataSet implements Serializable {
     private String textValue;
 
     @ManyToOne
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "ref_value")
     private ObjectsDataSet refObject;
 
     public ParamsDataSet() {

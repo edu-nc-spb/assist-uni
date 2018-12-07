@@ -14,7 +14,7 @@ public class ObjectsDataSet implements Serializable {
     private long objectId;
 
     @ManyToOne
-    @JoinColumn(name = "objectTypeId")
+    @JoinColumn(name = "object_type")
     private ObjectTypesDataSet objectType;
 
     @OneToMany(mappedBy = "refObject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -25,7 +25,7 @@ public class ObjectsDataSet implements Serializable {
     private List<ParamsDataSet> params;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "parentId")
+    @JoinColumn(name = "parent")
     private ObjectsDataSet parent;
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
