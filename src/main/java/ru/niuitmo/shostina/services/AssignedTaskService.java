@@ -14,31 +14,35 @@ import java.util.ListIterator;
 
 public class AssignedTaskService extends ServiceUtils {
 
+
+    private List<DataElement> getMyTaskHelper
+            (String param, List<ParamsDataSet> myTasksParams) throws ServiceException {
+        String user = "";
+        List<DataElement> res = new ArrayList<>();
+        for (ParamsDataSet myTask : myTasksParams) {
+            ObjectsDataSet myTaskObject = myTask.getObject();
+            ObjectsDataSet task = myTaskObject.getParent();
+            for (ParamsDataSet myTaskParam : myTaskObject.getParams()) {
+                if (myTaskParam.getAttr().equals(param)) {
+                    user = myTaskParam.getTextValue();
+                }
+            }
+            res.add(new DataElement("(" + user + ") " + task.getName(),
+                    myTaskObject.getObjectId()));
+        }
+        return res;
+    }
+
     public List<DataElement> getMyTasks(long id) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             ObjectsDataSet user = (new ObjectsDAO(session).get(id));
-            List<DataElement> res = new ArrayList<>();
-            List<ParamsDataSet> params = user.getReferences();
-            String student = "";
-            for (ParamsDataSet param : params) {
-                ObjectsDataSet myTaskObject = param.getObject();
-
-                for(ParamsDataSet myTaskParam : myTaskObject.getParams()) {
-                    if (myTaskParam.getAttr().equals(ASSTUDENT)) {
-                        student = myTaskParam.getTextValue();
-                    }
-                }
-
-                ObjectsDataSet task = myTaskObject.getParent();
-                List<ParamsDataSet> taskParams = task.getParams();
-                for (ParamsDataSet taskParam : taskParams) {
-                    if (taskParam.getAttr().equals(HEADER)) {
-                        res.add(new DataElement("(" + student + ") " + taskParam.getTextValue(),
-                                myTaskObject.getObjectId()));
-                    }
-                }
-
+            List<DataElement> res;
+            List<ParamsDataSet> myTasksParams = user.getReferences();
+            if (user.getObjectType().getName().equals(STUDENT)) {
+                res = getMyTaskHelper(ASTEACHER, myTasksParams);
+            } else {
+                res = getMyTaskHelper(ASSTUDENT, myTasksParams);
             }
             session.close();
             return res;

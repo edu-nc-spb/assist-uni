@@ -13,6 +13,9 @@ public class ObjectsDataSet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long objectId;
 
+    @Column(name = "name", unique = true)
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "object_type")
     private ObjectTypesDataSet objectType;
@@ -84,5 +87,13 @@ public class ObjectsDataSet implements Serializable {
 
     public void setReferences(List<ParamsDataSet> references) {
         this.references = references;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

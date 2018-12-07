@@ -31,10 +31,8 @@ public class TaskService extends ServiceUtils {
             } else {
                 taskParams = task.getParent().getParams();
             }
+            res.setHeader(task.getName());
             for (ParamsDataSet param : taskParams) {
-                if (param.getAttr().equals(HEADER)) {
-                    res.setHeader(param.getTextValue());
-                }
                 if (param.getAttr().equals(PROBLEM)) {
                     res.setProblem(param.getTextValue());
                 }
@@ -98,19 +96,17 @@ public class TaskService extends ServiceUtils {
             Transaction transaction = session.beginTransaction();
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
-            ParamsDataSet param1 = new ParamsDataSet(HEADER, header);
-            ParamsDataSet param2 = new ParamsDataSet(PROBLEM, problem);
-            param1.setObject(object);
-            param2.setObject(object);
-            params.add(param1);
-            params.add(param2);
+            object.setName(header);
+            long res = (long) session.save(object);
+            ParamsDataSet param = new ParamsDataSet(PROBLEM, problem);
+            param.setObject(object);
+            params.add(param);
+            session.save(param);
             object.setParams(params);
             ObjectTypesDataSet type = new ObjectTypesDAO(session).getByName(TASK);
             object.setObjectType(type);
+            session.update(object);
             type.getObjects().add(object);
-            session.save(param1);
-            session.save(param2);
-            long res = (long) session.save(object);
             session.update(type);
             transaction.commit();
             session.close();
@@ -127,14 +123,7 @@ public class TaskService extends ServiceUtils {
             List<ObjectsDataSet> objects = (objectTypesDAO.getByName(TASK)).getObjects();
             List<DataElement> res = new ArrayList<>();
             for (ObjectsDataSet object : objects) {
-                List<ParamsDataSet> params = object.getParams();
-                for (ParamsDataSet param : params) {
-                    if (param.getAttr().equals(HEADER)) {
-                        System.out.println("!!!" + param.getTextValue() + " " + object.getObjectId());
-                        res.add(new DataElement(param.getTextValue(), object.getObjectId()));
-                        break;
-                    }
-                }
+                res.add(new DataElement(object.getName(), object.getObjectId()));
             }
             session.close();
             return res;
@@ -148,9 +137,12 @@ public class TaskService extends ServiceUtils {
             Session session = SESSIONFACTORY.openSession();
             Transaction transaction = session.beginTransaction();
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
+            ObjectsDataSet task = objectsDAO.get(idTask);
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
-            myTaskObject.setParent(objectsDAO.get(idTask));
-
+            myTaskObject.setName(task.getName() + " teacher: " +
+                    idTeacher + "student: " + idStudent);
+            myTaskObject.setParent(task);
+            session.save(myTaskObject);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(createParam(session, myTaskObject, ANSWER, "no answer"));
 
@@ -158,27 +150,22 @@ public class TaskService extends ServiceUtils {
             ParamsDataSet asTeacher = new ParamsDataSet(ASTEACHER);
             asTeacher.setObject(myTaskObject);
             asTeacher.setRefObject(teacher);
+            asTeacher.setTextValue(teacher.getName());
             teacher.getReferences().add(asTeacher);
             params.add(asTeacher);
             session.save(asTeacher);
 
             ObjectsDataSet student = objectsDAO.get(idStudent);
-            String studentName = "";
-            for(ParamsDataSet param : student.getParams()) {
-                if(param.getAttr().equals(NAME)) {
-                    studentName = param.getTextValue();
-                }
-            }
             ParamsDataSet asStudent = new ParamsDataSet(ASSTUDENT);
             asStudent.setObject(myTaskObject);
             asStudent.setRefObject(student);
-            asStudent.setTextValue(studentName);
+            asStudent.setTextValue(student.getName());
             student.getReferences().add(asStudent);
             params.add(asStudent);
             session.save(asStudent);
 
             myTaskObject.setParams(params);
-            session.save(myTaskObject);
+            session.update(myTaskObject);
             session.update(teacher);
             session.update(student);
             transaction.commit();

@@ -14,7 +14,7 @@ public class ObjectTypesDataSet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int objectTypeId;
 
-    @Column(name = "name", unique = true, updatable = false)
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "objectType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -55,13 +55,7 @@ public class UserService extends ServiceUtils {
             List<ObjectsDataSet> objects = (objectTypesDAO.getByName(STUDENT)).getObjects();
             List<DataElement> res = new ArrayList<>();
             for (ObjectsDataSet object : objects) {
-                List<ParamsDataSet> params = object.getParams();
-                for (ParamsDataSet param : params) {
-                    if (param.getAttr().equals(NAME)) {
-                        res.add(new DataElement(param.getTextValue(), param.getObject().getObjectId()));
-                        break;
-                    }
-                }
+                res.add(new DataElement(object.getName(), object.getObjectId()));
             }
             System.out.println(res);
             session.close();

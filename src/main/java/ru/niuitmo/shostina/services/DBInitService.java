@@ -52,13 +52,14 @@ public class DBInitService extends ServiceUtils {
             ObjectTypesDataSet objectType = new ObjectTypesDAO(session).getByName(type);
             List<ParamsDataSet> params = new ArrayList<>();
             ObjectsDataSet object = new ObjectsDataSet();
-            params.add(createParam(session, object, NAME, name));
+            object.setName(name);
+            long res = (long) session.save(object);
             params.add(createParam(session, object, LOGIN, login));
             params.add(createParam(session, object, PASS, password));
             object.setParams(params);
             object.setObjectType(objectType);
             objectType.getObjects().add(object);
-            long res = (long) session.save(object);
+            session.update(object);
             session.update(objectType);
             transaction.commit();
             session.close();
