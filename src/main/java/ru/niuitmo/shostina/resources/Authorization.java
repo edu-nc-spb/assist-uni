@@ -4,7 +4,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ru.niuitmo.shostina.services.ServiceException;
 import ru.niuitmo.shostina.services.UserService;
-import ru.niuitmo.shostina.utils.CalendarAuthorization;
 import ru.niuitmo.shostina.utils.User;
 
 import javax.ws.rs.FormParam;
@@ -22,10 +21,9 @@ public class Authorization {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticate(@FormParam("login") String login,
-                                        @FormParam("password") String password) throws Exception {
+                                        @FormParam("password") String password) {
         try {
             User user = (new UserService()).getUser(login, password);
-            CalendarAuthorization.calendarAuth(login);
             return Response.ok(new User("Bearer " + issueToken(user.getToken()), user.getRole())).build();
         } catch (ServiceException e) {
             e.printStackTrace();

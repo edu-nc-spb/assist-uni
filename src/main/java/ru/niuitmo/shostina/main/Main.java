@@ -6,21 +6,12 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import ru.niuitmo.shostina.services.DBInitService;
 
 public class Main {
 
-    private static void initDB() {
-        new DBInitService().initEntry();
-    }
-
     public static void main(String[] args) throws Exception {
-
-        initDB();
-
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-
         int port = 8080;
         if(args.length > 0) {
             try {
@@ -30,15 +21,12 @@ public class Main {
                 System.out.println(e.getMessage());
             }
         }
-
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("src/main/webapp");
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resourceHandler, context});
-
         Server jettyServer = new Server(port);
         jettyServer.setHandler(handlers);
-
         ServletHolder jerseyServlet1 = context.addServlet(
                 org.glassfish.jersey.servlet.ServletContainer.class, "/*");
         jerseyServlet1.setInitOrder(0);
