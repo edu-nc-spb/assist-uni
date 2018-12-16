@@ -9,6 +9,7 @@ import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
 import ru.niuitmo.shostina.utils.DataElement;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -18,6 +19,7 @@ public class AssignedTaskService extends ServiceUtils {
     private List<DataElement> getMyTaskHelper
             (String param, List<ParamsDataSet> myTasksParams) throws ServiceException {
         String user = "";
+        Date deadline = null;
         List<DataElement> res = new ArrayList<>();
         for (ParamsDataSet myTask : myTasksParams) {
             ObjectsDataSet myTaskObject = myTask.getObject();
@@ -28,7 +30,7 @@ public class AssignedTaskService extends ServiceUtils {
                 }
             }
             res.add(new DataElement("(" + user + ") " + task.getName(),
-                    myTaskObject.getObjectId()));
+                        myTaskObject.getObjectId()));
         }
         return res;
     }

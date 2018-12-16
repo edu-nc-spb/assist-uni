@@ -33,7 +33,7 @@ import java.util.List;
 
 @Path("/user/calendar")
 @AuthNeeded
-public class CalendarService {
+public class GoogleCalendar {
 
     @Context
     ContainerRequestContext requestContext;
@@ -44,8 +44,9 @@ public class CalendarService {
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String tokenDirectoryPath) throws IOException {
-        InputStream in = CalendarService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String tokenDirectoryPath)
+            throws IOException {
+        InputStream in = GoogleCalendar.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
@@ -58,6 +59,7 @@ public class CalendarService {
 
     public static com.google.api.services.calendar.Calendar calendarAuth(String id)
             throws GeneralSecurityException, IOException {
+        System.out.print("calendar auth");
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         com.google.api.services.calendar.Calendar service =
                 new com.google.api.services.calendar.Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,
@@ -93,8 +95,26 @@ public class CalendarService {
     public Response addEvent(@FormParam("header") String header) {
         try {
             String id = (requestContext.getHeaders().getFirst("id"));
-            CalendarService.addEvent(header, id);
+            GoogleCalendar.addEvent(header, id);
             String json = "OK. You add new event into google calendar '" + header + "'.";
+            return Response.ok(json).build();
+        } catch (GeneralSecurityException e) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        } catch (IOException e) {
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        }
+    }
+
+    @Path("/auth")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response auth() {
+        try {
+            String id = (requestContext.getHeaders().getFirst("id"));
+            calendarAuth(id);
+            String json = "OK. You authorize in Google Calendar.";
             return Response.ok(json).build();
         } catch (GeneralSecurityException e) {
             return Response.status(Response.Status.NOT_FOUND).

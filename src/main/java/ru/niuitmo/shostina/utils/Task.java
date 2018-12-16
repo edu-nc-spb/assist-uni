@@ -1,9 +1,12 @@
 package ru.niuitmo.shostina.utils;
 
+import java.util.Date;
+
 public class Task {
     long id;
     String header;
     String problem;
+    Date deadline;
 
     public Task() {
     }
@@ -30,5 +33,13 @@ public class Task {
 
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadine) {
+        this.deadline = deadine;
     }
 }

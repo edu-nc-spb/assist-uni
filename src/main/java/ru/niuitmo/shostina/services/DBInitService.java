@@ -13,6 +13,10 @@ import java.util.List;
 
 public class DBInitService extends ServiceUtils {
 
+    public static void main(String[] args) {
+        new DBInitService().initEntry();
+    }
+
     public void initEntry() {
         TaskService taskService = new TaskService();
 
@@ -27,7 +31,7 @@ public class DBInitService extends ServiceUtils {
             addType(TASK);
 
             long idTask = taskService.addTask("Header1", "Problem1");
-            taskService.assignTask(idT, idS, idTask);
+            taskService.assignTask(idT, idS, idTask, 60*24);
         } catch (ServiceException e) {
             e.printStackTrace();
         }

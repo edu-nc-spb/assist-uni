@@ -1,7 +1,11 @@
 package ru.niuitmo.shostina.resources;
 
-import ru.niuitmo.shostina.services.*;
+import ru.niuitmo.shostina.services.AssignedTaskService;
+import ru.niuitmo.shostina.services.ServiceException;
+import ru.niuitmo.shostina.services.TaskService;
+import ru.niuitmo.shostina.services.UserService;
 import ru.niuitmo.shostina.utils.ListOfData;
+import ru.niuitmo.shostina.utils.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -85,7 +89,9 @@ public class Teacher {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTask(@FormParam(TASKID) long idTask) {
         try {
-            return Response.ok(taskService.getTask(idTask)).build();
+            Task res = taskService.getTask(idTask);
+            System.out.println("GET DEADLINE: " + res.getDeadline());
+            return Response.ok(res).build();
         } catch (ServiceException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).
@@ -97,10 +103,11 @@ public class Teacher {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response addStudent(@FormParam(TASKID) long idTask,
-                               @FormParam("id_student") int idStudent) {
+                               @FormParam("id_student") int idStudent, @FormParam("deadline") int deadline) {
         try {
+            System.out.println("NEW DEADLINE: " + deadline);
             long id = Long.parseLong(requestContext.getHeaders().getFirst("id"));
-            taskService.assignTask(id, idStudent, idTask);
+            taskService.assignTask(id, idStudent, idTask, deadline);
             String json = ("OK. Task was added for student '" + idStudent + "'.");
             return Response.ok(json).build();
         } catch (ServiceException e) {

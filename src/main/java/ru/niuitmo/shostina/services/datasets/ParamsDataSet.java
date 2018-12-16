@@ -2,6 +2,7 @@ package ru.niuitmo.shostina.services.datasets;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "params")
@@ -26,6 +27,9 @@ public class ParamsDataSet implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ref_value")
     private ObjectsDataSet refObject;
+
+    @Column(name = "date_value")
+    private Date date;
 
     public ParamsDataSet() {
     }
@@ -91,5 +95,13 @@ public class ParamsDataSet implements Serializable {
 
     public void setRefObject(ObjectsDataSet refObject) {
         this.refObject = refObject;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

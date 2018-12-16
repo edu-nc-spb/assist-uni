@@ -96,10 +96,12 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
+                    var $form = jQuery(this);
+                    var deadline = $form.find("textarea[name='deadline']").val();
                     $.ajax({
                         type: "POST",
                         url: '/user/teacher/add-student',
-                        data: {id_task: id_task, id_student: term},
+                        data: {id_task: id_task, id_student: term, deadline: deadline},
                         dataType: 'json',
                         headers: {AUTHORIZATION : token}
                     }).done(function (data) {
@@ -109,12 +111,19 @@
                     }.bind(this))
                     jQuery('#context').empty();
                 }
-            }).append($select);
+            }).append(jQuery('<textarea/>', {
+                name: 'deadline',
+                style: 'width: 100%; margin-top: 10px;',
+                placeholder: "через сколько минут закончится прием ответов"
+
+            })).append($select);
             addStudentButton.append(jQuery('<input/>', {
                 style:"background-color: #00bed6;",
                 type: 'submit',
                 value: 'назначить студенту'
             }));
+
+
             jQuery('#context').empty().append(addStudentButton);
         }
     </script>

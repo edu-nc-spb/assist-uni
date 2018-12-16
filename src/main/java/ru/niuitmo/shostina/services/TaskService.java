@@ -12,10 +12,21 @@ import ru.niuitmo.shostina.utils.DataElement;
 import ru.niuitmo.shostina.utils.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
 public class TaskService extends ServiceUtils {
+
+    private Date getDeadline(ObjectsDataSet object) throws ServiceException {
+        List<ParamsDataSet>params = object.getParams();
+        for (ParamsDataSet param : params) {
+            if(param.getAttr().equals(DEADLINE)) {
+                return param.getDate();
+            }
+        }
+        throw new ServiceException("Assigned task without deadline");
+    }
 
     public Task getTask(long id) throws ServiceException {
         System.out.println(id);
@@ -29,6 +40,7 @@ public class TaskService extends ServiceUtils {
             if (task.getParent() == null) {
                 taskParams = task.getParams();
             } else {
+                res.setDeadline(getDeadline(task));
                 taskParams = task.getParent().getParams();
             }
             res.setHeader(task.getName());
@@ -132,7 +144,7 @@ public class TaskService extends ServiceUtils {
         }
     }
 
-    public void assignTask(long idTeacher, long idStudent, long idTask) throws ServiceException {
+    public void assignTask(long idTeacher, long idStudent, long idTask, int minutes) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             Transaction transaction = session.beginTransaction();
@@ -143,9 +155,12 @@ public class TaskService extends ServiceUtils {
                     idTeacher + "student: " + idStudent);
             myTaskObject.setParent(task);
             session.save(myTaskObject);
+            System.out.println("TS: NEW DEADLINE: " + minutes);
+            Date deadline = new Date(System.currentTimeMillis() + (minutes * ONE_MINUTE_IN_MILLIS));
+            System.out.println("TS: NEW DEADLINE: " + deadline);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(createParam(session, myTaskObject, ANSWER, "no answer"));
-
+            params.add(createParam(session, myTaskObject, DEADLINE, deadline));
             ObjectsDataSet teacher = objectsDAO.get(idTeacher);
             ParamsDataSet asTeacher = new ParamsDataSet(ASTEACHER);
             asTeacher.setObject(myTaskObject);
@@ -171,6 +186,7 @@ public class TaskService extends ServiceUtils {
             transaction.commit();
             session.close();
         } catch (HibernateException e) {
+            System.out.println("ERROR!!! ASSIGNED TASK");
             e.printStackTrace();
             throw new ServiceException(e);
         }

@@ -66,6 +66,9 @@
                     this.header = data.header
                     this.problem =  data.problem
                     this.id_task = data.id
+                    if(data.deadline != null) {
+                        this.date = data.deadline;
+                    }
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'
