@@ -2,7 +2,7 @@
     <form>
         <div class="form-group">
             <label for="header">Заголовок</label>
-            <input type="text" class="form-control" id = "header"  value="{header}" placeholder="Заголовок">
+            <input type="text" class="form-control" id = "header" placeholder="Заголовок...">
             </input>
         </div>
         <div class="form-group">
