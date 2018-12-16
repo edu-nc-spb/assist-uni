@@ -3,13 +3,12 @@ package ru.niuitmo.shostina.services;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ru.niuitmo.shostina.models.DataElement;
 import ru.niuitmo.shostina.services.dao.ObjectsDAO;
 import ru.niuitmo.shostina.services.datasets.ObjectsDataSet;
 import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
-import ru.niuitmo.shostina.models.DataElement;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -17,9 +16,8 @@ public class AssignedTaskService extends ServiceUtils {
 
 
     private List<DataElement> getMyTaskHelper
-            (String param, List<ParamsDataSet> myTasksParams) throws ServiceException {
+            (String param, List<ParamsDataSet> myTasksParams) {
         String user = "";
-        Date deadline = null;
         List<DataElement> res = new ArrayList<>();
         for (ParamsDataSet myTask : myTasksParams) {
             ObjectsDataSet myTaskObject = myTask.getObject();

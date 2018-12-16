@@ -69,7 +69,7 @@ public class CalendarService extends ServiceUtils {
         }
         if (!auth) {
             Transaction transaction = session.beginTransaction();
-            params.add(createParam(session, user, CALENDAR, OK));
+            params.add(createParam(session, user, CALENDAR, CALENDAR_AUTH));
             session.update(user);
             transaction.commit();
         }
@@ -83,10 +83,8 @@ public class CalendarService extends ServiceUtils {
         ObjectsDataSet user = (new ObjectsDAO(session)).get(userId);
         List<ParamsDataSet> params = user.getParams();
         for (ParamsDataSet param : params) {
-            if (param.getAttr().equals(CALENDAR)) {
-                if (param.getTextValue().equals(OK)) {
-                    auth = true;
-                }
+            if (param.getAttr().equals(CALENDAR) && param.getTextValue().equals(CALENDAR_AUTH)) {
+                auth = true;
             }
         }
         session.close();
