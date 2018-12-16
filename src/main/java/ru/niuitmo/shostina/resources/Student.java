@@ -1,7 +1,7 @@
 package ru.niuitmo.shostina.resources;
 
 import ru.niuitmo.shostina.services.*;
-import ru.niuitmo.shostina.utils.ListOfData;
+import ru.niuitmo.shostina.models.ListOfData;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;

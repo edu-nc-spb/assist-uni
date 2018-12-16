@@ -6,8 +6,8 @@ import ru.niuitmo.shostina.services.dao.ObjectTypesDAO;
 import ru.niuitmo.shostina.services.dao.ParamsDAO;
 import ru.niuitmo.shostina.services.datasets.ObjectsDataSet;
 import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
-import ru.niuitmo.shostina.utils.DataElement;
-import ru.niuitmo.shostina.utils.User;
+import ru.niuitmo.shostina.models.DataElement;
+import ru.niuitmo.shostina.models.User;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.niuitmo.shostina.utils;
+package ru.niuitmo.shostina.models;
 
 import java.util.List;
 

@@ -16,7 +16,6 @@
         this.on('update', (e) => {
             id_task = this.parent.id_task;
             parent = this.parent;
-            console.log(id_task + " update")
         })
         change() {
             console.log(id_task + " change");
@@ -122,8 +121,6 @@
                 type: 'submit',
                 value: 'назначить студенту'
             }));
-
-
             jQuery('#context').empty().append(addStudentButton);
         }
     </script>

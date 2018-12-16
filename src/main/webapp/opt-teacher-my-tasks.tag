@@ -9,10 +9,17 @@
         var header = this.parent.header;
         var parent = this.parent;
         var token = this.parent.token;
+        var deadline = "";
+        if(this.parent.date != null) {
+            deadline = this.parent.date;
+        }
         this.on('update', (e) => {
             id_task = this.parent.id_task;
             parent = this.parent;
             header = this.parent.header;
+            if(this.parent.date != null) {
+                deadline = this.parent.date;
+            }
         })
         showAnswer () {
             $.ajax({
@@ -31,7 +38,7 @@
             $.ajax({
                 type: "POST",
                 url: 'user/calendar/event',
-                data: {header: header},
+                data: {header: header, deadline: deadline},
                 dataType: 'json',
                 headers: {AUTHORIZATION : token}
             }).done(function (data) {

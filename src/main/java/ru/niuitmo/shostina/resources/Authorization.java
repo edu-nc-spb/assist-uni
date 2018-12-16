@@ -4,7 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ru.niuitmo.shostina.services.ServiceException;
 import ru.niuitmo.shostina.services.UserService;
-import ru.niuitmo.shostina.utils.User;
+import ru.niuitmo.shostina.models.User;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;

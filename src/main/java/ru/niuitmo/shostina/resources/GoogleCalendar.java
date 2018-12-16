@@ -27,7 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -69,7 +72,7 @@ public class GoogleCalendar {
         return service;
     }
 
-    private static void addEvent(String task, String userId) throws GeneralSecurityException, IOException {
+    private static void addEvent(String task, String userId, Date deadline) throws GeneralSecurityException, IOException {
         DateTime now = new DateTime(System.currentTimeMillis());
         Event event = new Event()
                 .setSummary("Assist Uni: new Task")
@@ -81,7 +84,7 @@ public class GoogleCalendar {
         event.setStart(start);
 
         EventDateTime end = new EventDateTime()
-                .setDateTime(new DateTime("2018-12-31T00:00:00-00:00"))
+                .setDateTime(new DateTime(deadline))
                 .setTimeZone("UTC+3:00");
         event.setEnd(end);
         String calendarId = "primary";
@@ -92,16 +95,24 @@ public class GoogleCalendar {
     @Path("/event")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addEvent(@FormParam("header") String header) {
+    public Response addEvent(@FormParam("header") String header, @FormParam("deadline") String deadline) {
         try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            Date date = formatter.parse(deadline);
             String id = (requestContext.getHeaders().getFirst("id"));
-            GoogleCalendar.addEvent(header, id);
+            GoogleCalendar.addEvent(header, id, date);
             String json = "OK. You add new event into google calendar '" + header + "'.";
             return Response.ok(json).build();
         } catch (GeneralSecurityException e) {
+            e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
         } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.NOT_FOUND).
+                    entity(e.getMessage()).build();
+        } catch (ParseException e) {
+            e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).
                     entity(e.getMessage()).build();
         }

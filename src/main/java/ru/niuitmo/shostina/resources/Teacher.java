@@ -4,8 +4,8 @@ import ru.niuitmo.shostina.services.AssignedTaskService;
 import ru.niuitmo.shostina.services.ServiceException;
 import ru.niuitmo.shostina.services.TaskService;
 import ru.niuitmo.shostina.services.UserService;
-import ru.niuitmo.shostina.utils.ListOfData;
-import ru.niuitmo.shostina.utils.Task;
+import ru.niuitmo.shostina.models.ListOfData;
+import ru.niuitmo.shostina.models.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;

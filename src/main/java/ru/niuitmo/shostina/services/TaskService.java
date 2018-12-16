@@ -8,8 +8,8 @@ import ru.niuitmo.shostina.services.dao.ObjectsDAO;
 import ru.niuitmo.shostina.services.datasets.ObjectTypesDataSet;
 import ru.niuitmo.shostina.services.datasets.ObjectsDataSet;
 import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
-import ru.niuitmo.shostina.utils.DataElement;
-import ru.niuitmo.shostina.utils.Task;
+import ru.niuitmo.shostina.models.DataElement;
+import ru.niuitmo.shostina.models.Task;
 
 import java.util.ArrayList;
 import java.util.Date;
