@@ -17,8 +17,8 @@
             id_task = this.parent.id_task;
             parent = this.parent;
         })
-        change() {
-            console.log(id_task + " change");
+        change(e) {
+            e.preventDefault();
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
                 submit: function (event) {
@@ -34,10 +34,12 @@
                     }).done(function (data) {
                         alert(data);
                         jQuery('#context').empty();
-                        this.parent.update({events : "changeTask", header:id_task})
+                        parent.update({events : "changeTask", header : id_task})
                     }.bind(this)).fail(function (request) {
                         alert(request.responseText);
-                    })
+                        jQuery('#context').empty();
+                        parent.update({events : "changeTask", header : id_task})
+                    }.bind(this))
                     jQuery('#context').empty();
                 }
             }).append(jQuery('<textarea/>', {
@@ -53,7 +55,6 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            console.log(id_task);
             $.ajax({
                 type: "POST",
                 url: 'user/teacher/delete-task',
@@ -63,18 +64,18 @@
             }).done(function (data) {
                 alert(data);
                 jQuery('#context').empty();
-                this.parent.update({events : "deleteTask"});
+                parent.update({events : "deleteTask"});
             }.bind(this)).fail(function (request) {
                 alert(request.responseText);
+                jQuery('#context').empty();
+                parent.update({events : "deleteTask"});
             })
             jQuery('#context').empty();
-            //this.parent.update({events : "deleteTask"});
         }
         addStudent() {
             var $select = $('<select/>', {
                 name:'name'
             });
-
             $.ajax({
                 url: '/user/teacher/get-students',
                 type: "GET",

@@ -30,7 +30,7 @@
         this.problem = this.parent.problem
     this.date = "";
         if(this.parent.date != null) {
-            this.date = "Дедлайн: " + this.parent.date;
+            this.date = this.parent.date;
         }
     })
     </script>

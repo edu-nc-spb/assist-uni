@@ -40,7 +40,6 @@
         })
 
         choose(e) {
-            console.log(e.target.dataset.message + " choose")
             this.parent.update({events : "get", header: e.target.dataset.message, flag: this.flag})
         }
 

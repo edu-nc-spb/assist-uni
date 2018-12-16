@@ -72,7 +72,6 @@
                     this.update()
                 }.bind(this))
                 this.center0 = 'card'
-            console.log(this.id_task + " " + e.header);
                 if(e.flag == "user/teacher/get-my-tasks") {
                     this.center = ('opt-teacher-my-tasks')
                 } else if(e.flag == "user/teacher/get-all-tasks") {
@@ -80,6 +79,7 @@
                 } else if (e.flag == "user/student/get-my-tasks") {
                     this.center = ('opt-student-my-tasks')
                 }
+                this.update();
                 riot.update()
             } else if (e != null && e.events == "myTasksStudent") {
                 this.flagC = false;
@@ -92,9 +92,8 @@
                 this.flagC0 = false;
                 riot.update()
             } else if (e != null && e.events == "changeTask") {
-            this.update({events:"get", header:e.header});
-            riot.update()
-        }
+                this.update({events:"get", header:e.header});
+            }
         })
     </script>
 </app>
