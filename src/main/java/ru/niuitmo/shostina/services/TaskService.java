@@ -11,12 +11,16 @@ import ru.niuitmo.shostina.services.datasets.ParamsDataSet;
 import ru.niuitmo.shostina.models.DataElement;
 import ru.niuitmo.shostina.models.Task;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
 public class TaskService extends ServiceUtils {
+
+    CalendarService calendarService = new CalendarService();
 
     private Date getDeadline(ObjectsDataSet object) throws ServiceException {
         List<ParamsDataSet>params = object.getParams();
@@ -155,9 +159,7 @@ public class TaskService extends ServiceUtils {
                     idTeacher + "student: " + idStudent);
             myTaskObject.setParent(task);
             session.save(myTaskObject);
-            System.out.println("TS: NEW DEADLINE: " + minutes);
             Date deadline = new Date(System.currentTimeMillis() + (minutes * ONE_MINUTE_IN_MILLIS));
-            System.out.println("TS: NEW DEADLINE: " + deadline);
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(createParam(session, myTaskObject, ANSWER, "no answer"));
             params.add(createParam(session, myTaskObject, DEADLINE, deadline));
@@ -185,12 +187,17 @@ public class TaskService extends ServiceUtils {
             session.update(student);
             transaction.commit();
             session.close();
+            calendarService.addEvent(task.getName(), idStudent, deadline);
+            calendarService.addEvent(task.getName(), idTeacher, deadline);
         } catch (HibernateException e) {
-            System.out.println("ERROR!!! ASSIGNED TASK");
+            e.printStackTrace();
+            throw new ServiceException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ServiceException(e);
+        } catch (GeneralSecurityException e) {
             e.printStackTrace();
             throw new ServiceException(e);
         }
-
     }
-
 }

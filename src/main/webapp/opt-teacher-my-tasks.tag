@@ -1,7 +1,6 @@
 <opt-teacher-my-tasks>
     <div style="margin-top: 20px;">
     <button style="background-color: #00bed6" onclick="{showAnswer}">Посмотреть ответ</button>
-        <button style="background-color: #00bed6" onclick="{addEvent}">Добавить в Google календарь</button>
     <div id = "context"></div>
     </div>
     <script>
@@ -9,17 +8,10 @@
         var header = this.parent.header;
         var parent = this.parent;
         var token = this.parent.token;
-        var deadline = "";
-        if(this.parent.date != null) {
-            deadline = this.parent.date;
-        }
         this.on('update', (e) => {
             id_task = this.parent.id_task;
             parent = this.parent;
             header = this.parent.header;
-            if(this.parent.date != null) {
-                deadline = this.parent.date;
-            }
         })
         showAnswer () {
             $.ajax({
@@ -31,19 +23,6 @@
             }).done(function (data) {
                 alert(data);
             }).fail(function (request) {
-                alert(request.responseText);
-            })
-        }
-        addEvent(e) {
-            $.ajax({
-                type: "POST",
-                url: 'user/calendar/event',
-                data: {header: header, deadline: deadline},
-                dataType: 'json',
-                headers: {AUTHORIZATION : token}
-            }).done(function (data) {
-                alert(data);
-            }.bind(this)).fail(function (request) {
                 alert(request.responseText);
             })
         }

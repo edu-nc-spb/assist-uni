@@ -20,6 +20,8 @@ public class ServiceUtils {
     public static final String ASSTUDENT = "assign for student";
     public static final String ANSWER = "answer";
     public static final String DEADLINE = "deadline";
+    public static final String CALENDAR = "calendar";
+    public static final String OK = "ok";
     public final static int  ONE_MINUTE_IN_MILLIS = 60000;
 
 
