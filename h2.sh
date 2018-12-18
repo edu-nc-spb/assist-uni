@@ -1,3 +1,4 @@
+
 #!/bin/bash
 # This script will give you H2 database shell
 

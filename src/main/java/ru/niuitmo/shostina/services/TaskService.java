@@ -148,7 +148,7 @@ public class TaskService extends ServiceUtils {
         }
     }
 
-    public void assignTask(long idTeacher, long idStudent, long idTask, int minutes) throws ServiceException {
+    public long assignTask(long idTeacher, long idStudent, long idTask, int minutes) throws ServiceException {
         try {
             Session session = SESSIONFACTORY.openSession();
             Transaction transaction = session.beginTransaction();
@@ -158,7 +158,7 @@ public class TaskService extends ServiceUtils {
             myTaskObject.setName(task.getName() + " teacher: " +
                     idTeacher + "student: " + idStudent);
             myTaskObject.setParent(task);
-            session.save(myTaskObject);
+            long res = (long) session.save(myTaskObject);
             Date deadline = new Date(System.currentTimeMillis() + (minutes * ONE_MINUTE_IN_MILLIS));
             List<ParamsDataSet> params = new ArrayList<>();
             params.add(createParam(session, myTaskObject, ANSWER, "no answer"));
@@ -189,6 +189,7 @@ public class TaskService extends ServiceUtils {
             session.close();
             calendarService.addEvent(task.getName(), idStudent, deadline);
             calendarService.addEvent(task.getName(), idTeacher, deadline);
+            return res;
         } catch (HibernateException e) {
             e.printStackTrace();
             throw new ServiceException(e);
