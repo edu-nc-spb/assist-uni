@@ -56,6 +56,7 @@
             } else if(e != null && e.events == "get") {
                 this.flagC = true;
                 this.flagC0 = true;
+                this.date = null;
                 $.ajax({
                     type: "POST",
                     url: 'user/teacher/get-task',

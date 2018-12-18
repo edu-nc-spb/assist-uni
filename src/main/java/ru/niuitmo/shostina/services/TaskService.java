@@ -33,7 +33,6 @@ public class TaskService extends ServiceUtils {
     }
 
     public Task getTask(long id) throws ServiceException {
-        System.out.println(id);
         try {
             Session session = SESSIONFACTORY.openSession();
             ObjectsDAO objectsDAO = new ObjectsDAO(session);
@@ -43,11 +42,12 @@ public class TaskService extends ServiceUtils {
             List<ParamsDataSet> taskParams;
             if (task.getParent() == null) {
                 taskParams = task.getParams();
+                res.setHeader(task.getName());
             } else {
                 res.setDeadline(getDeadline(task));
                 taskParams = task.getParent().getParams();
+                res.setHeader(task.getParent().getName());
             }
-            res.setHeader(task.getName());
             for (ParamsDataSet param : taskParams) {
                 if (param.getAttr().equals(PROBLEM)) {
                     res.setProblem(param.getTextValue());
@@ -156,7 +156,7 @@ public class TaskService extends ServiceUtils {
             ObjectsDataSet task = objectsDAO.get(idTask);
             ObjectsDataSet myTaskObject = new ObjectsDataSet();
             myTaskObject.setName(task.getName() + " teacher: " +
-                    idTeacher + "student: " + idStudent);
+                    idTeacher + " student: " + idStudent);
             myTaskObject.setParent(task);
             long res = (long) session.save(myTaskObject);
             Date deadline = new Date(System.currentTimeMillis() + (minutes * ONE_MINUTE_IN_MILLIS));
