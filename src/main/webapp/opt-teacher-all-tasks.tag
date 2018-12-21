@@ -9,31 +9,38 @@
                 Назначить студенту</button>
         </div>
         <div id = "context"></div>
-    </div>
     <script>
-        var header = this.parent.header
         var parent = this.parent;
+        var id_task = this.parent.id_task;
+        var token = this.parent.token;
         this.on('update', (e) => {
-            header = this.parent.header
+            id_task = this.parent.id_task;
             parent = this.parent;
         })
-        change() {
+        change(e) {
+            e.preventDefault();
             var changeTaskForm = jQuery('<form/>', {
                 id: "changeTask",
                 submit: function (event) {
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("textarea[name='newProblem']").val();
-                    var posting = $.post('teacher/1/change-task', {
-                        header: header, newProblem: term
-                    });
-                    posting.done(function (data) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'user/teacher/change-task',
+                        data: {id_task: id_task, newProblem: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data);
-                    }).fail(function (request) {
+                        jQuery('#context').empty();
+                        parent.update({events : "changeTask", header : id_task})
+                    }.bind(this)).fail(function (request) {
                         alert(request.responseText);
-                    })
+                        jQuery('#context').empty();
+                        parent.update({events : "changeTask", header : id_task})
+                    }.bind(this))
                     jQuery('#context').empty();
-                    parent.update({events : "changeTask", header:header})
                 }
             }).append(jQuery('<textarea/>', {
                 name: 'newProblem',
@@ -48,27 +55,38 @@
             jQuery('#context').empty().append(changeTaskForm);
         }
         deleteT(){
-            var posting = $.post('/teacher/1/delete-task', {header: header});
-            posting.done(function (data) {
+            $.ajax({
+                type: "POST",
+                url: 'user/teacher/delete-task',
+                data: {id_task: id_task},
+                dataType: 'json',
+                headers: {AUTHORIZATION : token}
+            }).done(function (data) {
                 alert(data);
-            }).fail(function (request) {
+                jQuery('#context').empty();
+                parent.update({events : "deleteTask"});
+            }.bind(this)).fail(function (request) {
                 alert(request.responseText);
+                jQuery('#context').empty();
+                parent.update({events : "deleteTask"});
             })
             jQuery('#context').empty();
-            this.parent.update({events : "deleteTask"});
         }
         addStudent() {
             var $select = $('<select/>', {
                 name:'name'
             });
-            var getting = $.get('/teacher/1/get-students');
-            getting.done(function (data) {
+            $.ajax({
+                url: '/user/teacher/get-students',
+                type: "GET",
+                headers: {AUTHORIZATION : token},
+            }).done(function (data) {
                 $.each(
                     data.data,
                     function (intIndex, objValue) {
                         $select.append($("<option/>", {
                             value: objValue.id,
-                            text: objValue.name
+                            text: objValue.data
                         }))
                     })
             });
@@ -78,16 +96,27 @@
                 submit: function (event) {
                     event.preventDefault();
                     var term = $select.val();
-                    var posting = $.post('/teacher/1/add-student',
-                        {header: header, id: term});
-                    posting.done(function (data) {
+                    var $form = jQuery(this);
+                    var deadline = $form.find("textarea[name='deadline']").val();
+                    $.ajax({
+                        type: "POST",
+                        url: '/user/teacher/add-student',
+                        data: {id_task: id_task, id_student: term, deadline: deadline},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data);
                     }.bind(this)).fail(function (request) {
                         alert(request.responseText);
                     }.bind(this))
                     jQuery('#context').empty();
                 }
-            }).append($select);
+            }).append(jQuery('<textarea/>', {
+                name: 'deadline',
+                style: 'width: 100%; margin-top: 10px;',
+                placeholder: "через сколько минут закончится прием ответов"
+
+            })).append($select);
             addStudentButton.append(jQuery('<input/>', {
                 style:"background-color: #00bed6;",
                 type: 'submit',
@@ -95,6 +124,5 @@
             }));
             jQuery('#context').empty().append(addStudentButton);
         }
-
     </script>
 </opt-teacher-all-tasks>

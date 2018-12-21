@@ -9,40 +9,72 @@
     <div id = "menu">
         <ul>
             <li>
+                <p4 style="text-align: center;">Добро пожаловать, {userName}</p4>
+            </li>
+            <li>
                 <h3 style="text-align: center;">Меню</h3>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ allTasks }>
+                <button style="background-color: #80D4DF; border-color: #0ec3db;width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;" class="btn btn-sm btn-block" onclick="{ allTasks }">
                     База заданий
                 </button>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ myTasks }>
+                <button style="background-color: #80D4DF; border-color: #0ec3db;width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
+                        class="btn btn-sm btn-block" onclick="{ myTasks }">
                     Назначенные задания
                 </button>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db" class="btn btn-sm btn-block" onclick={ createTask}>
+                <button style="background-color: #80D4DF; border-color: #0ec3db;width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;" class="btn btn-sm btn-block" onclick="{ createTask}">
                     Создать задание
+                </button>
+            </li>
+            <li>
+                <button style="background-color: #80D4DF; border-color: #0ec3db;width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
+                        class="btn btn-sm btn-block" onclick="{ addCalendar }">
+                    Добавить Google Calendar
                 </button>
             </li>
         </ul>
     </div>
     <script>
         var parent = this.parent
-        this.menu = [{value: "База заданий", ev: "{allTasks}"},
-            {value: "Назначенные задания", ev:"myTaskTeacher"},
-            {value: "Создать задание", ev:"createTask"}]
+        var token = this.parent.token
+        this.userName = this.parent.userName
         allTasks() {
-            console.log("hi")
             parent.update({events : "allTaskTeacher"})
         }
         myTasks() {
-            console.log("hiii")
             parent.update({events : "myTaskTeacher"})
         }
         createTask() {
             parent.update({events : "createTask"})
+        }
+        addCalendar() {
+            console.log("auth")
+            $.ajax({
+                type: "POST",
+                url: 'user/calendar/auth',
+                dataType: 'json',
+                headers: {AUTHORIZATION : token}
+            }).done(function (data) {
+                alert(data);
+            }.bind(this)).fail(function (request) {
+                alert(request.responseText);
+            })
         }
     </script>
 </menu-teacher>

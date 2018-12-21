@@ -1,15 +1,18 @@
 <opt-student-my-tasks>
     <div class="container" style="margin-top: 20px;">
-    <div class="row">
-    <button style="background-color: #00bed6" onclick="{addAnswer}"> Ответить </button>
-    </div>
+        <div class="row">
+            <button style="background-color: #00bed6" onclick="{addAnswer}"> Ответить </button>
+        </div>
     <div class="row">
     <div id = "context"></div>
     </div>
     </div>
     <script>
-        var header = this.parent.header
+        var id_task = this.parent.id_task
+        var token = this.parent.token;
+        var header = this.parent.header;
         this.on('update', (e) => {
+            id_task = this.parent.id_task
             header = this.parent.header
         })
         addAnswer() {
@@ -20,10 +23,14 @@
                     event.preventDefault();
                     var $form = jQuery(this),
                         term = $form.find("input[name='answer']").val();
-                    var posting = $.post('/student/2/add-answer', {
-                        header: header, answer: term
-                    });
-                    posting.done(function (data) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: 'user/student/add-answer',
+                        data: {id_task: id_task, answer: term},
+                        dataType: 'json',
+                        headers: {AUTHORIZATION : token}
+                    }).done(function (data) {
                         alert(data.data);
                     }).fail(function (request) {
                         alert(request.responseText);

@@ -9,9 +9,12 @@
         <ul>
             <h3 style="text-align: center;">Список заданий</h3>
             <li if="{tasks}" each="{header, i in tasks}">
-                <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db"
-                        class="btn btn-sm btn-block" data-message="{header}"
-                        onclick="{choose}" value = "{header}">{header}</button>
+                <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db; width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
+                        class="btn btn-sm btn-block" data-message="{header.id}"
+                        onclick="{choose}" value = "{header.id}">{header.data}</button>
             </li>
         </ul>
     </div>
@@ -20,22 +23,28 @@
         this.update();
         this.on('update', (e) => {
             if(e == null) {
-            this.tasks = []
-            this.flag = this.parent.flag
-            jQuery.get(this.flag).done(function (data) {
                 this.tasks = []
-                $.each(
-                    data.tasks,
-                    function (intIndex, objValue) {
-                        this.tasks.push(objValue);
-                    }.bind(this))
-                this.update({first: false})
-            }.bind(this))
-        }
+                this.flag = this.parent.flag
+                this.token = this.parent.token
+                $.ajax({
+                    url: this.flag,
+                    type: "GET",
+                    headers: {AUTHORIZATION : this.token},
+                }).done(function (data) {
+                    this.tasks = []
+                    $.each(
+                        data.data,
+                        function (intIndex, objValue) {
+                            this.tasks.push(objValue);
+                        }.bind(this))
+                    this.update({first: false})
+                }.bind(this))
+            }
         })
 
         choose(e) {
             this.parent.update({events : "get", header: e.target.dataset.message, flag: this.flag})
         }
+
     </script>
 </list>
