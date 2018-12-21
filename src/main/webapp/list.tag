@@ -9,7 +9,10 @@
         <ul>
             <h3 style="text-align: center;">Список заданий</h3>
             <li if="{tasks}" each="{header, i in tasks}">
-                <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db"
+                <button id = "choose" style="background-color: #80D4DF; border-color: #0ec3db; width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
                         class="btn btn-sm btn-block" data-message="{header.id}"
                         onclick="{choose}" value = "{header.id}">{header.data}</button>
             </li>

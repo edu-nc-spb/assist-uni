@@ -12,13 +12,21 @@
                 <h3 style="text-align: center;">Меню</h3>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db"
+                <button style="background-color: #80D4DF; border-color: #0ec3db;
+                        width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
                         class="btn btn-sm btn-block" onclick="{ myTasks }">
                     Назначенные мне задания
                 </button>
             </li>
             <li>
-                <button style="background-color: #80D4DF; border-color: #0ec3db"
+                <button style="background-color: #80D4DF; border-color: #0ec3db;
+                        width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;"
                         class="btn btn-sm btn-block" onclick="{ addCalendar }">
                     Добавить Google Calendar
                 </button>

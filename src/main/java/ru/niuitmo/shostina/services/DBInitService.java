@@ -90,23 +90,23 @@ public class DBInitService extends ServiceUtils {
                     long id = taskService.assignTask(idT1, s, tasks1.get(i), 60*24*10);
                     assignedTaskService.addAnswer(s, id, answer.get(i));
                 }
+            }
+            for(long s : students2) {
+                for(long task : tasks1) {
+                    taskService.assignTask(idT1, s, task, 60*24*15);
+                }
                 for(long task : tasks2) {
                     taskService.assignTask(idT1, s, task, 60*24*15);
                 }
             }
             for(long s : students2) {
-                for(long task : tasks2) {
-                    taskService.assignTask(idT1, s, task, 60*24*15);
-                }
-            }
-            for(long s : students2) {
-                for(long task : tasks3) {
-                    taskService.assignTask(idT2, s, task, 60*24*20);
+                for(int i = 0; i < 3; i++) {
+                    taskService.assignTask(idT2, s, tasks3.get(i), 60*24*20);
                 }
             }
             for(long s : students1) {
-                for(long task : tasks3) {
-                    taskService.assignTask(idT2, s, task, 60*24*20);
+                for(int i = 0; i < 3; i++) {
+                    taskService.assignTask(idT2, s, tasks3.get(i), 60*24*20);
                 }
             }
 
