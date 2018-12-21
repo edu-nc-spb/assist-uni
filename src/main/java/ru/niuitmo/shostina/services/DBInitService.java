@@ -28,8 +28,8 @@ public class DBInitService extends ServiceUtils {
             long idT1 = addUser("Корнеев Г.А.", TEACHER, "korneev", "t1");
             long idT2 = addUser("Елизаров Р.А.", TEACHER, "elizarov", "t2");
             long idT3 = addUser("Шалыто А.А.", TEACHER, "shal", "t3");
-            students1.add(addUser("Волков", STUDENT, "student1", "s1"));
-            students1.add(addUser("Глухов", STUDENT, "student2", "s2"));
+            students1.add(addUser("Волков", STUDENT, "volkov", "s1"));
+            students1.add(addUser("Глухов", STUDENT, "glukhov", "s2"));
             students1.add(addUser("Дугинец", STUDENT, "student3", "s3"));
             students1.add(addUser("Зеленов", STUDENT, "student4", "s4"));
             students1.add(addUser("Карлукова", STUDENT, "student5", "s5"));
@@ -84,32 +84,6 @@ public class DBInitService extends ServiceUtils {
             answer.add("Подснежники");
             answer.add("Счастье");
             answer.add("Секунда (високосная или секунда координации)");
-
-            for(long s : students1) {
-                for(int i = 0; i < 5; i++) {
-                    long id = taskService.assignTask(idT1, s, tasks1.get(i), 60*24*10);
-                    assignedTaskService.addAnswer(s, id, answer.get(i));
-                }
-            }
-            for(long s : students2) {
-                for(long task : tasks1) {
-                    taskService.assignTask(idT1, s, task, 60*24*15);
-                }
-                for(long task : tasks2) {
-                    taskService.assignTask(idT1, s, task, 60*24*15);
-                }
-            }
-            for(long s : students2) {
-                for(int i = 0; i < 3; i++) {
-                    taskService.assignTask(idT2, s, tasks3.get(i), 60*24*20);
-                }
-            }
-            for(long s : students1) {
-                for(int i = 0; i < 3; i++) {
-                    taskService.assignTask(idT2, s, tasks3.get(i), 60*24*20);
-                }
-            }
-
         } catch (ServiceException e) {
             e.printStackTrace();
         }

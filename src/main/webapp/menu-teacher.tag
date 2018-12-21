@@ -54,7 +54,6 @@
         var parent = this.parent
         var token = this.parent.token
         this.userName = this.parent.userName
-        console.log(this.userName)
         allTasks() {
             parent.update({events : "allTaskTeacher"})
         }

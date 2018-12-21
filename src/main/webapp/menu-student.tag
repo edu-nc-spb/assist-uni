@@ -9,6 +9,9 @@
     <div id="menu">
         <ul>
             <li>
+                <p4 style="text-align: center;">Добро пожаловать, {userName}</p4>
+            </li>
+            <li>
                 <h3 style="text-align: center;">Меню</h3>
             </li>
             <li>
@@ -35,6 +38,7 @@
     </div>
     <script>
         var token = this.parent.token
+        this.userName = this.parent.userName
         myTasks()
         {
             this.parent.update({events: "myTasksStudent"})
