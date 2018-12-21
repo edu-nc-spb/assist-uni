@@ -9,6 +9,9 @@
     <div id = "menu">
         <ul>
             <li>
+                <p4 style="text-align: center;">Добро пожаловать, {userName}</p4>
+            </li>
+            <li>
                 <h3 style="text-align: center;">Меню</h3>
             </li>
             <li>
@@ -50,9 +53,8 @@
     <script>
         var parent = this.parent
         var token = this.parent.token
-        this.menu = [{value: "База заданий", ev: "{allTasks}"},
-            {value: "Назначенные задания", ev:"myTaskTeacher"},
-            {value: "Создать задание", ev:"createTask"}]
+        this.userName = this.parent.userName
+        console.log(this.userName)
         allTasks() {
             parent.update({events : "allTaskTeacher"})
         }

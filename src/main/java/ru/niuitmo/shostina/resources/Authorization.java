@@ -24,7 +24,7 @@ public class Authorization {
                                         @FormParam("password") String password) {
         try {
             User user = (new UserService()).getUser(login, password);
-            return Response.ok(new User("Bearer " + issueToken(user.getToken()), user.getRole())).build();
+            return Response.ok(new User("Bearer " + issueToken(user.getToken()), user.getRole(), user.getName())).build();
         } catch (ServiceException e) {
             e.printStackTrace();
             return Response.status(UNAUTHORIZED).build();

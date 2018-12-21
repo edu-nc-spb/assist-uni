@@ -25,7 +25,7 @@ public class UserService extends ServiceUtils {
                     } else if (object.getObjectType().getName().equals(STUDENT)) {
                         role = 2;
                     }
-                    return new User(Long.toString(object.getObjectId()), role);
+                    return new User(Long.toString(object.getObjectId()), role, object.getName());
                 } else
                     throw new ServiceException("Wrong password");
             }

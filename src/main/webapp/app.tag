@@ -23,6 +23,7 @@
         this.on('update', (e) => {
              if (e != null && e.events == "signIn") {
                 this.token = e.token;
+                this.userName = e.userName;
                 if(e.role == 2)
                 this.left = 'menu-student';
                 if(e.role == 1)

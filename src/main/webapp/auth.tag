@@ -17,7 +17,7 @@
             $.post('auth/', {login : jQuery("#login").val(),
                 password : jQuery("#inputPassword").val()}).
             done(function (data) {
-                this.parent.update({events: "signIn", token : data.token, role : data.role})
+                this.parent.update({events: "signIn", token : data.token, role : data.role, userName : data.name})
             }.bind(this)).fail(function (data) {
                 alert("Неверный логин или пароль");
             }.bind(this))
