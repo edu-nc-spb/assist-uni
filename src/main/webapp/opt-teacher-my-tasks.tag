@@ -1,7 +1,7 @@
 <opt-teacher-my-tasks>
-    <div style="margin-top: 20px;">
-    <button style="background-color: #00bed6" onclick="{showAnswer}">Посмотреть ответ</button>
-    <div id = "context"></div>
+    <div style="overflow: auto;margin-top: 20px;">
+        <button style="background-color: #00bed6" onclick="{showAnswer}">Посмотреть ответ</button>
+        <div id = "context"></div>
     </div>
     <script>
         var id_task = this.parent.id_task;

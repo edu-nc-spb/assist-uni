@@ -6,7 +6,7 @@
         }
     </style>
 
-    <div id="menu">
+    <div id="menu" style="width:200px; overflow:auto">
         <ul>
             <li>
                 <p4 style="text-align: center;">Добро пожаловать, {userName}</p4>
@@ -17,19 +17,15 @@
             <li>
                 <button style="background-color: #80D4DF; border-color: #0ec3db;
                         width: 200px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;"
+                        overflow: auto;"
                         class="btn btn-sm btn-block" onclick="{ myTasks }">
                     Назначенные мне задания
                 </button>
             </li>
             <li>
                 <button style="background-color: #80D4DF; border-color: #0ec3db;
-                        width: 200px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;"
+                        width:200px;
+                        overflow: auto"
                         class="btn btn-sm btn-block" onclick="{ addCalendar }">
                     Добавить Google Calendar
                 </button>

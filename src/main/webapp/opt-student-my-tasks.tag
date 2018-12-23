@@ -1,5 +1,5 @@
 <opt-student-my-tasks>
-    <div class="container" style="margin-top: 20px;">
+    <div class="container" style="overflow: auton ;margin-top: 20px;">
         <div class="row">
             <button style="background-color: #00bed6" onclick="{addAnswer}"> Ответить </button>
         </div>

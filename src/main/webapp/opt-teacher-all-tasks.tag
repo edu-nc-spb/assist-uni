@@ -1,6 +1,6 @@
 <opt-teacher-all-tasks>
         <div class="btn-group" role="group"
-             style="margin-top: 10px;">
+             style="margin-top: 10px;overflow: auto;">
             <button style="background-color: #00bed6" onclick="{change}">
                 Изменить условие</button>
             <button style="background-color: #00bed6" onclick="{deleteT}">

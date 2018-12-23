@@ -4,14 +4,9 @@
             border-bottom: 2px solid  #EAA83A;
             padding:10px;
         }
-        .borderdiv {
-            border-width: 4px;
-            border-style: double;
-            border-color: greenyellow;
-        }
     </style>
 
-    <div style="background-color: #fdd89e;" id = "card">
+    <div style="background-color: #fdd89e; overflow: hidden;" id = "card">
         <!--<h3 >{header}</h3>-->
         <h3 class = "colortext">{header}</h3>
         <p style="padding-left:10px; padding-right:10px;">{date}</p>
